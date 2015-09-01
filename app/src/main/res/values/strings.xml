@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Metal</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main2">Take Picture</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="title_activity_loc">LocActivity</string>
+    <string name="title_activity_cek_maps">Map</string>
+    <string name="title_activity_show_log">Show Log</string>
+    <string name="title_activity_input">Input Customer</string>
+    <string name="title_activity_gallery">Gallery</string>
+
+    <!--Strings-->
+    <string name="gallery">Halaman ini digunakan untuk melihat detail pelanggan yang berada pada halaman utama app</string>
+    <string name="input">Halaman ini digunakan untuk input pelanggaran baru</string>
+    <string name="log">Halaman ini bersifat optional</string>
+    <string name="cvtext">This is the info for Customer 1\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
+    <string name="cvtext2">This is the info for Customer 2\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
+    <string name="cvtext3">This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
+    <string name="cvtext4">This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
+</resources>
