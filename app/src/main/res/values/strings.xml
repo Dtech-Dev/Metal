@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Pemetaan Pelanggaran</string>
-    <string name="app_alias">Metal</string>
+    <string name="app_name">Metal</string>
+    <string name="app_alias">Pemetaan Pelanggaran</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
