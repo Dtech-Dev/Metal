@@ -76,7 +76,7 @@ public class NavDrawerFragment extends Fragment {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(mainActivity, InputActivity.class));
+                        startActivity(new Intent(mainActivity, InputCustomerActivity.class));
                         break;
                     case 1:
                         startActivity(new Intent(mainActivity, GalleryActivity.class));

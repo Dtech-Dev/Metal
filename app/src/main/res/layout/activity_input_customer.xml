@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            layout="@layout/app_bar"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/barInputCust" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textCustID"
+            android:layout_below="@+id/barInputCust"
+            android:layout_alignParentStart="true"
+            android:hint="@string/label_id_pel"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/textCustName"
+            android:layout_below="@+id/textCustID"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/label_nama_pelanggan" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/textCustAddress"
+            android:layout_below="@+id/textCustName"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/label_alamat" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textJenisPelanggaran"
+            android:layout_below="@+id/textCustAddress"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/label_jenis_pelanggaran" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerTarif"
+            android:layout_below="@+id/textJenisPelanggaran"
+            android:spinnerMode="dropdown"
+            android:entries="@+id/array_tarif"
+            android:layout_toEndOf="@+id/btnTakeImg" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Image"
+            android:id="@+id/btnUploadImg"
+            android:layout_below="@+id/spinnerTarif"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ambil Image"
+            android:id="@+id/btnTakeImg"
+            android:layout_below="@+id/spinnerTarif"
+            android:layout_toEndOf="@+id/btnUploadImg" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Simpan"
+            android:id="@+id/btnSaveInputCust"
+            android:layout_below="@+id/spinnerTarif"
+            android:layout_toEndOf="@+id/txtTarifDaya" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Tarif Daya"
+            android:id="@+id/txtTarifDaya"
+            android:layout_alignTop="@+id/spinnerTarif"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/btnTakeImg"
+            android:layout_above="@+id/btnUploadImg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_below="@+id/btnUploadImg"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/no_image_large"
+            android:layout_alignEnd="@+id/spinnerTarif" />
+
+    </RelativeLayout>
+    <!--<fragment-->
+        <!--android:id="@+id/nav_drawer"-->
+        <!--android:layout_width="@dimen/nav_drawer_width"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="start"-->
+        <!--app:layout="@layout/fragment_nav_drawer"-->
+        <!--android:name="com.dtech.posisi.NavDrawerFragment"-->
+        <!--tools:layout="@layout/fragment_nav_drawer" />-->
+</LinearLayout>

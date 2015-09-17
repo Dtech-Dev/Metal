@@ -22,7 +22,6 @@ public class MainActivity extends ActionBarActivity {
     private MainListAdapter adapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +34,12 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-       tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+        tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+        tool.setTitle(getString(R.string.app_name));
         setSupportActionBar(tool);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-       NavDrawerFragment drawerFragment=(NavDrawerFragment)
+        NavDrawerFragment drawerFragment=(NavDrawerFragment)
                getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
         drawerFragment.setUp(R.id.nav_drawer,(DrawerLayout)findViewById(R.id.drawer_layout), tool);
 

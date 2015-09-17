@@ -51,6 +51,10 @@
             android:label="@string/title_activity_show_log" >
         </activity>
         <activity
+            android:name=".InputCustomerActivity"
+            android:label="@string/title_activity_input" >
+        </activity>
+        <activity
             android:name=".InputActivity"
             android:label="@string/title_activity_input" >
         </activity>

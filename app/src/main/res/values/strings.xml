@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Metal</string>
+    <string name="app_name">Pemetaan Pelanggaran</string>
+    <string name="app_alias">Metal</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -23,4 +24,23 @@
     <string name="cvtext2">This is the info for Customer 2\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
     <string name="cvtext3">This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
     <string name="cvtext4">This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want</string>
+    <string name="label_id_pel">ID Pelanggan</string>
+    <string name="label_alamat">Alamat</string>
+    <string name="label_nama_pelanggan">Name</string>
+    <string name="label_jenis_pelanggaran">Jenis Pelanggaran</string>
+    <string-array name="array_tarif">
+        <item>R-1/TR</item>
+        <item>R-2/TR</item>
+        <item>R-3/TR</item>
+        <item>B-2/TR</item>
+        <item>B-3/TM</item>
+        <item>I-3/TM</item>
+        <item>I-4/TT</item>
+        <item>P-1/TR</item>
+        <item>P-2/TM</item>
+        <item>P-3/TR</item>
+        <item>L/TR</item>
+        <item>TM</item>
+        <item>TT</item>
+    </string-array>
 </resources>
