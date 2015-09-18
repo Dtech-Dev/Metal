@@ -1,5 +1,6 @@
 package com.dtech.posisi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.dtech.cam.MetalCamera;
 import com.dtech.orm.Customer;
 import com.dtech.orm.DatabaseHandler;
 
@@ -105,6 +107,19 @@ public class InputCustomerActivity extends AppCompatActivity {
                     Log.d("Name: ", log);
                     Toast.makeText(InputCustomerActivity.this, "See your logs!", Toast.LENGTH_SHORT).show();
                 }*/
+            }
+        });
+
+        // BUTTON TAKE IMAGE
+        btnSave = (Button) findViewById(R.id.btnTakeImg);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // start activity containts camera buttons
+                // TODO, make any change to MetalCamera Class, so that they can call it directly
+                Intent camIntent = new Intent(InputCustomerActivity.this, MetalCamera.class);
+                startActivity(camIntent);
+                finish();
             }
         });
     }
