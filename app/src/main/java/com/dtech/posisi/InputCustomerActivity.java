@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * Created by ADIST on 9/17/2015.
  */
+ 
 public class InputCustomerActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText etCode, etName, etAddress, etFoulType;
