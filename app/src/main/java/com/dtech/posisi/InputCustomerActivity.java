@@ -25,6 +25,15 @@ public class InputCustomerActivity extends AppCompatActivity {
     private Spinner spinnerTarif;
     private Button btnSave;
     private Button btnUploadImg;
+    
+    //update imageview from sdcard
+    private static final int SELECT_PICTURE=1;
+    private ImageView imagePelanggan;
+    int column_index;
+    Cursor cursor;
+    String imagePath, logo, Logo;
+    String selectedImagePath;
+    String filemanagerString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +85,15 @@ public class InputCustomerActivity extends AppCompatActivity {
         });
         
         // BUTTON UPLOAD IMAGE
-        btnSave = (Button) findViewById(R.id.btnUploadImg);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
+        btnUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intentUpload = new Intent();
+                 intentUpload.setType("image/*");
+                intentUpload.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
+                /*
                 // Reading all contacts
                 Log.d("Reading: ", "Reading all contacts..");
                 List<Customer> Customers = dbHandler.getAllCustomer();
@@ -89,8 +103,36 @@ public class InputCustomerActivity extends AppCompatActivity {
                     // Writing Customers to log
                     Log.d("Name: ", log);
                     Toast.makeText(InputCustomerActivity.this, "See your logs!", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (resultCode== Activity.RESULT_OK){
+            if (requestCode==SELECT_PICTURE){
+                Uri selectedImageUri=data.getData();
+                filemanagerString=selectedImageUri.getPath();
+                selectedImagePath = getPath(selectedImageUri);
+                imagePelanggan.setImageURI(selectedImageUri);
+                /*cek bitmap
+                imagePath.getBytes();
+                Bitmap bm = BitmapFactory.decodeFile(imagePath);
+                */
+
+            }
+        }
+    }
+
+    public String getPath(Uri uri) {
+
+        String[] projection = {MediaStore.MediaColumns.DATA};
+        cursor = managedQuery(uri, projection, null, null, null);
+        column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        imagePath = cursor.getString(column_index);
+
+        return cursor.getString(column_index);
     }
 }
