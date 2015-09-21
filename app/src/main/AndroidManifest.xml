@@ -63,10 +63,6 @@
             android:name=".GalleryActivity"
             android:label="@string/title_activity_gallery" >
         </activity>
-        <activity
-            android:name="com.dtech.cam.MetalCamera"
-            android:label="@string/title_activity_input" >
-        </activity>
     </application>
 
 </manifest>
