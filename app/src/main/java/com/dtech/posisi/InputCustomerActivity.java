@@ -17,8 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.Databases.MetalDbaseAdapter;
 import com.dtech.cam.MetalCamera;
 import com.dtech.orm.Customer;
 import com.dtech.orm.DatabaseHandler;
@@ -35,6 +37,8 @@ public class InputCustomerActivity extends AppCompatActivity {
     private Spinner spinnerTarif;
     private Button btnSave;
     private Button btnUploadImg;
+
+    MetalDbaseAdapter dbaseHelper;
     
     //update imageview from sdcard
     private static final int SELECT_PICTURE=1;
@@ -51,6 +55,8 @@ public class InputCustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input_customer);
 
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+
+        //dbaseHelper = new MetalDbaseAdapter(this);
 
         // TOOLBAR
         toolbar = (Toolbar) findViewById(R.id.barInputCust);
@@ -158,4 +164,12 @@ public class InputCustomerActivity extends AppCompatActivity {
 
         return cursor.getString(column_index);
     }
+
+    /*public void addCustomer(View view) {
+        TextView code, name, address, foul, tarif;
+
+        //declaration
+
+        long id = dbaseHelper.insertData(code, name, address, foul, tarif);
+    }*/
 }

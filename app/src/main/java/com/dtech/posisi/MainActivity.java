@@ -2,6 +2,7 @@ package com.dtech.posisi;
 
 ;
 import android.content.Intent;
+
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,12 +10,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+
+import com.dtech.Databases.MetalDbaseAdapter;
+import com.dtech.orm.Customer;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    MetalDbaseAdapter metalHelper;
 
     private android.support.v7.widget.Toolbar tool;
 
@@ -22,10 +31,13 @@ public class MainActivity extends ActionBarActivity {
     private MainListAdapter adapter;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        metalHelper = new MetalDbaseAdapter(this);
 
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
@@ -54,19 +66,27 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    public static List<Information> getDatamain(){
-        List<Information> mdata=new ArrayList<>();
-        int[] icons={R.drawable.ic_pict_icon, R.drawable.ic_pict_icon, R.drawable.ic_pict_icon,
+
+
+
+    public static List<Information> getDatamain() {
+        Customer dataCustomer = new Customer();
+        //List<Customer> dataCust = new ArrayList<Customer>();
+        List<Information> mdata = new ArrayList<>();
+        int[] icons = {R.drawable.ic_pict_icon, R.drawable.ic_pict_icon, R.drawable.ic_pict_icon,
                 R.drawable.ic_pict_icon};
-        String[] title={"This is the info for Customer 1\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-        "This is the info for Customer 2\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-        "This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-        "This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want"
+        String[] title = {"This is the info for Customer 1\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
+                "This is the info for Customer 2\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
+                "This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
+                "This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want"
         };
-        for (int i=0;i<title.length && i<icons.length; i++){
-            Information current=new Information();
-            current.mainTitle=title[i];
-            current.mainIconId=icons[i];
+
+
+
+        for (int i = 0; i < title.length && i < icons.length; i++) {
+            Information current = new Information();
+            current.mainTitle = title[i];
+            current.mainIconId = icons[i];
             mdata.add(current);
         }
         return mdata;
