@@ -14,17 +14,14 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.dtech.Databases.MetalDbaseAdapter;
-
 import com.dtech.orm.Customer;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
-
-    MetalDbaseAdapter metalHelper;
 
     private android.support.v7.widget.Toolbar tool;
 
@@ -40,13 +37,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        metalHelper = new MetalDbaseAdapter(this);
-
+        adaptCustomer = new MainCustomerAdapter(getDataCust());
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
-       // adapter=new MainListAdapter(getDatamain());
-        //custAdapter=new AdapterCustomer(getDataCust());
-        adaptCustomer = new MainCustomerAdapter(getDataCust());
         recyclerView.setAdapter(adaptCustomer);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -68,6 +61,12 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // RELOAD recyclerView
+        adaptCustomer = new MainCustomerAdapter(getDataCust());
+        recyclerView=(RecyclerView)findViewById(R.id.mList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adaptCustomer);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         return true;
     }
 
@@ -76,13 +75,11 @@ public class MainActivity extends ActionBarActivity {
 
         Customer mCustomer = new Customer();
         List<Information> listCustomer = new ArrayList<>();
-        String[] nama = {mCustomer.get_name()};
-        String[] address = {mCustomer.get_address()};
-
-        for (int i=0; i < nama.length && i < address.length; i++) {
+        List<Customer> customer = Customer.listAll(Customer.class);
+        for (Customer cust : customer) {
             Information setCust = new Information();
-            setCust.nama = nama[i];
-            setCust.address = address[i];
+            setCust.nama = cust.getcode() + "; " + cust.getname();
+            setCust.address = cust.getaddress();
             listCustomer.add(setCust);
         }
         return listCustomer;

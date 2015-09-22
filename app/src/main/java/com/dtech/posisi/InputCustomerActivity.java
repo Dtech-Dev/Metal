@@ -20,21 +20,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//<<<<<<< HEAD
-import com.dtech.Databases.MetalDbaseAdapter;
-//import com.dtech.cam.MetalCamera;
-//=======
-//>>>>>>> origin/master
 import com.dtech.orm.Customer;
-import com.dtech.orm.DatabaseHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by ADIST on 9/17/2015.
  */
-
 public class InputCustomerActivity extends AppCompatActivity {
     private static final int TAKE_PHOTO_CODE = 1;
     private static final int SELECT_PICTURE = 2;
@@ -47,15 +41,6 @@ public class InputCustomerActivity extends AppCompatActivity {
     private Button btnSave;
     private Button btnUploadImg;
 
-     DatabaseHandler dbHandler;
-//<<<<<<< HEAD
-
-    MetalDbaseAdapter dbaseHelper;
-
-    //update imageview from sdcard
-    //private static final int SELECT_PICTURE=1;
-//=======
-//>>>>>>> origin/master
     private ImageView imagePelanggan;
 
     private int count = 0;
@@ -66,25 +51,15 @@ public class InputCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
 
-         dbHandler = new DatabaseHandler(this);
         setToolBar();
         setSpinnerTarif();
         setEditTextCustInfo();
-        setButtonSave(dbHandler);
+        setButtonSave();
         setButtonUploadImg();
         setButtonTakeImage();
         setImageView(null, null);
     }
 
-//<<<<<<< HEAD
-        //dbaseHelper = new MetalDbaseAdapter(this);
-
-        // TOOLBAR
-        /*toolbar = (Toolbar) findViewById(R.id.barInputCust);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);*/
-//=======
     private void setImageView(Uri selectedImageUri, Bitmap bm) {
         if (imagePelanggan == null)
             imagePelanggan = (ImageView) findViewById(R.id.imageView);
@@ -93,8 +68,6 @@ public class InputCustomerActivity extends AppCompatActivity {
         if (bm != null)
             imagePelanggan.setImageBitmap(bm);
     }
-//>>>>>>> origin/master
-
     private void setButtonTakeImage() {
         // BUTTON TAKE IMAGE
         btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
@@ -152,20 +125,34 @@ public class InputCustomerActivity extends AppCompatActivity {
         });
     }
 
-    private void setButtonSave(final DatabaseHandler dbHandler) {
+    private void setButtonSave() {
         // BUTTON SAVE
         btnSave = (Button) findViewById(R.id.btnSaveInputCust);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Customer newCustomer = new Customer(
-                        etCode.getText().toString(),
-                        etName.getText().toString(),
-                        etAddress.getText().toString(),
-                        etFoulType.getText().toString(),
-                        spinnerTarif.getSelectedItem().toString()
-                );
-                dbHandler.addCustomer(newCustomer);
+                String sql = "select * from customer where code = ?";
+//                List<Customer> customer = Customer.findWithQuery(Customer.class, sql, etCode.getText().toString());
+                List<Customer> customer = Customer.find(Customer.class, "code = ? ", etCode.getText().toString());
+                if (customer.size() == 0) {
+                    Customer newCustomer = new Customer(
+                            etCode.getText().toString(),
+                            etName.getText().toString(),
+                            etAddress.getText().toString(),
+                            etFoulType.getText().toString(),
+                            spinnerTarif.getSelectedItem().toString()
+                    );
+                    newCustomer.save();
+                } else {
+                    for (Customer cust : customer){
+                        cust.setcode(etCode.getText().toString());
+                        cust.setname(etName.getText().toString());
+                        cust.setaddress(etAddress.getText().toString());
+                        cust.setfoultype(etFoulType.getText().toString());
+                        cust.settarifdaya(spinnerTarif.getSelectedItem().toString());
+                        cust.save();
+                    }
+                }
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
 
                 etCode.setText("");
@@ -264,7 +251,7 @@ public class InputCustomerActivity extends AppCompatActivity {
         address = etAddress.getText().toString();
         foul = etFoulType.getText().toString();
         tarif = spinnerTarif.getSelectedItem().toString();
-        long id = dbaseHelper.insertData(code, name, address, foul, tarif);
+//        long id = dbaseHelper.insertData(code, name, address, foul, tarif);
 
 
     }
