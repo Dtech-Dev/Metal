@@ -1,7 +1,6 @@
 package com.dtech.posisi;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -179,6 +178,16 @@ public class InputCustomerActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+//        if (resultCode == Activity.RESULT_OK && requestCode==SELECT_PICTURE){
+//            Uri selectedImageUri = data.getData();
+//            filemanagerString = selectedImageUri.getPath();
+//            selectedImagePath = getPath(selectedImageUri);
+//            imagePelanggan.setImageURI(selectedImageUri);
+//            /*cek bitmap
+//            imagePath.getBytes();
+//            Bitmap bm = BitmapFactory.decodeFile(imagePath);
+//            */
+//        }
         if (resultCode == RESULT_OK)
             switch (requestCode){
                 case SELECT_PICTURE :
