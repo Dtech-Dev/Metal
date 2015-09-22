@@ -46,6 +46,8 @@ public class InputCustomerActivity extends AppCompatActivity {
     private Button btnTakeImg;
     private Button btnSave;
     private Button btnUploadImg;
+
+     DatabaseHandler dbHandler;
 //<<<<<<< HEAD
 
     MetalDbaseAdapter dbaseHelper;
@@ -64,7 +66,7 @@ public class InputCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
 
-        final DatabaseHandler dbHandler = new DatabaseHandler(this);
+         dbHandler = new DatabaseHandler(this);
         setToolBar();
         setSpinnerTarif();
         setEditTextCustInfo();
@@ -251,11 +253,19 @@ public class InputCustomerActivity extends AppCompatActivity {
         setImageView(selectedImageUri, null);
     }
 
-    /*public void addCustomer(View view) {
-        TextView code, name, address, foul, tarif;
+    public void addCustomer(View view) {
+        String code, name, address, foul, tarif;
 
         //declaration
 
+        setEditTextCustInfo();
+        code = etCode.getText().toString();
+        name = etName.getText().toString();
+        address = etAddress.getText().toString();
+        foul = etFoulType.getText().toString();
+        tarif = spinnerTarif.getSelectedItem().toString();
         long id = dbaseHelper.insertData(code, name, address, foul, tarif);
-    }*/
+
+
+    }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.dtech.Databases.MetalDbaseAdapter;
+
 import com.dtech.orm.Customer;
 
 
@@ -29,6 +30,8 @@ public class MainActivity extends ActionBarActivity {
 
     private RecyclerView recyclerView;
     private MainListAdapter adapter;
+    private MainCustomerAdapter adaptCustomer;
+
 
 
 
@@ -41,8 +44,10 @@ public class MainActivity extends ActionBarActivity {
 
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
-        adapter=new MainListAdapter(getDatamain());
-        recyclerView.setAdapter(adapter);
+       // adapter=new MainListAdapter(getDatamain());
+        //custAdapter=new AdapterCustomer(getDataCust());
+        adaptCustomer = new MainCustomerAdapter(getDataCust());
+        recyclerView.setAdapter(adaptCustomer);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -67,10 +72,24 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+    public static List<Information> getDataCust() {
 
+        Customer mCustomer = new Customer();
+        List<Information> listCustomer = new ArrayList<>();
+        String[] nama = {mCustomer.get_name()};
+        String[] address = {mCustomer.get_address()};
+
+        for (int i=0; i < nama.length && i < address.length; i++) {
+            Information setCust = new Information();
+            setCust.nama = nama[i];
+            setCust.address = address[i];
+            listCustomer.add(setCust);
+        }
+        return listCustomer;
+    }
 
     public static List<Information> getDatamain() {
-        Customer dataCustomer = new Customer();
+        //Customer dataCustomer = new Customer();
         //List<Customer> dataCust = new ArrayList<Customer>();
         List<Information> mdata = new ArrayList<>();
         int[] icons = {R.drawable.ic_pict_icon, R.drawable.ic_pict_icon, R.drawable.ic_pict_icon,
@@ -80,6 +99,8 @@ public class MainActivity extends ActionBarActivity {
                 "This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
                 "This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want"
         };
+
+        //String[] customer=  new String[] {/*ini nanti di isi dengan data yang ada di Customer.java*/}
 
 
 

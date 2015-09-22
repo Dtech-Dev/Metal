@@ -10,4 +10,7 @@ public class Information {
 
     String mainTitle;
     int mainIconId;
+
+    String nama;
+    String address;
 }

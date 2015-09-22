@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 //import com.dtech.Databases.DatabaseHelper;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,27 +43,33 @@ import java.util.List;
         private static final String KEY_ADDRESS = "address";
         private static final String KEY_FOUL_TYPE = "foul_type";
         private static final String KEY_TARIF_DAYA = "tarif_daya";
+    private Context context;
 
         // Constructor
         public DatabaseHandler(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            this.context = context;
+            Toast.makeText(context,"Constructor called",Toast.LENGTH_SHORT).show();
         }
-
-        /*public MetalDbaseAdapter open() {
-            dbase = this.getWritableDatabase();
-            return this;
-        }*/
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            String sqlCreateCustTabel = "CREATE TABLE " + TABLE_CUSTOMER +
-                    "(" + KEY_ID + " INTEGER PRIMARY KEY, " +
-                    KEY_CODE + " TEXT," +
-                    KEY_NAME + " TEXT," +
-                    KEY_ADDRESS + " TEXT," +
-                    KEY_FOUL_TYPE + " TEXT," +
-                    KEY_TARIF_DAYA + " TEXT)";
-            db.execSQL(sqlCreateCustTabel);
+
+
+            try {
+                String sqlCreateCustTabel = "CREATE TABLE " + TABLE_CUSTOMER +
+                        "(" + KEY_ID + " INTEGER PRIMARY KEY, " +
+                        KEY_CODE + " TEXT," +
+                        KEY_NAME + " TEXT," +
+                        KEY_ADDRESS + " TEXT," +
+                        KEY_FOUL_TYPE + " TEXT," +
+                        KEY_TARIF_DAYA + " TEXT)";
+                db.execSQL(sqlCreateCustTabel);
+                Toast.makeText(context, "success", Toast.LENGTH_SHORT).show();
+            } catch (android.database.SQLException e) {
+                //e.printStackTrace();
+                Toast.makeText(context, "Creating" + e, Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override
@@ -101,6 +109,8 @@ import java.util.List;
 
             return customer;
         }
+
+            //gok seng iki rasa e gok
         public List<Customer> getAllCustomer() {
             List<Customer> customerList = new ArrayList<Customer>();
             // Select All Query
