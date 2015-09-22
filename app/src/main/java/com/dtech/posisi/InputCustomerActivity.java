@@ -1,13 +1,13 @@
 package com.dtech.posisi;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,34 +20,44 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//<<<<<<< HEAD
 import com.dtech.Databases.MetalDbaseAdapter;
-import com.dtech.cam.MetalCamera;
+//import com.dtech.cam.MetalCamera;
+//=======
+//>>>>>>> origin/master
 import com.dtech.orm.Customer;
 import com.dtech.orm.DatabaseHandler;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by ADIST on 9/17/2015.
  */
- 
+
 public class InputCustomerActivity extends AppCompatActivity {
+    private static final int TAKE_PHOTO_CODE = 1;
+    private static final int SELECT_PICTURE = 2;
+    private static final String IMAGE_DIRECTORY_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
+
     private Toolbar toolbar;
     private EditText etCode, etName, etAddress, etFoulType;
     private Spinner spinnerTarif;
+    private Button btnTakeImg;
     private Button btnSave;
     private Button btnUploadImg;
+//<<<<<<< HEAD
 
     MetalDbaseAdapter dbaseHelper;
-    
+
     //update imageview from sdcard
-    private static final int SELECT_PICTURE=1;
+    //private static final int SELECT_PICTURE=1;
+//=======
+//>>>>>>> origin/master
     private ImageView imagePelanggan;
-    int column_index;
-    Cursor cursor;
-    String imagePath, logo, Logo;
-    String selectedImagePath;
-    String filemanagerString;
+
+    private int count = 0;
+    Uri outputFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +65,92 @@ public class InputCustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_input_customer);
 
         final DatabaseHandler dbHandler = new DatabaseHandler(this);
+        setToolBar();
+        setSpinnerTarif();
+        setEditTextCustInfo();
+        setButtonSave(dbHandler);
+        setButtonUploadImg();
+        setButtonTakeImage();
+        setImageView(null, null);
+    }
 
+//<<<<<<< HEAD
         //dbaseHelper = new MetalDbaseAdapter(this);
 
         // TOOLBAR
-        toolbar = (Toolbar) findViewById(R.id.barInputCust);
+        /*toolbar = (Toolbar) findViewById(R.id.barInputCust);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);*/
+//=======
+    private void setImageView(Uri selectedImageUri, Bitmap bm) {
+        if (imagePelanggan == null)
+            imagePelanggan = (ImageView) findViewById(R.id.imageView);
+        if (selectedImageUri != null)
+            imagePelanggan.setImageURI(selectedImageUri);
+        if (bm != null)
+            imagePelanggan.setImageBitmap(bm);
+    }
+//>>>>>>> origin/master
 
-        // SPINNER
-        spinnerTarif = (Spinner) findViewById(R.id.spinnerTarif);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.array_tarif, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinnerTarif.setAdapter(adapter);
+    private void setButtonTakeImage() {
+        // BUTTON TAKE IMAGE
+        btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
+        btnTakeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // start camera
+                setImageDir();
+                setImageNameFile(IMAGE_DIRECTORY_NAME);
 
-        // ALL EDIT TEXT
-        etCode = (EditText) findViewById(R.id.textCustID);
-        etName = (EditText) findViewById(R.id.textCustName);
-        etAddress = (EditText) findViewById(R.id.textCustAddress);
-        etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
+                startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+            }
+        });
+    }
+
+    private Uri setImageNameFile(String dir) {
+        count++;
+        String file = dir+count+".jpg";
+        File newfile = new File(file);
+        try {
+            newfile.createNewFile();
+        } catch (IOException e) {
+            Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                    + IMAGE_DIRECTORY_NAME + " directory");
+        }
+
+        outputFileUri = Uri.fromFile(newfile);
+        return outputFileUri;
+    }
+
+    @NonNull
+    private String setImageDir() {
+        File newdir = new File(IMAGE_DIRECTORY_NAME);
+        if (!newdir.exists())
+            if (!newdir.mkdir())
+                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
+                        + IMAGE_DIRECTORY_NAME + " directory");
+        return IMAGE_DIRECTORY_NAME;
+    }
+
+    private void setButtonUploadImg() {
+        // BUTTON UPLOAD IMAGE
+        btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
+        btnUploadImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentUpload = new Intent();
+                intentUpload.setType("image/*");
+                intentUpload.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
+            }
+        });
+    }
+
+    private void setButtonSave(final DatabaseHandler dbHandler) {
         // BUTTON SAVE
         btnSave = (Button) findViewById(R.id.btnSaveInputCust);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -99,70 +173,82 @@ public class InputCustomerActivity extends AppCompatActivity {
                 spinnerTarif.setSelection(0);
             }
         });
-        
-        // BUTTON UPLOAD IMAGE
-        btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
-        btnUploadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentUpload = new Intent();
-                 intentUpload.setType("image/*");
-                intentUpload.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-                /*
-                // Reading all contacts
-                Log.d("Reading: ", "Reading all contacts..");
-                List<Customer> Customers = dbHandler.getAllCustomer();
-
-                for (Customer cn : Customers) {
-                    String log = "Id: " + cn.get_id() + " ,Name: " + cn.get_name() + " ,Phone: " + cn.get_tarif_daya();
-                    // Writing Customers to log
-                    Log.d("Name: ", log);
-                    Toast.makeText(InputCustomerActivity.this, "See your logs!", Toast.LENGTH_SHORT).show();
-                }*/
-            }
-        });
-
-        // BUTTON TAKE IMAGE
-        btnSave = (Button) findViewById(R.id.btnTakeImg);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // start activity containts camera buttons
-                // TODO, make any change to MetalCamera Class, so that they can call it directly
-                Intent camIntent = new Intent(InputCustomerActivity.this, MetalCamera.class);
-                startActivity(camIntent);
-                finish();
-            }
-        });
     }
-    
+
+    private void setEditTextCustInfo() {
+        // ALL EDIT TEXT
+        etCode = (EditText) findViewById(R.id.textCustID);
+        etName = (EditText) findViewById(R.id.textCustName);
+        etAddress = (EditText) findViewById(R.id.textCustAddress);
+        etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
+    }
+
+    private void setSpinnerTarif() {
+        // SPINNER
+        spinnerTarif = (Spinner) findViewById(R.id.spinnerTarif);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.array_tarif, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerTarif.setAdapter(adapter);
+    }
+
+    private void setToolBar() {
+        // TOOLBAR
+        toolbar = (Toolbar) findViewById(R.id.barInputCust);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (resultCode== Activity.RESULT_OK){
-            if (requestCode==SELECT_PICTURE){
-                Uri selectedImageUri=data.getData();
-                filemanagerString=selectedImageUri.getPath();
-                selectedImagePath = getPath(selectedImageUri);
-                imagePelanggan.setImageURI(selectedImageUri);
-                /*cek bitmap
-                imagePath.getBytes();
-                Bitmap bm = BitmapFactory.decodeFile(imagePath);
-                */
+//        if (resultCode == Activity.RESULT_OK && requestCode==SELECT_PICTURE){
+//            Uri selectedImageUri = data.getData();
+//            filemanagerString = selectedImageUri.getPath();
+//            selectedImagePath = getPath(selectedImageUri);
+//            imagePelanggan.setImageURI(selectedImageUri);
+//            /*cek bitmap
+//            imagePath.getBytes();
+//            Bitmap bm = BitmapFactory.decodeFile(imagePath);
+//            */
 
+//        }
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case SELECT_PICTURE:
+                    setImageFromUpload(data);
+                    break;
+                case TAKE_PHOTO_CODE:
+                    previewCapturedImage();
+                    break;
             }
         }
     }
 
-    public String getPath(Uri uri) {
+    /**
+     * Display image from a path to ImageView
+     */
+    private void previewCapturedImage() {
+        try {
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
 
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        cursor = managedQuery(uri, projection, null, null, null);
-        column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
-        imagePath = cursor.getString(column_index);
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+            options.inSampleSize = 2;
 
-        return cursor.getString(column_index);
+            final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
+                    options);
+
+            setImageView(null, bitmap);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setImageFromUpload(Intent data) {
+        Uri selectedImageUri = data.getData();
+        setImageView(selectedImageUri, null);
     }
 
     /*public void addCustomer(View view) {
