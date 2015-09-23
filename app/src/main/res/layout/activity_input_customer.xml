@@ -12,18 +12,21 @@
             android:layout_height="wrap_content"
             layout="@layout/app_bar"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
+            android:id="@+id/barInputCust"
+            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/barInputCust" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textCustID"
             android:layout_below="@+id/barInputCust"
-            android:layout_alignParentStart="true"
             android:hint="@string/label_id_pel"
-            android:layout_alignParentEnd="true" />
+            android:layout_toLeftOf="@+id/btnSaveInputCust"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -32,9 +35,11 @@
             android:ems="10"
             android:id="@+id/textCustName"
             android:layout_below="@+id/textCustID"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:hint="@string/label_nama_pelanggan" />
+            android:hint="@string/label_nama_pelanggan"
+            android:layout_alignRight="@+id/btnSaveInputCust"
+            android:layout_alignEnd="@+id/btnSaveInputCust"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -43,34 +48,57 @@
             android:ems="10"
             android:id="@+id/textCustAddress"
             android:layout_below="@+id/textCustName"
+            android:hint="@string/label_alamat"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:hint="@string/label_alamat" />
+            android:layout_alignEnd="@+id/btnSaveInputCust" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textJenisPelanggaran"
             android:layout_below="@+id/textCustAddress"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:hint="@string/label_jenis_pelanggaran" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerTarif"
-            android:layout_below="@+id/textJenisPelanggaran"
-            android:spinnerMode="dropdown"
-            android:entries="@+id/array_tarif"
-            android:layout_toEndOf="@+id/btnTakeImg" />
+            android:hint="@string/label_jenis_pelanggaran"
+            android:layout_alignRight="@+id/btnSaveInputCust"
+            android:layout_alignEnd="@+id/btnSaveInputCust"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upload Image"
             android:id="@+id/btnUploadImg"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignRight="@+id/btnSaveInputCust"
+            android:layout_alignEnd="@+id/btnSaveInputCust" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Simpan"
+            android:id="@+id/btnSaveInputCust"
+            android:layout_alignTop="@+id/textCustID"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/no_image_large"
             android:layout_below="@+id/spinnerTarif"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/btnUploadImg"
+            android:layout_toStartOf="@+id/btnUploadImg" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerTarif"
+            android:layout_below="@+id/textJenisPelanggaran"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <Button
@@ -78,36 +106,10 @@
             android:layout_height="wrap_content"
             android:text="Ambil Image"
             android:id="@+id/btnTakeImg"
-            android:layout_below="@+id/spinnerTarif"
-            android:layout_toEndOf="@+id/btnUploadImg" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Simpan"
-            android:id="@+id/btnSaveInputCust"
-            android:layout_below="@+id/spinnerTarif"
-            android:layout_toEndOf="@+id/txtTarifDaya" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Tarif Daya"
-            android:id="@+id/txtTarifDaya"
-            android:layout_alignTop="@+id/spinnerTarif"
-            android:layout_alignParentStart="true"
-            android:layout_alignEnd="@+id/btnTakeImg"
-            android:layout_above="@+id/btnUploadImg" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
             android:layout_below="@+id/btnUploadImg"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/no_image_large"
-            android:layout_alignEnd="@+id/spinnerTarif" />
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_alignRight="@+id/btnUploadImg"
+            android:layout_alignEnd="@+id/btnUploadImg" />
 
     </RelativeLayout>
     <!--<fragment-->
