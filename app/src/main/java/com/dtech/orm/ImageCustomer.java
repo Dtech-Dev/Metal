@@ -30,7 +30,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.name = imagecustRecord.get(1);
         this.longitude=imagecustRecord.get(2);
         this.latitude = imagecustRecord.get(3);
-        //this.image = By
+
     }
 
     //Getter and Setter
