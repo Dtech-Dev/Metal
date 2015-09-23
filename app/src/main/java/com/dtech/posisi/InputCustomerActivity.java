@@ -57,8 +57,8 @@ public class InputCustomerActivity extends AppCompatActivity {
         setSpinnerTarif();
         setEditTextCustInfo();
         setButtonSave();
-        setButtonUploadImg();
-        setButtonTakeImage();
+        //setButtonUploadImg();
+        //setButtonTakeImage();
         setImageView(null, null);
     }
 
@@ -72,10 +72,10 @@ public class InputCustomerActivity extends AppCompatActivity {
     }
     private void setButtonTakeImage() {
         // BUTTON TAKE IMAGE
-        btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
+      /*  btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
         btnTakeImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            @Override*/
+            //public void onClick(View view) {
                 // start camera
                 setImageDir();
                 setImageNameFile(IMAGE_DIRECTORY_NAME);
@@ -84,8 +84,8 @@ public class InputCustomerActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-            }
-        });
+      /*      }
+        });*/
     }
 
     private Uri setImageNameFile(String dir) {
@@ -115,16 +115,16 @@ public class InputCustomerActivity extends AppCompatActivity {
 
     private void setButtonUploadImg() {
         // BUTTON UPLOAD IMAGE
-        btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
-        btnUploadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+       // btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
+        //btnUploadImg.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+          //  public void onClick(View view) {
                 Intent intentUpload = new Intent();
                 intentUpload.setType("image/*");
                 intentUpload.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-            }
-        });
+       //     }
+      //  });
     }
 
     private void setButtonSave() {
@@ -260,11 +260,21 @@ public class InputCustomerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+
+        if (id == R.id.gal) {
+            setButtonUploadImg();
+        }
+        if (id == R.id.take) {
+            setButtonTakeImage();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_input_cust, menu);
+        //return super.onCreateOptionsMenu(menu);
+        return true;
     }
 }
