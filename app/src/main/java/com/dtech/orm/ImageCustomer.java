@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * Created by aris on 22/09/15.
  */
+
 public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
 
