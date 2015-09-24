@@ -24,9 +24,10 @@
             android:id="@+id/textCustID"
             android:layout_below="@+id/barInputCust"
             android:hint="@string/label_id_pel"
-            android:layout_toLeftOf="@+id/btnSaveInputCust"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/textCustName"
+            android:layout_alignEnd="@+id/textCustName" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -64,26 +65,29 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Button
+        <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upload Image"
             android:id="@+id/btnUploadImg"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignRight="@+id/btnSaveInputCust"
-            android:layout_alignEnd="@+id/btnSaveInputCust" />
+            android:layout_alignEnd="@+id/btnSaveInputCust" />-->
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Simpan"
             android:id="@+id/btnSaveInputCust"
-            android:layout_alignTop="@+id/textCustID"
+            android:layout_marginRight="42dp"
+            android:layout_marginEnd="42dp"
+            android:layout_below="@+id/spinnerTarif"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="44dp" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:src="@drawable/no_image_large"
@@ -101,7 +105,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <Button
+       <!-- <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ambil Image"
@@ -109,7 +113,7 @@
             android:layout_below="@+id/btnUploadImg"
             android:layout_toRightOf="@+id/imageView"
             android:layout_alignRight="@+id/btnUploadImg"
-            android:layout_alignEnd="@+id/btnUploadImg" />
+            android:layout_alignEnd="@+id/btnUploadImg" />-->
 
     </RelativeLayout>
     <!--<fragment-->

@@ -71,11 +71,8 @@ public class InputCustomerActivity extends AppCompatActivity {
             imagePelanggan.setImageBitmap(bm);
     }
     private void setButtonTakeImage() {
-        // BUTTON TAKE IMAGE
-      /*  btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
-        btnTakeImg.setOnClickListener(new View.OnClickListener() {
-            @Override*/
-            //public void onClick(View view) {
+        // MENU TAKE IMAGE
+
                 // start camera
                 setImageDir();
                 setImageNameFile(IMAGE_DIRECTORY_NAME);
@@ -84,8 +81,7 @@ public class InputCustomerActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-      /*      }
-        });*/
+
     }
 
     private Uri setImageNameFile(String dir) {
@@ -114,17 +110,13 @@ public class InputCustomerActivity extends AppCompatActivity {
     }
 
     private void setButtonUploadImg() {
-        // BUTTON UPLOAD IMAGE
-       // btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
-        //btnUploadImg.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-          //  public void onClick(View view) {
+        // MENU UPLOAD IMAGE
+
                 Intent intentUpload = new Intent();
                 intentUpload.setType("image/*");
                 intentUpload.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-       //     }
-      //  });
+
     }
 
     private void setButtonSave() {
