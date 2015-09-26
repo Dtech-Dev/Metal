@@ -14,6 +14,8 @@ public class Customer extends SugarRecord<Customer> {
     String address;
     String foultype;
     String tarifdaya;
+    String latTude;
+    String longTude;
 
     // START : Constructor
     public Customer(){}
@@ -25,12 +27,14 @@ public class Customer extends SugarRecord<Customer> {
 //        this.foultype = foulType;
 //        this.tarifdaya = tarifDaya;
 //    }
-    public Customer(String code, String name, String address, String foulType, String tarifDaya) {
+    public Customer(String code, String name, String address, String foulType, String tarifDaya, String latTude, String longTude) {
         this.code = code;
         this.name = name;
         this.address = address;
         this.foultype = foulType;
         this.tarifdaya = tarifDaya;
+        this.latTude = latTude;
+        this.longTude = longTude;
     }
     public Customer(List<String> custRecord){
 //        this.id = Integer.parseInt(custRecord.get(0));
@@ -39,6 +43,8 @@ public class Customer extends SugarRecord<Customer> {
         this.address = custRecord.get(3);
         this.foultype = custRecord.get(4);
         this.tarifdaya = custRecord.get(5);
+        this.latTude = custRecord.get(6);
+        this.longTude = custRecord.get(7);
     }
     // END : Constructor
 
@@ -90,5 +96,22 @@ public class Customer extends SugarRecord<Customer> {
     public void settarifdaya(String tarifdaya) {
         this.tarifdaya = tarifdaya;
     }
+
+    public String getLatTude() {
+        return latTude;
+    }
+
+    public void setLatTude(String latTude) {
+        this.latTude = latTude;
+    }
+
+    public String getLongTude() {
+        return longTude;
+    }
+
+    public void setLongTude(String longTude) {
+        this.longTude = longTude;
+    }
+
     // END : Set & Get
 }

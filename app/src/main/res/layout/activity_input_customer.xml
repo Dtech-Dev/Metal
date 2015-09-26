@@ -105,15 +105,36 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-       <!-- <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ambil Image"
-            android:id="@+id/btnTakeImg"
-            android:layout_below="@+id/btnUploadImg"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_alignRight="@+id/btnUploadImg"
-            android:layout_alignEnd="@+id/btnUploadImg" />-->
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tLong"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/btnSaveInputCust"
+            android:layout_alignEnd="@+id/btnSaveInputCust"
+            android:layout_marginBottom="65dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tLat"
+            android:layout_above="@+id/tLong"
+            android:layout_alignRight="@+id/tLong"
+            android:layout_alignEnd="@+id/tLong" />
+
+        <!-- <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Ambil Image"
+             android:id="@+id/btnTakeImg"
+             android:layout_below="@+id/btnUploadImg"
+             android:layout_toRightOf="@+id/imageView"
+             android:layout_alignRight="@+id/btnUploadImg"
+             android:layout_alignEnd="@+id/btnUploadImg" />-->
 
     </RelativeLayout>
     <!--<fragment-->
