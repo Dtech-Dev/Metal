@@ -40,6 +40,9 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private static final int SELECT_PICTURE = 2;
     private static final String IMAGE_DIRECTORY_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
 
+    private String cbLat;
+    private String cbLong;
+
     private Toolbar toolbar;
     private EditText etCode, etName, etAddress, etFoulType;
     private Spinner spinnerTarif;
@@ -60,6 +63,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
+
+
 
 
         setToolBar();
@@ -145,8 +150,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             etAddress.getText().toString(),
                             etFoulType.getText().toString(),
                             spinnerTarif.getSelectedItem().toString(),
-                            tLat.getText().toString(),
-                            tLong.getText().toString()
+                            cbLat, cbLong
                     );
                     newCustomer.save();
                 } else {
@@ -156,8 +160,10 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                         cust.setaddress(etAddress.getText().toString());
                         cust.setfoultype(etFoulType.getText().toString());
                         cust.settarifdaya(spinnerTarif.getSelectedItem().toString());
-                        cust.setLatTude(tLat.getText().toString());
-                        cust.setLongTude(tLong.getText().toString());
+                        cust.setLatTude(cbLat);
+                        cust.setLongTude(cbLong);
+                        /*cust.setLatTude(tLat.getText().toString());
+                        cust.setLongTude(tLong.getText().toString());*/
                         cust.save();
                     }
                 }
@@ -301,9 +307,21 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     @Override
     public void onConnected(Bundle bundle) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        double latThis=lastLocation.getLatitude();
+        double longThis=lastLocation.getLongitude();
         if (lastLocation != null) {
             tLat.setText(String.valueOf(lastLocation.getLatitude()));
             tLong.setText(String.valueOf(lastLocation.getLongitude()));
+            cbLat=tLat.getText().toString();
+            cbLong = tLong.getText().toString();
+            /*tLat.setText(Double.toString(latThis));
+            tLong.setText(Double.toString(longThis));*/
+            /*try {
+                cbLat=tLat.getText().toString();
+                Toast.makeText(this, "berhasil ambil latitude"+cbLat, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Gagal ambil latitude", Toast.LENGTH_SHORT).show();
+            }*/
         } else {
             Toast.makeText(this, "Failed to find location", Toast.LENGTH_SHORT).show();
         }

@@ -13,4 +13,6 @@ public class Information {
 
     String nama;
     String address;
+    String latTude;
+    String longTude;
 }

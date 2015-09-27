@@ -20,22 +20,40 @@
                 android:id="@+id/mlistnama"
                 android:text="name"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="25dp"
                 android:padding="8dp"
 
-                />
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/mlistaddress"
+                android:layout_alignStart="@+id/mlistaddress" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/mlistaddress"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="18dp"
                 android:layout_gravity="center_vertical"
                 android:text="address"
-                android:padding="10dp"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/mlistnama"/>
+                android:padding="8dp"
+                android:layout_below="@+id/mlistnama"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/lLat"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/lLong"
+                android:layout_alignTop="@+id/lLat"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
