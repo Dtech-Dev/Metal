@@ -3,6 +3,7 @@ package com.dtech.posisi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.net.Uri;
 import android.os.Environment;
@@ -11,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.orm.Customer;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +35,13 @@ import java.util.List;
 /**
  * Created by ADIST on 9/17/2015.
  */
-public class InputCustomerActivity extends AppCompatActivity {
+public class InputCustomerActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int TAKE_PHOTO_CODE = 1;
     private static final int SELECT_PICTURE = 2;
     private static final String IMAGE_DIRECTORY_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
+
+    private String cbLat;
+    private String cbLong;
 
     private Toolbar toolbar;
     private EditText etCode, etName, etAddress, etFoulType;
@@ -40,8 +49,12 @@ public class InputCustomerActivity extends AppCompatActivity {
     private Button btnTakeImg;
     private Button btnSave;
     private Button btnUploadImg;
+    private TextView tLat;
+    private TextView tLong;
 
     private ImageView imagePelanggan;
+
+    private GoogleApiClient mGoogleApiClient;
 
     private int count = 0;
     Uri outputFileUri;
@@ -51,13 +64,17 @@ public class InputCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
 
+
+
+
         setToolBar();
         setSpinnerTarif();
         setEditTextCustInfo();
         setButtonSave();
-        setButtonUploadImg();
-        setButtonTakeImage();
+        //setButtonUploadImg();
+        //setButtonTakeImage();
         setImageView(null, null);
+        buildGoogleApiClient();
     }
 
     private void setImageView(Uri selectedImageUri, Bitmap bm) {
@@ -69,11 +86,8 @@ public class InputCustomerActivity extends AppCompatActivity {
             imagePelanggan.setImageBitmap(bm);
     }
     private void setButtonTakeImage() {
-        // BUTTON TAKE IMAGE
-        btnTakeImg = (Button) findViewById(R.id.btnTakeImg);
-        btnTakeImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        // MENU TAKE IMAGE
+
                 // start camera
                 setImageDir();
                 setImageNameFile(IMAGE_DIRECTORY_NAME);
@@ -82,8 +96,7 @@ public class InputCustomerActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-            }
-        });
+
     }
 
     private Uri setImageNameFile(String dir) {
@@ -112,17 +125,13 @@ public class InputCustomerActivity extends AppCompatActivity {
     }
 
     private void setButtonUploadImg() {
-        // BUTTON UPLOAD IMAGE
-        btnUploadImg = (Button) findViewById(R.id.btnUploadImg);
-        btnUploadImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        // MENU UPLOAD IMAGE
+
                 Intent intentUpload = new Intent();
                 intentUpload.setType("image/*");
                 intentUpload.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-            }
-        });
+
     }
 
     private void setButtonSave() {
@@ -140,16 +149,21 @@ public class InputCustomerActivity extends AppCompatActivity {
                             etName.getText().toString(),
                             etAddress.getText().toString(),
                             etFoulType.getText().toString(),
-                            spinnerTarif.getSelectedItem().toString()
+                            spinnerTarif.getSelectedItem().toString(),
+                            cbLat, cbLong
                     );
                     newCustomer.save();
                 } else {
-                    for (Customer cust : customer){
+                    for (Customer cust : customer) {
                         cust.setcode(etCode.getText().toString());
                         cust.setname(etName.getText().toString());
                         cust.setaddress(etAddress.getText().toString());
                         cust.setfoultype(etFoulType.getText().toString());
                         cust.settarifdaya(spinnerTarif.getSelectedItem().toString());
+                        cust.setLatTude(cbLat);
+                        cust.setLongTude(cbLong);
+                        /*cust.setLatTude(tLat.getText().toString());
+                        cust.setLongTude(tLong.getText().toString());*/
                         cust.save();
                     }
                 }
@@ -160,6 +174,9 @@ public class InputCustomerActivity extends AppCompatActivity {
                 etAddress.setText("");
                 etFoulType.setText("");
                 spinnerTarif.setSelection(0);
+                tLat.setText("");
+                tLong.setText("");
+
             }
         });
     }
@@ -170,6 +187,8 @@ public class InputCustomerActivity extends AppCompatActivity {
         etName = (EditText) findViewById(R.id.textCustName);
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
+        tLat = (TextView) findViewById(R.id.tLat);
+        tLong = (TextView) findViewById(R.id.tLong);
     }
 
     private void setSpinnerTarif() {
@@ -254,5 +273,81 @@ public class InputCustomerActivity extends AppCompatActivity {
 //        long id = dbaseHelper.insertData(code, name, address, foul, tarif);
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+
+        if (id == R.id.gal) {
+            setButtonUploadImg();
+        }
+        if (id == R.id.take) {
+            setButtonTakeImage();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_input_cust, menu);
+        //return super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        double latThis=lastLocation.getLatitude();
+        double longThis=lastLocation.getLongitude();
+        if (lastLocation != null) {
+            tLat.setText(String.valueOf(lastLocation.getLatitude()));
+            tLong.setText(String.valueOf(lastLocation.getLongitude()));
+            cbLat=tLat.getText().toString();
+            cbLong = tLong.getText().toString();
+            /*tLat.setText(Double.toString(latThis));
+            tLong.setText(Double.toString(longThis));*/
+            /*try {
+                cbLat=tLat.getText().toString();
+                Toast.makeText(this, "berhasil ambil latitude"+cbLat, Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Gagal ambil latitude", Toast.LENGTH_SHORT).show();
+            }*/
+        } else {
+            Toast.makeText(this, "Failed to find location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 }

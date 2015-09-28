@@ -41,7 +41,8 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         Information current=data.get(position);
         holder.title.setText(current.nama);
         holder.address.setText(current.address);
-
+        holder.lLat.setText(current.latTude);
+        holder.lLong.setText(current.longTude);
     }
 
     @Override
@@ -52,6 +53,8 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
     class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView title;
         TextView address;
+        TextView lLat;
+        TextView lLong;
 
 
         public MainViewHolder(View itemView) {
@@ -60,6 +63,8 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             context=itemView.getContext();
             title=(TextView)itemView.findViewById(R.id.mlistnama);
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
+            lLat = (TextView) itemView.findViewById(R.id.lLat);
+            lLong = (TextView) itemView.findViewById(R.id.lLong);
         }
 
         @Override

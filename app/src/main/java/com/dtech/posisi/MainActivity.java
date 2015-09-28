@@ -80,6 +80,8 @@ public class MainActivity extends ActionBarActivity {
             Information setCust = new Information();
             setCust.nama = cust.getcode() + "; " + cust.getname();
             setCust.address = cust.getaddress();
+            setCust.latTude = cust.getLatTude();
+            setCust.longTude = cust.getLongTude();
             listCustomer.add(setCust);
         }
         return listCustomer;

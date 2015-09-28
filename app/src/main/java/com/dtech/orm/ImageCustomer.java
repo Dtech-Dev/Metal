@@ -5,16 +5,18 @@ import com.orm.SugarRecord;
 import java.util.List;
 
 /**
- * Created by Administrator on 23/09/2015.
+ * Created by aris on 22/09/15.
  */
+
 public class ImageCustomer extends SugarRecord<ImageCustomer> {
+
+
     String name;
     String longitude;
     String latitude;
     byte image;
 
     public ImageCustomer() {
-
     }
 
     public ImageCustomer(String name, String longitude, String latitude, byte image) {
@@ -24,12 +26,14 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.image = image;
     }
 
-    public ImageCustomer(List<String> recordImageCust) {
-        this.name = recordImageCust.get(1);
-        this.longitude = recordImageCust.get(2);
-        this.latitude = recordImageCust.get(3);
+    public ImageCustomer(List<String> imagecustRecord) {
+        this.name = imagecustRecord.get(1);
+        this.longitude=imagecustRecord.get(2);
+        this.latitude = imagecustRecord.get(3);
+
     }
 
+    //Getter and Setter
     public String getName() {
         return name;
     }
