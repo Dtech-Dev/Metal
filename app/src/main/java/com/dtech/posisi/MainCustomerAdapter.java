@@ -1,12 +1,14 @@
 package com.dtech.posisi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapter.MainViewHolder> {
 
     private Context context;
+    String handleString;
 
 
     List<Information> data= Collections.emptyList();
@@ -37,12 +40,23 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, int position) {
+    public void onBindViewHolder(final MainViewHolder holder, int position) {
         Information current=data.get(position);
         holder.title.setText(current.nama);
         holder.address.setText(current.address);
         holder.lLat.setText(current.latTude);
         holder.lLong.setText(current.longTude);
+
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleString = holder.title.getText().toString();
+                //Toast.makeText(context, "Name Clicked "+handleString, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ShowLogActivity.class);
+                intent.putExtra("stringHandled", handleString);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
