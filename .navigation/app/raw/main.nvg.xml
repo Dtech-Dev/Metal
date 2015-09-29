@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.Main2Activity"/>
+      <point      
+        x = "1924"      
+        y = "-28"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.LocActivity"/>
+      <point      
+        x = "60"      
+        y = "80"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.ShowLogActivity"/>
+      <point      
+        x = "2800"      
+        y = "0"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.CekMapsActivity"/>
+      <point      
+        x = "2028"      
+        y = "964"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.GalleryActivity"/>
+      <point      
+        x = "2960"      
+        y = "508"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.MainActivity"/>
+      <point      
+        x = "2192"      
+        y = "652"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.InputCustomerActivity"/>
+      <point      
+        x = "888"      
+        y = "584"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.dtech.posisi.InputActivity"/>
+      <point      
+        x = "980"      
+        y = "40"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>
