@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 
 import com.dtech.orm.Customer;
+import com.dtech.orm.ImageCustomer;
 
 
 import java.util.ArrayList;
@@ -72,44 +73,22 @@ public class MainActivity extends ActionBarActivity {
 
 
     public static List<Information> getDataCust() {
-
-        Customer mCustomer = new Customer();
         List<Information> listCustomer = new ArrayList<>();
         List<Customer> customer = Customer.listAll(Customer.class);
+        ImageCustomer lastImage;
         for (Customer cust : customer) {
             Information setCust = new Information();
             setCust.nama = cust.getcode() + "; " + cust.getname();
             setCust.address = cust.getaddress();
             setCust.latTude = cust.getLatTude();
             setCust.longTude = cust.getLongTude();
+
+            lastImage = ImageCustomer.getLastImage(cust);
+            if (lastImage != null)
+                setCust.imageToShow = lastImage.getImage();
             listCustomer.add(setCust);
         }
         return listCustomer;
-    }
-
-    public static List<Information> getDatamain() {
-        //Customer dataCustomer = new Customer();
-        //List<Customer> dataCust = new ArrayList<Customer>();
-        List<Information> mdata = new ArrayList<>();
-        int[] icons = {R.drawable.ic_pict_icon, R.drawable.ic_pict_icon, R.drawable.ic_pict_icon,
-                R.drawable.ic_pict_icon};
-        String[] title = {"This is the info for Customer 1\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-                "This is the info for Customer 2\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-                "This is the info for Customer 3\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want",
-                "This is the info for Customer 4\n\nIncluding :\nName\nAddress\nGPS Location\nand other info that you want"
-        };
-
-        //String[] customer=  new String[] {/*ini nanti di isi dengan data yang ada di Customer.java*/}
-
-
-
-        for (int i = 0; i < title.length && i < icons.length; i++) {
-            Information current = new Information();
-            current.mainTitle = title[i];
-            current.mainIconId = icons[i];
-            mdata.add(current);
-        }
-        return mdata;
     }
 
     @Override

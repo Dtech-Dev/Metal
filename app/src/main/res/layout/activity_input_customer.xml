@@ -26,8 +26,8 @@
             android:hint="@string/label_id_pel"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/textCustName"
-            android:layout_alignEnd="@+id/textCustName" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -37,10 +37,10 @@
             android:id="@+id/textCustName"
             android:layout_below="@+id/textCustID"
             android:hint="@string/label_nama_pelanggan"
-            android:layout_alignRight="@+id/btnSaveInputCust"
-            android:layout_alignEnd="@+id/btnSaveInputCust"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -52,7 +52,8 @@
             android:hint="@string/label_alamat"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignEnd="@+id/btnSaveInputCust" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -60,10 +61,10 @@
             android:id="@+id/textJenisPelanggaran"
             android:layout_below="@+id/textCustAddress"
             android:hint="@string/label_jenis_pelanggaran"
-            android:layout_alignRight="@+id/btnSaveInputCust"
-            android:layout_alignEnd="@+id/btnSaveInputCust"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <!--<Button
             android:layout_width="wrap_content"
@@ -79,12 +80,12 @@
             android:layout_height="wrap_content"
             android:text="Simpan"
             android:id="@+id/btnSaveInputCust"
-            android:layout_marginRight="42dp"
-            android:layout_marginEnd="42dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginTop="41dp"
             android:layout_below="@+id/spinnerTarif"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="44dp" />
+            android:layout_alignParentEnd="true" />
 
         <ImageView
             android:layout_width="200dp"
@@ -94,8 +95,8 @@
             android:layout_below="@+id/spinnerTarif"
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/btnUploadImg"
-            android:layout_toStartOf="@+id/btnUploadImg" />
+            android:layout_toStartOf="@+id/btnSaveInputCust"
+            android:layout_toLeftOf="@+id/btnSaveInputCust" />
 
         <Spinner
             android:layout_width="wrap_content"
@@ -125,6 +126,18 @@
             android:layout_above="@+id/tLong"
             android:layout_alignRight="@+id/tLong"
             android:layout_alignEnd="@+id/tLong" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/textImageName"
+            android:layout_marginTop="26dp"
+            android:layout_below="@+id/tLat"
+            android:layout_alignLeft="@+id/tLong"
+            android:layout_alignStart="@+id/tLong"
+            android:visibility="invisible" />
 
         <!-- <Button
              android:layout_width="wrap_content"

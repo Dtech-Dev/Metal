@@ -11,10 +11,14 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,11 +27,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.cam.ImageHandler;
 import com.dtech.orm.Customer;
+import com.dtech.orm.ImageCustomer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -64,9 +71,6 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
 
-
-
-
         setToolBar();
         setSpinnerTarif();
         setEditTextCustInfo();
@@ -84,19 +88,19 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             imagePelanggan.setImageURI(selectedImageUri);
         if (bm != null)
             imagePelanggan.setImageBitmap(bm);
+        imagePelanggan.setDrawingCacheEnabled(true);
+        imagePelanggan.buildDrawingCache();
     }
     private void setButtonTakeImage() {
         // MENU TAKE IMAGE
+        // start camera
+        setImageDir();
+        setImageNameFile(IMAGE_DIRECTORY_NAME);
 
-                // start camera
-                setImageDir();
-                setImageNameFile(IMAGE_DIRECTORY_NAME);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
-                startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-
+        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
     }
 
     private Uri setImageNameFile(String dir) {
@@ -126,12 +130,10 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
     private void setButtonUploadImg() {
         // MENU UPLOAD IMAGE
-
-                Intent intentUpload = new Intent();
-                intentUpload.setType("image/*");
-                intentUpload.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-
+        Intent intentUpload = new Intent();
+        intentUpload.setType("image/*");
+        intentUpload.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
     }
 
     private void setButtonSave() {
@@ -140,11 +142,10 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sql = "select * from customer where code = ?";
-//                List<Customer> customer = Customer.findWithQuery(Customer.class, sql, etCode.getText().toString());
-                List<Customer> customer = Customer.find(Customer.class, "code = ? ", etCode.getText().toString());
-                if (customer.size() == 0) {
-                    Customer newCustomer = new Customer(
+                boolean exist = Customer.custExist("code = ? ", etCode.getText().toString());
+                Customer cust = null;
+                if (!exist) {
+                    cust = new Customer(
                             etCode.getText().toString(),
                             etName.getText().toString(),
                             etAddress.getText().toString(),
@@ -152,21 +153,34 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             spinnerTarif.getSelectedItem().toString(),
                             cbLat, cbLong
                     );
-                    newCustomer.save();
+                    cust.save();
                 } else {
-                    for (Customer cust : customer) {
-                        cust.setcode(etCode.getText().toString());
-                        cust.setname(etName.getText().toString());
-                        cust.setaddress(etAddress.getText().toString());
-                        cust.setfoultype(etFoulType.getText().toString());
-                        cust.settarifdaya(spinnerTarif.getSelectedItem().toString());
-                        cust.setLatTude(cbLat);
-                        cust.setLongTude(cbLong);
-                        /*cust.setLatTude(tLat.getText().toString());
-                        cust.setLongTude(tLong.getText().toString());*/
-                        cust.save();
+                    List<Customer> custm = Customer.find(Customer.class, "code = ?",
+                            etCode.getText().toString());
+                    for (Customer cst : custm){
+                        cst.setcode(etCode.getText().toString());
+                        cst.setname(etName.getText().toString());
+                        cst.setaddress(etAddress.getText().toString());
+                        cst.setfoultype(etFoulType.getText().toString());
+                        cst.settarifdaya(spinnerTarif.getSelectedItem().toString());
+                        cst.setLatTude(cbLat);
+                        cst.setLongTude(cbLong);
+                        cst.save();
+                        cust = cst;
                     }
                 }
+
+                if (cust == null) {
+                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                Bitmap image = imagePelanggan.getDrawingCache();
+                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] imageByteArray = stream.toByteArray();
+                ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, imageByteArray);
+                cstImage.save();
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
 
                 etCode.setText("");
@@ -183,12 +197,44 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
     private void setEditTextCustInfo() {
         // ALL EDIT TEXT
-        etCode = (EditText) findViewById(R.id.textCustID);
         etName = (EditText) findViewById(R.id.textCustName);
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
+
+        etCode = (EditText) findViewById(R.id.textCustID);
+        etCode.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!s.equals("")) {
+                    boolean exist = Customer.custExist("code = ? ", s.toString());
+                    if (exist) {
+                        List<Customer> cust = Customer.find(Customer.class, "code = ? ",
+                                s.toString());
+                        if (cust.size() > 1) {
+                            Toast.makeText(InputCustomerActivity.this, "Data redundan, code: " + s.toString(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        for (Customer custx : cust){
+                            etName.setText(custx.getname());
+                            etAddress.setText(custx.getaddress());
+                            etFoulType.setText(custx.getfoultype());
+                            tLat.setText(custx.getLatTude());
+                            tLong.setText(custx.getLongTude());
+                        }
+                    }
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // maybe we need it later
+            }
+
+            public void afterTextChanged(Editable s) {
+                // maybe we need it later
+            }
+        });
+
     }
 
     private void setSpinnerTarif() {
@@ -210,17 +256,6 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-//        if (resultCode == Activity.RESULT_OK && requestCode==SELECT_PICTURE){
-//            Uri selectedImageUri = data.getData();
-//            filemanagerString = selectedImageUri.getPath();
-//            selectedImagePath = getPath(selectedImageUri);
-//            imagePelanggan.setImageURI(selectedImageUri);
-//            /*cek bitmap
-//            imagePath.getBytes();
-//            Bitmap bm = BitmapFactory.decodeFile(imagePath);
-//            */
-
-//        }
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case SELECT_PICTURE:
@@ -259,22 +294,6 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         setImageView(selectedImageUri, null);
     }
 
-    public void addCustomer(View view) {
-        String code, name, address, foul, tarif;
-
-        //declaration
-
-        setEditTextCustInfo();
-        code = etCode.getText().toString();
-        name = etName.getText().toString();
-        address = etAddress.getText().toString();
-        foul = etFoulType.getText().toString();
-        tarif = spinnerTarif.getSelectedItem().toString();
-//        long id = dbaseHelper.insertData(code, name, address, foul, tarif);
-
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id=item.getItemId();
@@ -307,21 +326,13 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     @Override
     public void onConnected(Bundle bundle) {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        double latThis=lastLocation.getLatitude();
-        double longThis=lastLocation.getLongitude();
         if (lastLocation != null) {
+            double latThis=lastLocation.getLatitude();
+            double longThis=lastLocation.getLongitude();
             tLat.setText(String.valueOf(lastLocation.getLatitude()));
             tLong.setText(String.valueOf(lastLocation.getLongitude()));
             cbLat=tLat.getText().toString();
             cbLong = tLong.getText().toString();
-            /*tLat.setText(Double.toString(latThis));
-            tLong.setText(Double.toString(longThis));*/
-            /*try {
-                cbLat=tLat.getText().toString();
-                Toast.makeText(this, "berhasil ambil latitude"+cbLat, Toast.LENGTH_SHORT).show();
-            } catch (Exception e) {
-                Toast.makeText(this, "Gagal ambil latitude", Toast.LENGTH_SHORT).show();
-            }*/
         } else {
             Toast.makeText(this, "Failed to find location", Toast.LENGTH_SHORT).show();
         }

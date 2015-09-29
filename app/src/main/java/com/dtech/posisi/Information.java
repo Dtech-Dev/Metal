@@ -11,6 +11,8 @@ public class Information {
     String mainTitle;
     int mainIconId;
 
+    byte[] imageToShow;
+
     String nama;
     String address;
     String latTude;

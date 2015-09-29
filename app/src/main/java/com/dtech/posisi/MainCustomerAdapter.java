@@ -1,6 +1,8 @@
 package com.dtech.posisi;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,8 +37,6 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         return holder;
     }
 
-
-
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         Information current=data.get(position);
@@ -43,6 +44,10 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         holder.address.setText(current.address);
         holder.lLat.setText(current.latTude);
         holder.lLong.setText(current.longTude);
+        // convert image first from byt[] to bitmap
+        Bitmap convImg = BitmapFactory.decodeByteArray(current.imageToShow,
+                0, current.imageToShow.length);
+        holder.showUpImageHolder.setImageBitmap(convImg);
     }
 
     @Override
@@ -55,6 +60,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         TextView address;
         TextView lLat;
         TextView lLong;
+        ImageView showUpImageHolder;
 
 
         public MainViewHolder(View itemView) {
@@ -65,6 +71,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
             lLat = (TextView) itemView.findViewById(R.id.lLat);
             lLong = (TextView) itemView.findViewById(R.id.lLong);
+            showUpImageHolder = (ImageView) itemView.findViewById(R.id.showUp);
         }
 
         @Override

@@ -49,13 +49,6 @@ public class Customer extends SugarRecord<Customer> {
     // END : Constructor
 
     // START : Set & Get
-//    public int getid() {
-//        return id;
-//    }
-//
-//    public void setid(int id) {
-//        this.id = id;
-//    }
 
     public String getname() {
         return name;
@@ -114,4 +107,11 @@ public class Customer extends SugarRecord<Customer> {
     }
 
     // END : Set & Get
+
+    public static boolean custExist(String where, String params) {
+        if (!where.contains("?"))
+            return false;
+        List<Customer> customer = Customer.find(Customer.class, where, params);
+        return customer.size() > 0;
+    }
 }
