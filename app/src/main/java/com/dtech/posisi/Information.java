@@ -13,13 +13,4 @@ public class Information {
     String mainTitle;
     int mainIconId;
 
-    byte[] imageToShow;
-
-    String nama;
-    String address;
-    String latTude;
-    String longTude;
-    byte[] image;
-
-    Bitmap bm;
 }

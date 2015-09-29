@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.os.Bundle;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -14,11 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,14 +25,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dtech.cam.ImageHandler;
 import com.dtech.orm.Customer;
 import com.dtech.orm.ImageCustomer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -53,9 +49,9 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private Toolbar toolbar;
     private EditText etCode, etName, etAddress, etFoulType;
     private Spinner spinnerTarif;
-    private Button btnTakeImg;
     private Button btnSave;
-    private Button btnUploadImg;
+//    private Button btnTakeImg;
+//    private Button btnUploadImg;
     private TextView tLat;
     private TextView tLong;
 
@@ -88,9 +84,11 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             imagePelanggan = (ImageView) findViewById(R.id.imageView);
         if (selectedImageUri != null)
             imagePelanggan.setImageURI(selectedImageUri);
-        if (bm != null) {
+        if (bm != null)
             imagePelanggan.setImageBitmap(bm);
+        if (selectedImageUri != null || bm != null) {
             imagePelanggan.setDrawingCacheEnabled(true);
+            imagePelanggan.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
             imagePelanggan.buildDrawingCache();
         }
     }
@@ -163,11 +161,11 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                     List<Customer> custm = Customer.find(Customer.class, "code = ?",
                             etCode.getText().toString());
                     for (Customer cst : custm){
-                        cst.setcode(etCode.getText().toString());
-                        cst.setname(etName.getText().toString());
-                        cst.setaddress(etAddress.getText().toString());
-                        cst.setfoultype(etFoulType.getText().toString());
-                        cst.settarifdaya(spinnerTarif.getSelectedItem().toString());
+                        cst.setCode(etCode.getText().toString());
+                        cst.setName(etName.getText().toString());
+                        cst.setAddress(etAddress.getText().toString());
+                        cst.setFoultype(etFoulType.getText().toString());
+                        cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
                         cst.setLatTude(cbLat);
                         cst.setLongTude(cbLong);
                         cst.save();
@@ -180,11 +178,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                     return;
                 }
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                Bitmap image = imagePelanggan.getDrawingCache();
-                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] imageByteArray = stream.toByteArray();
-                ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, imageByteArray);
+                String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(), null, 100);
+                ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, new byte[]{}, encodedImg);
                 cstImage.save();
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
 
@@ -195,7 +190,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 spinnerTarif.setSelection(0);
                 tLat.setText("");
                 tLong.setText("");
-
+                imagePelanggan.setImageBitmap(null);
             }
         });
     }
@@ -221,11 +216,12 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                                     Toast.LENGTH_SHORT).show();
                         }
                         for (Customer custx : cust){
-                            etName.setText(custx.getname());
-                            etAddress.setText(custx.getaddress());
-                            etFoulType.setText(custx.getfoultype());
+                            etName.setText(custx.getName());
+                            etAddress.setText(custx.getAddress());
+                            etFoulType.setText(custx.getTarifdaya());
                             tLat.setText(custx.getLatTude());
                             tLong.setText(custx.getLongTude());
+//                            spinnerTarif.getSelectedItem().toString(); // TODO : how to set from DB??
                         }
                     }
                 }

@@ -1,8 +1,6 @@
 package com.dtech.posisi;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Collections;
+import com.dtech.orm.Customer;
+import com.dtech.orm.ImageCustomer;
+
 import java.util.List;
 
 /**
@@ -22,22 +20,17 @@ import java.util.List;
  */
 public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapter.MainViewHolder> {
 
+    private List<Customer> dataCustomer;
     private Context context;
-    String handleString;
     String handleLat;
     String handleLong;
 
-
-    List<Information> data= Collections.emptyList();
-
-    public MainCustomerAdapter(List<Information> data){
-
-        this.data=data;
+    public MainCustomerAdapter(List<Customer> customers){
+        this.dataCustomer = customers;
     }
 
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_row, parent,false);
         MainViewHolder holder=new MainViewHolder(view);
         return holder;
@@ -45,16 +38,19 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
     @Override
     public void onBindViewHolder(final MainViewHolder holder, int position) {
-        Information current=data.get(position);
-        holder.title.setText(current.nama);
-        holder.address.setText(current.address);
-        holder.lLat.setText(current.latTude);
-        holder.lLong.setText(current.longTude);
-        // convert image first from byt[] to bitmap
-        Bitmap convImg = BitmapFactory.decodeByteArray(current.imageToShow,
-                0, current.imageToShow.length);
-        holder.showUpImageHolder.setImageBitmap(convImg);
-
+        Customer customer = dataCustomer.get(position);
+        holder.title.setText(customer.getName());
+        holder.address.setText(customer.getAddress());
+        holder.lLat.setText(customer.getLatTude());
+        holder.lLong.setText(customer.getLongTude());
+        // show an image
+        // edhan 093015.0057 ada 2 cara untuk ambil last image, tinggal pilih mana yang enak
+//        String lastImage = ImageCustomer.getLastImageRecord(customer).getImageTest();
+        String lastImage = customer.lastImage();
+        if (lastImage != null) {
+            holder.showUpImageHolder.setImageBitmap(
+                    ImageCustomer.decodeImage(lastImage));
+        }
         holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +83,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return dataCustomer.size();
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

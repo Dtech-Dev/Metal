@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Created by Administrator on 28/08/2015.
  */
+@Deprecated
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainViewHolder> {
 
     private Context context;

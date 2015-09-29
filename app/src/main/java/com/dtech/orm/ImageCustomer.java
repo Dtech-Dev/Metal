@@ -1,9 +1,13 @@
 package com.dtech.orm;
 
-import android.media.Image;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.orm.SugarRecord;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,27 +16,27 @@ import java.util.List;
 
 public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
-    Customer customer;
-    String name;
-    String longitude;
-    String latitude;
+    private Customer customer;
+    private String name;
+    private String longitude;
+    private String latitude;
+    private String imageTest;
+    @Deprecated
     byte[] image;
+
+    private static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
+    private static final int DEFAULT_COMPRESSION = 60;
 
     public ImageCustomer() {}
 
-    public ImageCustomer(Customer customer, String name, String longitude, String latitude, byte[] image) {
-        this.customer = customer;
-        this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
+    public ImageCustomer(Customer customer, String name, String longitude, String latitude
+            , byte[] image, String imageTest) {
+        this.setCustomer(customer);
+        this.setName(name);
+        this.setLongitude(longitude);
+        this.setLatitude(latitude);
         this.image = image;
-    }
-
-    public ImageCustomer(List<String> imagecustRecord) {
-        this.name = imagecustRecord.get(1);
-        this.longitude=imagecustRecord.get(2);
-        this.latitude = imagecustRecord.get(3);
-
+        this.setImageTest(imageTest);
     }
 
     //Getter and Setter
@@ -68,6 +72,15 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.image = image;
     }
 
+    public String getImageTest() {
+        return imageTest;
+    }
+
+    public void setImageTest(String imageTest) {
+        this.imageTest = imageTest;
+    }
+
+
     public Customer getCustomer() {
         return customer;
     }
@@ -76,31 +89,47 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.customer = customer;
     }
 
-    public static ImageCustomer getLastImage(Customer cust) {
-        List<ImageCustomer> res = getImages(cust);
-        if (res == null)
+    public static ImageCustomer getLastImageRecord(Customer cust) {
+        List<ImageCustomer> res = getImageRecords(cust);
+        if (res.equals(Collections.EMPTY_LIST))
             return null;
         return res.get(0);
     }
 
-    public static List<ImageCustomer> getImages(Customer cust) {
-//        List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
-//                , cust.getId().toString());
+    public static List<ImageCustomer> getImageRecords(Customer cust) {
         List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
-                , new String[] {cust.getId().toString()}, "", "id desc", "");
+                , new String[]{cust.getId().toString()}, "", "id desc", "");
         if (imageCust.size() <= 0)
-            return null;
+            return Collections.emptyList();
         return imageCust;
     }
 
-    public List<ImageCustomer> getImages() {
-//        List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
-//                , cust.getId().toString());
+    public List<ImageCustomer> getImageRecords() {
         List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
                 , new String[] {getCustomer().getId().toString()}, "", "id desc", "");
         if (imageCust.size() <= 0)
             return null;
         return imageCust;
+    }
+
+    public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
+            , int compressQuality){
+        if (compresFormat == null)
+            compresFormat = DEFAULT_COMPRESS_FORMAT;
+        if (compressQuality < 60)
+            compressQuality = DEFAULT_COMPRESSION;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compress(compresFormat, compressQuality, stream);
+        byte[] imageByteArray = stream.toByteArray();
+        // code below still left a log like this shit:
+        // -->> W/OpenGLRenderer: Bitmap too large to be uploaded into a texture
+        return Base64.encodeToString(imageByteArray, Base64.DEFAULT);
+    }
+
+    public static Bitmap decodeImage(String base64ImgString){
+        byte[] decodedImage = Base64.decode(base64ImgString, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedImage,
+                0, decodedImage.length);
     }
 
 }
