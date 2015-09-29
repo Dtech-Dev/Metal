@@ -59,6 +59,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private int count = 0;
     Uri outputFileUri;
 
+    byte[] image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +84,11 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             imagePelanggan = (ImageView) findViewById(R.id.imageView);
         if (selectedImageUri != null)
             imagePelanggan.setImageURI(selectedImageUri);
-        if (bm != null)
+        if (bm != null){
             imagePelanggan.setImageBitmap(bm);
+            //image=new Byte(String.valueOf(bm));
+            //image=new byte[bm];
+        }
     }
     private void setButtonTakeImage() {
         // MENU TAKE IMAGE
@@ -151,6 +156,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             etFoulType.getText().toString(),
                             spinnerTarif.getSelectedItem().toString(),
                             cbLat, cbLong
+                            //image
                     );
                     newCustomer.save();
                 } else {
@@ -162,6 +168,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                         cust.settarifdaya(spinnerTarif.getSelectedItem().toString());
                         cust.setLatTude(cbLat);
                         cust.setLongTude(cbLong);
+                        //cust.setImage(image);
                         /*cust.setLatTude(tLat.getText().toString());
                         cust.setLongTude(tLong.getText().toString());*/
                         cust.save();
@@ -247,6 +254,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
                     options);
+
+
 
             setImageView(null, bitmap);
         } catch (NullPointerException e) {

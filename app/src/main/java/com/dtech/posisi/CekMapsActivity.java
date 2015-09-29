@@ -40,9 +40,12 @@ public class CekMapsActivity extends FragmentActivity implements
     private Marker usrMarker;
     private double currentLatitude;
     private double currentLongitude;
-    private double locfirst=currentLongitude+0.1;
-    private double locsec=currentLongitude+0.2;
+    private double latFromAdapter;
+    private double longFromAdapter;
     private double locthr=currentLongitude+0.3;
+
+    String latHandled;
+    String longHandled;
 
 
     public static final String TAG=CekMapsActivity.class.getSimpleName();
@@ -65,7 +68,29 @@ public class CekMapsActivity extends FragmentActivity implements
 
 
         setUpMapIfNeeded();
+        intentFromAdapter();
+        convertingStringFromAdapter();
     }
+
+    private void intentFromAdapter() {
+        latHandled=getIntent().getExtras().getString("intentLat");
+        longHandled = getIntent().getExtras().getString("intentLong");
+        //Toast.makeText(this,"lat= "+latHandled+", long= "+longHandled,Toast.LENGTH_SHORT).show();
+    }
+
+    private void convertingStringFromAdapter() {
+        latFromAdapter = Double.parseDouble(latHandled);
+        longFromAdapter = Double.parseDouble(longHandled);
+        /*try {
+            latFromAdapter = Double.parseDouble(latHandled);
+            longFromAdapter = Double.parseDouble(longHandled);
+            Toast.makeText(this,"success converting", Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            //e.printStackTrace();
+            Toast.makeText(this,"failed converting", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
 
     @Override
     protected void onResume() {
@@ -194,25 +219,25 @@ public class CekMapsActivity extends FragmentActivity implements
         if (usrMarker==null){
             usrMarker=mMap.addMarker(options);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
         } else{
             usrMarker.remove();
             usrMarker=mMap.addMarker(options);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
         }
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(1000)
+                .radius(10000)
                 .strokeColor(0xff009688)
                 .strokeWidth(10)
                 .fillColor(0x80B2DFDB);
         mMap.addCircle(circleOptions);
 
-        mMap.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, (currentLongitude)+0.005)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
-        mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.003, (currentLongitude)+0.003)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
-        mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.005, currentLongitude)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(latFromAdapter, longFromAdapter)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
+       /* mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.003, (currentLongitude)+0.003)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.005, currentLongitude)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));*/
     }
 
     @Override

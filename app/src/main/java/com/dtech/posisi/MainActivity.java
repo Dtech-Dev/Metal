@@ -78,10 +78,11 @@ public class MainActivity extends ActionBarActivity {
         List<Customer> customer = Customer.listAll(Customer.class);
         for (Customer cust : customer) {
             Information setCust = new Information();
-            setCust.nama = cust.getcode() + "; " + cust.getname();
+            setCust.nama = cust.getcode() + ";\n" + cust.getname();
             setCust.address = cust.getaddress();
             setCust.latTude = cust.getLatTude();
             setCust.longTude = cust.getLongTude();
+            //setCust.image=cust.getImage();
             listCustomer.add(setCust);
         }
         return listCustomer;

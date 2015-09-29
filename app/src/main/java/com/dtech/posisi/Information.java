@@ -1,5 +1,7 @@
 package com.dtech.posisi;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Administrator on 24/08/2015.
  */
@@ -15,4 +17,7 @@ public class Information {
     String address;
     String latTude;
     String longTude;
+    byte[] image;
+
+    Bitmap bm;
 }

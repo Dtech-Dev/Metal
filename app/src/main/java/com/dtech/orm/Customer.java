@@ -16,6 +16,7 @@ public class Customer extends SugarRecord<Customer> {
     String tarifdaya;
     String latTude;
     String longTude;
+    //byte[] image;
 
     // START : Constructor
     public Customer(){}
@@ -35,6 +36,7 @@ public class Customer extends SugarRecord<Customer> {
         this.tarifdaya = tarifDaya;
         this.latTude = latTude;
         this.longTude = longTude;
+        //this.image = image;
     }
     public Customer(List<String> custRecord){
 //        this.id = Integer.parseInt(custRecord.get(0));
@@ -112,6 +114,14 @@ public class Customer extends SugarRecord<Customer> {
     public void setLongTude(String longTude) {
         this.longTude = longTude;
     }
+
+   /* public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }*/
 
     // END : Set & Get
 }

@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 public class ShowLogActivity extends AppCompatActivity {
 
-    String latlang;
+    String latlang="Boo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_log);
 
-        latlang = getIntent().getExtras().getString("stringHandled");
+        //latlang = getIntent().getExtras().getString("stringHandled");
 
         TextView tvlog = (TextView) findViewById(R.id.tvlog);
         tvlog.setText(latlang);
