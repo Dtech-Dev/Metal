@@ -66,6 +66,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private int count = 0;
     Uri outputFileUri;
 
+    byte[] image;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,11 +88,13 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             imagePelanggan = (ImageView) findViewById(R.id.imageView);
         if (selectedImageUri != null)
             imagePelanggan.setImageURI(selectedImageUri);
-        if (bm != null)
+        if (bm != null) {
             imagePelanggan.setImageBitmap(bm);
-        imagePelanggan.setDrawingCacheEnabled(true);
-        imagePelanggan.buildDrawingCache();
+            imagePelanggan.setDrawingCacheEnabled(true);
+            imagePelanggan.buildDrawingCache();
+        }
     }
+
     private void setButtonTakeImage() {
         // MENU TAKE IMAGE
         // start camera
@@ -152,6 +156,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             etFoulType.getText().toString(),
                             spinnerTarif.getSelectedItem().toString(),
                             cbLat, cbLong
+                            //image
                     );
                     cust.save();
                 } else {
@@ -282,6 +287,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
                     options);
+
+
 
             setImageView(null, bitmap);
         } catch (NullPointerException e) {

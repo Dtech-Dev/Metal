@@ -78,11 +78,10 @@ public class MainActivity extends ActionBarActivity {
         ImageCustomer lastImage;
         for (Customer cust : customer) {
             Information setCust = new Information();
-            setCust.nama = cust.getcode() + "; " + cust.getname();
+            setCust.nama = cust.getcode() + ";\n" + cust.getname();
             setCust.address = cust.getaddress();
             setCust.latTude = cust.getLatTude();
             setCust.longTude = cust.getLongTude();
-
             lastImage = ImageCustomer.getLastImage(cust);
             if (lastImage != null)
                 setCust.imageToShow = lastImage.getImage();
