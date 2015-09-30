@@ -1,16 +1,33 @@
 package com.dtech.posisi;
 
+import android.content.Context;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.dtech.orm.Customer;
 
 public class GalleryActivity extends AppCompatActivity {
+
+
+    GalleryCustomerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        GridView grid = (GridView) findViewById(R.id.grid);
+        adapter=new GalleryCustomerAdapter(this, Customer.listAll(Customer.class));
+        grid.setAdapter(adapter);
     }
 
     @Override
@@ -37,4 +54,7 @@ public class GalleryActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

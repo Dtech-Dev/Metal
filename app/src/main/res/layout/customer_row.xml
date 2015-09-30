@@ -67,7 +67,7 @@
                 android:layout_toStartOf="@+id/lLat"
                 android:layout_gravity="top"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/no_image_large"
+
                 android:layout_above="@+id/lLat" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>

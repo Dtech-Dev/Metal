@@ -7,7 +7,19 @@
     tools:context="com.dtech.posisi.GalleryActivity">
 
     <TextView android:text="@string/gallery" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2" />
+
+    <GridView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/grid"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="44dp"
+        android:numColumns="auto_fit"
+        android:columnWidth="100dp"></GridView>
 
 
 </RelativeLayout>
