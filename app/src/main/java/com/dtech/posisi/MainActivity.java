@@ -1,7 +1,12 @@
 package com.dtech.posisi;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkingGPS();
         setRecyleView();
 
         tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
@@ -43,6 +49,25 @@ public class MainActivity extends ActionBarActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adaptCustomer);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void checkingGPS() {
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) || !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Loaction Services Not Active");
+            alert.setMessage("Please Enable Location Service and GPS");
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intentGPS);
+                }
+            });
+            Dialog alertDialog = alert.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+        }
     }
 
     @Override

@@ -54,17 +54,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         holder.title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*handleLat = holder.lLat.getText().toString();
-                handleLong = holder.lLong.getText().toString();
-                Intent gotoMaps = new Intent(context, CekMapsActivity.class);
-                gotoMaps.putExtra("intentLat", handleLat);
-                gotoMaps.putExtra("intentLong", handleLong);
-                context.startActivity(gotoMaps);*/
-               /* handleString = holder.title.getText().toString();
-                //Toast.makeText(context, "Name Clicked "+handleString, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, ShowLogActivity.class);
-                intent.putExtra("stringHandled", handleString);
-                context.startActivity(intent);*/
+
             }
         });
 

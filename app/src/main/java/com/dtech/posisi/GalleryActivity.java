@@ -4,13 +4,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+
+import com.dtech.orm.Customer;
 
 public class GalleryActivity extends AppCompatActivity {
 
+    GalleryAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
+
+        adapter = new GalleryAdapter(this, Customer.listAll(Customer.class));
+        GridView grid = (GridView) findViewById(R.id.grid);
+        grid.setAdapter(adapter);
+
     }
 
     @Override
