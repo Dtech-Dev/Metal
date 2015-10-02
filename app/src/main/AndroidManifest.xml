@@ -29,9 +29,7 @@
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+
         </activity>
         <activity
             android:name=".LocActivity"
@@ -48,6 +46,9 @@
         <activity
             android:name=".InputCustomerActivity"
             android:label="@string/title_activity_input" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".InputActivity"
@@ -56,6 +57,14 @@
         <activity
             android:name=".GalleryActivity"
             android:label="@string/title_activity_gallery" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name=".CekMapsAllCustomer"
+            android:label="All Customers">
+
         </activity>
         <!-- END: activity section -->
 

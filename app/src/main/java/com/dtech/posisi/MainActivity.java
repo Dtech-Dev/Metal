@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) || !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Loaction Services Not Active");
+            alert.setTitle("Location Services Not Active");
             alert.setMessage("Please Enable Location Service and GPS");
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if(id==R.id.nav){
-            startActivity(new Intent(this, Main2Activity.class));
+            startActivity(new Intent(this, InputCustomerActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

@@ -82,7 +82,7 @@ public class NavDrawerFragment extends Fragment {
                         startActivity(new Intent(mainActivity, GalleryActivity.class));
                         break;
                     case 2:
-                        startActivity(new Intent(mainActivity, CekMapsActivity.class));
+                        startActivity(new Intent(mainActivity, CekMapsAllCustomer.class));
                         break;
                     case 3:
                         startActivity(new Intent(mainActivity, ShowLogActivity.class));

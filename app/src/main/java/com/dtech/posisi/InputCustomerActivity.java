@@ -77,6 +77,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         //setButtonTakeImage();
         setImageView(null, null);
         buildGoogleApiClient();
+
     }
 
     private void setImageView(Uri selectedImageUri, Bitmap bm) {
@@ -279,7 +280,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
             // downsizing image as it throws OutOfMemory Exception for larger
             // images
-            options.inSampleSize = 2;
+            options.inSampleSize = 3;
 
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
                     options);
