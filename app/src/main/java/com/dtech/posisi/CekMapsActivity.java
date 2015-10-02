@@ -1,15 +1,10 @@
 package com.dtech.posisi;
 
-import android.content.Context;
 import android.content.IntentSender;
-import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,13 +15,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.security.Provider;
 
 public class CekMapsActivity extends FragmentActivity implements
         LocationListener, GoogleMap.OnMyLocationButtonClickListener,
@@ -229,7 +221,7 @@ public class CekMapsActivity extends FragmentActivity implements
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(10000)
+                .radius(30000)
                 .strokeColor(0xff009688)
                 .strokeWidth(10)
                 .fillColor(0x80B2DFDB);

@@ -7,31 +7,36 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.dtech.orm.Customer;
 import com.dtech.orm.ImageCustomer;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by aris on 30/09/15.
  */
 public class GalleryAdapter extends BaseAdapter {
 
-    Context context;
-    List<Customer> setimages;
+    private Context context;
+    private List<ImageCustomer> imgCustomer;
     private static LayoutInflater inflater = null;
 
-    public GalleryAdapter(Context context, List<Customer> setimages) {
-        this.context = context;
-        this.setimages = setimages;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public GalleryAdapter(Context context, List<ImageCustomer> imgCustomer){
+        this.setImgCustomer(imgCustomer);
+        this.setContext(context);
+        setInflater((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+    }
 
+    public static LayoutInflater getInflater() {
+        return inflater;
+    }
+
+    public static void setInflater(LayoutInflater inflater) {
+        GalleryAdapter.inflater = inflater;
     }
 
     @Override
     public int getCount() {
-        return setimages.size();
+        return getImgCustomer().size();
     }
 
     @Override
@@ -47,20 +52,38 @@ public class GalleryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertview, ViewGroup viewGroup) {
-        Customer customer = setimages.get(i);
         View view = convertview;
         if (convertview == null) {
-            view = inflater.inflate(R.layout.gallery_row, null);
+            view = getInflater().inflate(R.layout.gallery_row, null);
         }
 
         ImageView item = (ImageView)view.findViewById(R.id.imageRow);
-        String lastImage = customer.lastImage();
+        ImageCustomer imgCust = getImgCustomer().get(i);
+        String lastImage = imgCust.getImageTest();
         if (lastImage != null) {
             item.setImageBitmap(ImageCustomer.decodeImage(lastImage));
+        } else {
+            item.setBackgroundResource(R.drawable.no_image_large);
         }
 
         //item.setImageBitmap();
 
         return view;
+    }
+
+    public List<ImageCustomer> getImgCustomer() {
+        return imgCustomer;
+    }
+
+    public void setImgCustomer(List<ImageCustomer> imgCustomer) {
+        this.imgCustomer = imgCustomer;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

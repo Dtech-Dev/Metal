@@ -1,25 +1,29 @@
 package com.dtech.posisi;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
-import com.dtech.orm.Customer;
+import com.dtech.orm.ImageCustomer;
 
 public class GalleryActivity extends AppCompatActivity {
 
     GalleryAdapter adapter;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        adapter = new GalleryAdapter(this, Customer.listAll(Customer.class));
+        adapter = new GalleryAdapter(this, ImageCustomer.listAll(ImageCustomer.class));
         GridView grid = (GridView) findViewById(R.id.grid);
         grid.setAdapter(adapter);
 
+        setToolBar();
     }
 
     @Override
@@ -45,5 +49,14 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setToolBar() {
+        // TOOLBAR
+        toolbar = (Toolbar) findViewById(R.id.standardToolBar);
+        toolbar.setTitle("Gallery");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 }
