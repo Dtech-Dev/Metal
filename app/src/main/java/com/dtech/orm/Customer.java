@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import com.orm.SugarRecord;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -14,22 +16,23 @@ public class Customer extends SugarRecord<Customer> {
     private String code;
     private String name;
     private String address;
-    private String foultype;
     private String tarifdaya;
-    private String latTude;
-    private String longTude;
+    private String lastXPosition;
+    private String lastYPosition;
+    private String lastVisit;
+    private boolean active;
 
     // START : Constructor
     public Customer(){}
 
-    public Customer(String code, String name, String address, String foulType, String tarifDaya, String latTude, String longTude) {
+    public Customer(String code, String name, String address, String tarifDaya, String lastXPosition, String lastYPosition) {
         this.setCode(code);
         this.setName(name);
         this.setAddress(address);
-        this.setFoultype(foulType);
         this.setTarifdaya(tarifDaya);
-        this.setLatTude(latTude);
-        this.setLongTude(longTude);
+        this.setLastXPosition(lastXPosition);
+        this.setLastYPosition(lastYPosition);
+        this.active = true;
         //this.image = image;
     }
     // END : Constructor
@@ -79,14 +82,6 @@ public class Customer extends SugarRecord<Customer> {
         this.address = address;
     }
 
-    public String getFoultype() {
-        return foultype;
-    }
-
-    public void setFoultype(String foultype) {
-        this.foultype = foultype;
-    }
-
     public String getTarifdaya() {
         return tarifdaya;
     }
@@ -95,20 +90,37 @@ public class Customer extends SugarRecord<Customer> {
         this.tarifdaya = tarifdaya;
     }
 
-    public String getLatTude() {
-        return latTude;
+    public String getLastXPosition() {
+        return lastXPosition;
     }
 
-    public void setLatTude(String latTude) {
-        this.latTude = latTude;
+    public void setLastXPosition(String lastXPosition) {
+        this.lastXPosition = lastXPosition;
     }
 
-    public String getLongTude() {
-        return longTude;
+    public String getLastYPosition() {
+        return lastYPosition;
     }
 
-    public void setLongTude(String longTude) {
-        this.longTude = longTude;
+    public void setLastYPosition(String lastYPosition) {
+        this.lastYPosition = lastYPosition;
+    }
+
+    public String getLastVisit() {
+        ImageCustomer lastRecord = ImageCustomer.getLastImageRecord(this);
+        SimpleDateFormat xxx = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        if (lastRecord == null) {
+            return xxx.format(Calendar.getInstance().getTime());
+        }
+        return lastRecord.getFoulDate();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     // END : Set & Get
 }

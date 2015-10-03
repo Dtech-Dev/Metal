@@ -39,10 +39,11 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
     @Override
     public void onBindViewHolder(final MainViewHolder holder, int position) {
         Customer customer = dataCustomer.get(position);
-        holder.title.setText(customer.getName());
+        holder.title.setText(customer.getCode() + " : " + customer.getName());
         holder.address.setText(customer.getAddress());
-        holder.lLat.setText(customer.getLatTude());
-        holder.lLong.setText(customer.getLongTude());
+        holder.lastVisit.setText(customer.getLastVisit());
+        holder.lLat.setText(customer.getLastXPosition());
+        holder.lLong.setText(customer.getLastYPosition());
         // show an image
         // edhan 093015.0057 ada 2 cara untuk ambil last image, tinggal pilih mana yang enak
 //        String lastImage = ImageCustomer.getLastImageRecord(customer).getImageTest();
@@ -77,6 +78,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
     }
 
     class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView lastVisit;
         TextView title;
         TextView address;
         TextView lLat;
@@ -88,9 +90,10 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             super(itemView);
             rel = (RelativeLayout) itemView.findViewById(R.id.rel);
 
-            context=itemView.getContext();
-            title=(TextView)itemView.findViewById(R.id.mlistnama);
+            context = itemView.getContext();
+            title = (TextView)itemView.findViewById(R.id.mlistnama);
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
+            lastVisit = (TextView) itemView.findViewById(R.id.mlistlastvisit);
             lLat = (TextView) itemView.findViewById(R.id.lLat);
             lLong = (TextView) itemView.findViewById(R.id.lLong);
             showUpImageHolder = (ImageView) itemView.findViewById(R.id.showUp);

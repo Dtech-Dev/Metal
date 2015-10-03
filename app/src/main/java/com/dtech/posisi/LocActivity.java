@@ -1,9 +1,8 @@
 package com.dtech.posisi;
 
 import android.location.Location;
-import android.nfc.Tag;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +12,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-
-import org.apache.commons.logging.Log;
-import org.w3c.dom.Text;
+import com.google.android.gms.location.LocationServices;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
 public class LocActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener {
@@ -33,8 +29,8 @@ public class LocActivity extends AppCompatActivity implements ConnectionCallback
         setContentView(R.layout.activity_loc);
 
         buildGoogleApiClient();
-         mLat=(TextView)findViewById(R.id.latTude);
-         mLong=(TextView)findViewById(R.id.longTude);
+         mLat=(TextView)findViewById(R.id.lastXPosition);
+         mLong=(TextView)findViewById(R.id.lastYPosition);
 
         Button bGet=(Button)findViewById(R.id.get);
         bGet.setOnClickListener(new View.OnClickListener() {

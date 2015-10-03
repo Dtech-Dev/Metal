@@ -92,10 +92,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
             android:src="@drawable/no_image_large"
-            android:layout_below="@+id/spinnerTarif"
             android:layout_alignParentLeft="false"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/btnSaveInputCust"
+            android:layout_alignTop="@+id/btnSaveInputCust"
             android:layout_toLeftOf="@+id/btnSaveInputCust" />
 
         <Spinner
@@ -104,7 +104,10 @@
             android:id="@+id/spinnerTarif"
             android:layout_below="@+id/textJenisPelanggaran"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:spinnerMode="dialog"
+            android:layout_toLeftOf="@+id/textFoulDate"
+            android:layout_toStartOf="@+id/textFoulDate" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -112,10 +115,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
             android:id="@+id/tLong"
-            android:layout_alignParentBottom="true"
-            android:layout_alignRight="@+id/btnSaveInputCust"
-            android:layout_alignEnd="@+id/btnSaveInputCust"
-            android:layout_marginBottom="65dp" />
+            android:layout_below="@+id/tLat"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,9 +125,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
             android:id="@+id/tLat"
-            android:layout_above="@+id/tLong"
-            android:layout_alignRight="@+id/tLong"
-            android:layout_alignEnd="@+id/tLong" />
+            android:layout_below="@+id/btnSaveInputCust"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -138,6 +140,20 @@
             android:layout_alignLeft="@+id/tLong"
             android:layout_alignStart="@+id/tLong"
             android:visibility="invisible" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/textFoulDate"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/textJenisPelanggaran"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_above="@+id/imageView"
+            android:hint="yyyy/MM/dd hh:mm:ss" />
 
         <!-- <Button
              android:layout_width="wrap_content"

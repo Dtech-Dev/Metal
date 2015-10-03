@@ -7,7 +7,10 @@ import android.util.Base64;
 import com.orm.SugarRecord;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,13 +19,16 @@ import java.util.List;
 
 public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
+    private static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+
     private Customer customer;
     private String name;
     private String longitude;
     private String latitude;
     private String imageTest;
-    @Deprecated
-    byte[] image;
+    private String foulType;
+    private String foulDate;
 
     private static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     private static final int DEFAULT_COMPRESSION = 60;
@@ -30,13 +36,14 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
     public ImageCustomer() {}
 
     public ImageCustomer(Customer customer, String name, String longitude, String latitude
-            , byte[] image, String imageTest) {
+            , String imageTest, String foulType, String foulDate) {
         this.setCustomer(customer);
         this.setName(name);
         this.setLongitude(longitude);
         this.setLatitude(latitude);
-        this.image = image;
         this.setImageTest(imageTest);
+        this.setFoulType(foulType);
+        this.setFoulDate(foulDate);
     }
 
     //Getter and Setter
@@ -62,14 +69,6 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String getImageTest() {
@@ -106,7 +105,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
     public List<ImageCustomer> getImageRecords() {
         List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
-                , new String[] {getCustomer().getId().toString()}, "", "id desc", "");
+                , new String[]{getCustomer().getId().toString()}, "", "id desc", "");
         if (imageCust.size() <= 0)
             return null;
         return imageCust;
@@ -132,4 +131,38 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
                 0, decodedImage.length);
     }
 
+    public String getFoulType() {
+        return foulType;
+    }
+
+    public void setFoulType(String foulType) {
+        this.foulType = foulType;
+    }
+
+    public String getFoulDate() {
+        return foulDate;
+    }
+
+    public void setFoulDate(Date foulDate) {
+        this.foulDate = dateToString(foulDate, DEFAULT_DATETIME_FORMAT);
+    }
+
+    public void setFoulDate(Calendar foulDate) {
+        this.foulDate = dateToString(foulDate, DEFAULT_DATETIME_FORMAT);
+    }
+
+    public void setFoulDate(String foulDate) {
+        this.foulDate = foulDate;
+    }
+
+    public static String dateToString(Date date, String format) {
+        if (format.equals(null) || format.length() <= 0)
+            format = DEFAULT_DATETIME_FORMAT;
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
+    public String dateToString(Calendar calendar, String format) {
+        return dateToString(calendar.getTime(), format);
+    }
 }
