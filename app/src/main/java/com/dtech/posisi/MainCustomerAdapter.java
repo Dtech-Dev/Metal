@@ -41,7 +41,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         Customer customer = dataCustomer.get(position);
         holder.title.setText(customer.getCode() + " : " + customer.getName());
         holder.address.setText(customer.getAddress());
-        //holder.lastVisit.setText(customer.getLastVisit());
+        holder.lastVisit.setText(customer.getLastVisit());
         holder.lLat.setText(customer.getLastXPosition());
         holder.lLong.setText(customer.getLastYPosition());
         // show an image

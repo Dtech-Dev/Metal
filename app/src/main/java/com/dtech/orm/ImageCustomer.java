@@ -36,14 +36,14 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
     public ImageCustomer() {}
 
     public ImageCustomer(Customer customer, String name, String longitude, String latitude
-            , String imageTest, String foulType) {
+            , String imageTest, String foulType, String foulDate) {
         this.setCustomer(customer);
         this.setName(name);
         this.setLongitude(longitude);
         this.setLatitude(latitude);
         this.setImageTest(imageTest);
         this.setFoulType(foulType);
-        //this.setFoulDate(foulDate);
+        this.setFoulDate(foulDate);
     }
 
     //Getter and Setter
@@ -139,7 +139,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.foulType = foulType;
     }
 
-    /*public String getFoulDate() {
+    public String getFoulDate() {
         return foulDate;
     }
 
@@ -164,5 +164,5 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
 
     public String dateToString(Calendar calendar, String format) {
         return dateToString(calendar.getTime(), format);
-    }*/
+    }
 }

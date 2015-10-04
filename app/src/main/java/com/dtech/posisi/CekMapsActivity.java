@@ -221,7 +221,7 @@ public class CekMapsActivity extends FragmentActivity implements
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(10000)
+                .radius(30000)
                 .strokeColor(0xff009688)
                 .strokeWidth(10)
                 .fillColor(0x80B2DFDB);

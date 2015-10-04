@@ -106,14 +106,14 @@ public class Customer extends SugarRecord<Customer> {
         this.lastYPosition = lastYPosition;
     }
 
-    /*public String getLastVisit() {
+    public String getLastVisit() {
         ImageCustomer lastRecord = ImageCustomer.getLastImageRecord(this);
         SimpleDateFormat xxx = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         if (lastRecord == null) {
             return xxx.format(Calendar.getInstance().getTime());
         }
         return lastRecord.getFoulDate();
-    }*/
+    }
 
     public boolean isActive() {
         return active;
