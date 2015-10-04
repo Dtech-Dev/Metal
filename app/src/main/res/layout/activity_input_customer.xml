@@ -141,7 +141,7 @@
             android:layout_alignStart="@+id/tLong"
             android:visibility="invisible" />
 
-        <EditText
+        <!--<EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="date"
@@ -153,7 +153,7 @@
             android:layout_toRightOf="@+id/imageView"
             android:layout_toEndOf="@+id/imageView"
             android:layout_above="@+id/imageView"
-            android:hint="yyyy/MM/dd hh:mm:ss" />
+            android:hint="yyyy/MM/dd hh:mm:ss" />-->
 
         <!-- <Button
              android:layout_width="wrap_content"

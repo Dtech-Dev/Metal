@@ -179,7 +179,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
                 String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(), null, 100);
                 ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, encodedImg
-                        , etFoulType.getText().toString(), etFoulDate.getText().toString());
+                        , etFoulType.getText().toString());
                 cstImage.save();
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
 
@@ -201,12 +201,12 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
         etFoulDate = (EditText) findViewById(R.id.textFoulDate);
-        etFoulDate.setText(ImageCustomer.dateToString(Calendar.getInstance().getTime(), null));
+//        etFoulDate.setText(ImageCustomer.dateToString(Calendar.getInstance().getTime(), null));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
 
         etCode = (EditText) findViewById(R.id.textCustID);
-        etCode.addTextChangedListener(new TextWatcher() {
+        /*etCode.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.equals("")) {
                     boolean exist = Customer.custExist("code = ? ", s.toString());
@@ -244,7 +244,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             public void afterTextChanged(Editable s) {
                 // maybe we need it later
             }
-        });
+        });*/
 
     }
 
