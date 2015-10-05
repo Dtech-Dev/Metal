@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         // RELOAD recyclerView
-        setRecyleView();
+        //setRecyleView();
         return true;
     }
 
@@ -96,5 +96,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setRecyleView();
     }
 }

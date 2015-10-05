@@ -36,6 +36,7 @@ public class CekMapsActivity extends FragmentActivity implements
     private double longFromAdapter;
     private double locthr=currentLongitude+0.3;
 
+
     String latHandled;
     String longHandled;
 
@@ -221,7 +222,7 @@ public class CekMapsActivity extends FragmentActivity implements
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(30000)
+                .radius(10000)
                 .strokeColor(0xff009688)
                 .strokeWidth(10)
                 .fillColor(0x80B2DFDB);

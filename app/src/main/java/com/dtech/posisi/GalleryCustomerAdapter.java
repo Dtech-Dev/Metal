@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 
 import com.dtech.orm.Customer;
-import com.dtech.orm.ImageCustomer;
+import com.dtech.orm.Pelanggaran;
 
 import java.util.List;
 
@@ -57,9 +57,9 @@ public class GalleryCustomerAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.gallery_row, null);
         }
 
-        ImageView setImagecust = (ImageView) view.findViewById(R.id.imageList);
+        ImageView setImagecust = (ImageView) view.findViewById(R.id.imageRow);
 
-        setImagecust.setImageBitmap(ImageCustomer.decodeImage(lastImage));
+        setImagecust.setImageBitmap(Pelanggaran.decodeImage(lastImage));
 
         return view;
     }

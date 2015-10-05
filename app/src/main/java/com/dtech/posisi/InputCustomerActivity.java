@@ -1,5 +1,7 @@
 package com.dtech.posisi;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +32,8 @@ import com.dtech.orm.Customer;
 import com.dtech.orm.Pelanggaran;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
@@ -63,6 +67,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private EditText textDaya;
 
     private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
 
     private int count = 0;
     Uri outputFileUri;
@@ -346,6 +351,11 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)
+                .setFastestInterval(1 * 1000);
     }
 
     @Override
@@ -366,7 +376,28 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
             cbLat=tLat.getText().toString();
             cbLong = tLong.getText().toString();
         } else {
+            /*1st way to handling null Location
+            Toast.makeText(this, "Failed to find location", Toast.LENGTH_SHORT).show();*/
+
+            /*2nd way to handling null Location
+            try {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (LocationListener) this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
+
+            /*3rd way to handling null Location
             Toast.makeText(this, "Failed to find location", Toast.LENGTH_SHORT).show();
+            backToMain();*/
+
+            /*4th way to handling null location*/
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Please Wait");
+            alert.setMessage("Wait while we finding your locations");
+
+
+            Dialog alertDialog = alert.create();
+            alertDialog.show();
         }
     }
 
@@ -392,5 +423,12 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+    }
+
+    public void backToMain(){
+        Intent backToMain;
+        backToMain = new Intent(InputCustomerActivity.this, MainActivity.class);
+        startActivity(backToMain);
+
     }
 }
