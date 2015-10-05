@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.orm.Customer;
-import com.dtech.orm.ImageCustomer;
+import com.dtech.orm.Pelanggaran;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -182,11 +182,11 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                     return;
                 }
 
-                String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(),
+                String encodedImg = Pelanggaran.encodeImage(imagePelanggan.getDrawingCache(),
                         null, 100);
                 String foulDate = etFoulDate.getText().toString(); // + " " +
 //                        textClock.getText().toString(); // TODO : later we set a time for this
-                ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, encodedImg
+                Pelanggaran cstImage = new Pelanggaran(cust, "test", cbLat, cbLong, encodedImg
                         , etFoulType.getText().toString(), foulDate
                         , new BigDecimal(textDaya.getText().toString()));
                 cstImage.save();
@@ -216,7 +216,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
         etFoulDate = (EditText) findViewById(R.id.textFoulDate);
-        etFoulDate.setText(ImageCustomer.dateToString(Calendar.getInstance().getTime(), null));
+        etFoulDate.setText(Pelanggaran.dateToString(Calendar.getInstance().getTime()
+                , Pelanggaran.DEFAULT_DATE_FORMAT));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
         textDaya = (EditText) findViewById(R.id.textDaya);

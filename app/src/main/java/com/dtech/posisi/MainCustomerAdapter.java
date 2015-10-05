@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dtech.orm.Customer;
-import com.dtech.orm.ImageCustomer;
+import com.dtech.orm.Pelanggaran;
 
 import java.util.List;
 
@@ -46,11 +46,11 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         holder.lLong.setText(customer.getLastYPosition());
         // show an image
         // edhan 093015.0057 ada 2 cara untuk ambil last image, tinggal pilih mana yang enak
-//        String lastImage = ImageCustomer.getLastImageRecord(customer).getImageTest();
+//        String lastImage = Pelanggaran.getLastImageRecord(customer).getImageTest();
         String lastImage = customer.lastImage();
         if (lastImage != null) {
             holder.showUpImageHolder.setImageBitmap(
-                    ImageCustomer.decodeImage(lastImage));
+                    Pelanggaran.decodeImage(lastImage));
         }
         holder.title.setOnClickListener(new View.OnClickListener() {
             @Override

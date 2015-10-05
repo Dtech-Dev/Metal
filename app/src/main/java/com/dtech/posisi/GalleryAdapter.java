@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.dtech.orm.ImageCustomer;
+import com.dtech.orm.Pelanggaran;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import java.util.List;
 public class GalleryAdapter extends BaseAdapter {
 
     private Context context;
-    private List<ImageCustomer> imgCustomer;
+    private List<Pelanggaran> imgCustomer;
     private static LayoutInflater inflater = null;
 
-    public GalleryAdapter(Context context, List<ImageCustomer> imgCustomer){
+    public GalleryAdapter(Context context, List<Pelanggaran> imgCustomer){
         this.setImgCustomer(imgCustomer);
         this.setContext(context);
         setInflater((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -58,10 +58,10 @@ public class GalleryAdapter extends BaseAdapter {
         }
 
         ImageView item = (ImageView)view.findViewById(R.id.imageRow);
-        ImageCustomer imgCust = getImgCustomer().get(i);
+        Pelanggaran imgCust = getImgCustomer().get(i);
         String lastImage = imgCust.getImageTest();
         if (lastImage != null) {
-            item.setImageBitmap(ImageCustomer.decodeImage(lastImage));
+            item.setImageBitmap(Pelanggaran.decodeImage(lastImage));
         } else {
             item.setBackgroundResource(R.drawable.no_image_large);
         }
@@ -71,11 +71,11 @@ public class GalleryAdapter extends BaseAdapter {
         return view;
     }
 
-    public List<ImageCustomer> getImgCustomer() {
+    public List<Pelanggaran> getImgCustomer() {
         return imgCustomer;
     }
 
-    public void setImgCustomer(List<ImageCustomer> imgCustomer) {
+    public void setImgCustomer(List<Pelanggaran> imgCustomer) {
         this.imgCustomer = imgCustomer;
     }
 

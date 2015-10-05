@@ -46,7 +46,7 @@ public class Customer extends SugarRecord<Customer> {
     }
 
     public String lastImage(){
-        ImageCustomer lastImageRec = ImageCustomer.getLastImageRecord(this);
+        Pelanggaran lastImageRec = Pelanggaran.getLastImageRecord(this);
         if (lastImageRec != null)
             return lastImageRec.getImageTest();
         return null;
@@ -54,7 +54,7 @@ public class Customer extends SugarRecord<Customer> {
 
     public Bitmap lastImageBitmap(){
         if (lastImage() != null)
-            return ImageCustomer.decodeImage(lastImage());
+            return Pelanggaran.decodeImage(lastImage());
         return null;
     }
 
@@ -107,7 +107,7 @@ public class Customer extends SugarRecord<Customer> {
     }
 
     public String getLastVisit() {
-        ImageCustomer lastRecord = ImageCustomer.getLastImageRecord(this);
+        Pelanggaran lastRecord = Pelanggaran.getLastImageRecord(this);
         SimpleDateFormat xxx = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         if (lastRecord == null) {
             return xxx.format(Calendar.getInstance().getTime());
