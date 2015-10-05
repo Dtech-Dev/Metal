@@ -7,6 +7,7 @@ import android.util.Base64;
 import com.orm.SugarRecord;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
     private String imageTest;
     private String foulType;
     private String foulDate;
+    private BigDecimal daya;
 
     private static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     private static final int DEFAULT_COMPRESSION = 60;
@@ -36,7 +38,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
     public ImageCustomer() {}
 
     public ImageCustomer(Customer customer, String name, String longitude, String latitude
-            , String imageTest, String foulType, String foulDate) {
+            , String imageTest, String foulType, String foulDate, BigDecimal daya) {
         this.setCustomer(customer);
         this.setName(name);
         this.setLongitude(longitude);
@@ -44,6 +46,7 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.setImageTest(imageTest);
         this.setFoulType(foulType);
         this.setFoulDate(foulDate);
+        this.setDaya(daya);
     }
 
     //Getter and Setter
@@ -155,8 +158,16 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.foulDate = foulDate;
     }
 
+    public BigDecimal getDaya() {
+        return daya;
+    }
+
+    public void setDaya(BigDecimal daya) {
+        this.daya = daya;
+    }
+
     public static String dateToString(Date date, String format) {
-        if (format.equals(null) || format.length() <= 0)
+        if (format == null || format.length() <= 0)
             format = DEFAULT_DATETIME_FORMAT;
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);

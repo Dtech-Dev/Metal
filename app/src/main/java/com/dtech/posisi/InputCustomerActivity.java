@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 
@@ -55,8 +57,10 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     //    private Button btnUploadImg;
     private TextView tLat;
     private TextView tLong;
+    private TextClock textClock;
     private EditText etFoulDate;
     private ImageView imagePelanggan;
+    private EditText textDaya;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -173,26 +177,37 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 }
 
                 if (cust == null) {
-                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ",
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(), null, 100);
+                String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(),
+                        null, 100);
+                String foulDate = etFoulDate.getText().toString(); // + " " +
+//                        textClock.getText().toString(); // TODO : later we set a time for this
                 ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, encodedImg
-                        , etFoulType.getText().toString(), etFoulDate.getText().toString());
+                        , etFoulType.getText().toString(), foulDate
+                        , new BigDecimal(textDaya.getText().toString()));
                 cstImage.save();
-                Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ",
+                        Toast.LENGTH_SHORT).show();
 
-                etCode.setText("");
-                etName.setText("");
-                etAddress.setText("");
-                etFoulType.setText("");
-                spinnerTarif.setSelection(0);
-                tLat.setText("");
-                tLong.setText("");
-                imagePelanggan.setImageBitmap(null);
+                resetFields();
             }
         });
+    }
+
+    private void resetFields() {
+        etCode.setText("");
+        etName.setText("");
+        etAddress.setText("");
+        etFoulType.setText("");
+        spinnerTarif.setSelection(0);
+        tLat.setText("");
+        tLong.setText("");
+        imagePelanggan.setImageBitmap(null);
+        textDaya.setText("0");
     }
 
     private void setEditTextCustInfo() {
@@ -204,6 +219,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etFoulDate.setText(ImageCustomer.dateToString(Calendar.getInstance().getTime(), null));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
+        textDaya = (EditText) findViewById(R.id.textDaya);
+        textClock = (TextClock) findViewById(R.id.textClock);
 
         etCode = (EditText) findViewById(R.id.textCustID);
         etCode.addTextChangedListener(new TextWatcher() {
@@ -220,16 +237,13 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                         for (Customer custx : cust) {
                             etName.setText(custx.getName());
                             etAddress.setText(custx.getAddress());
-                            etFoulType.setText(custx.getTarifdaya());
                             tLat.setText(custx.getLastXPosition());
                             tLong.setText(custx.getLastYPosition());
                             setSpinnerTarif(custx.getTarifdaya());
                         }
                     } else {
-                        etCode.setText("");
                         etName.setText("");
                         etAddress.setText("");
-                        etFoulType.setText("");
                         setSpinnerTarif("");
                         tLat.setText("");
                         tLong.setText("");

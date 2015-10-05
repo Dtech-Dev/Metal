@@ -12,12 +12,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +106,7 @@ public class NavDrawerFragment extends Fragment {
 
         int[] icons={R.drawable.ic_polymer_black_24dp, R.drawable.ic_camera_enhance_black_24dp,
                 R.drawable.ic_room_black_24dp, R.drawable.ic_assignment_ind_black_24dp};
-        String[] title={"Input", "Gallery", "Check Map", "Show Log"};
+        String[] title={"Input Pelanggaran", "Gallery", "Check Map", "Show Log"};
         for (int i=0;i<title.length && i<icons.length; i++){
             Information current=new Information();
             current.title=title[i];

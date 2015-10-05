@@ -7,8 +7,234 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TableLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/barInputCust"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textCustID"
+                android:layout_below="@+id/barInputCust"
+                android:hint="@string/label_id_pel"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/textCustName"
+                android:layout_below="@+id/textCustID"
+                android:hint="@string/label_nama_pelanggan"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/textCustAddress"
+                android:layout_below="@+id/textCustName"
+                android:hint="@string/label_alamat"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textJenisPelanggaran"
+                android:layout_below="@+id/textCustAddress"
+                android:hint="@string/label_jenis_pelanggaran"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_row="0"
+                android:layout_column="0">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/textDaya"
+                        android:hint="Daya" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="VA"
+                        android:id="@+id/labelDaya"
+                        android:layout_column="1" />
+                </GridLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:layout_width="207dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spinnerTarif"
+                        android:layout_below="@+id/textJenisPelanggaran"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:spinnerMode="dialog"
+                        android:layout_toLeftOf="@+id/textFoulDate"
+                        android:layout_toStartOf="@+id/textFoulDate"
+                        android:layout_row="1"
+                        android:layout_column="0" />
+
+                </GridLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_column="1">
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:ems="10"
+                        android:id="@+id/textFoulDate"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/textJenisPelanggaran"
+                        android:layout_toRightOf="@+id/imageView"
+                        android:layout_toEndOf="@+id/imageView"
+                        android:layout_above="@+id/imageView"
+                        android:hint="yyyy/MM/dd" />
+                </GridLayout>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView"
+                        android:src="@drawable/no_image_large"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/btnSaveInputCust"
+                        android:layout_alignTop="@+id/btnSaveInputCust"
+                        android:layout_toLeftOf="@+id/btnSaveInputCust"
+                        android:layout_row="0"
+                        android:layout_column="0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Small Text"
+                        android:id="@+id/textImageName"
+                        android:layout_marginTop="26dp"
+                        android:layout_below="@+id/tLat"
+                        android:layout_alignLeft="@+id/tLong"
+                        android:layout_alignStart="@+id/tLong"
+                        android:visibility="invisible"
+                        android:layout_row="1"
+                        android:layout_column="0" />
+
+                </GridLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_column="1">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Simpan"
+                        android:id="@+id/btnSaveInputCust"
+                        android:layout_marginRight="48dp"
+                        android:layout_marginEnd="48dp"
+                        android:layout_marginTop="41dp"
+                        android:layout_below="@+id/spinnerTarif"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="left" />
+
+                    <GridLayout
+                        android:layout_width="166dp"
+                        android:layout_height="match_parent"
+                        android:layout_row="1"
+                        android:layout_column="0">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Small Text"
+                            android:id="@+id/tLong"
+                            android:layout_below="@+id/tLat"
+                            android:layout_toRightOf="@+id/imageView"
+                            android:layout_toEndOf="@+id/imageView" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Small Text"
+                            android:id="@+id/tLat"
+                            android:layout_below="@+id/btnSaveInputCust"
+                            android:layout_toRightOf="@+id/imageView"
+                            android:layout_toEndOf="@+id/imageView"
+                            android:layout_row="1"
+                            android:layout_column="0" />
+
+                        <TextClock
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textClock"
+                            android:layout_row="2"
+                            android:layout_column="0" />
+
+                    </GridLayout>
+                </GridLayout>
+
+            </TableRow>
+
+        </TableLayout>
+
         <include
-            android:layout_width="wrap_content"
+            android:layout_width="396dp"
             android:layout_height="wrap_content"
             layout="@layout/app_bar"
             android:layout_alignParentTop="true"
@@ -18,54 +244,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textCustID"
-            android:layout_below="@+id/barInputCust"
-            android:hint="@string/label_id_pel"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/textCustName"
-            android:layout_below="@+id/textCustID"
-            android:hint="@string/label_nama_pelanggan"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:id="@+id/textCustAddress"
-            android:layout_below="@+id/textCustName"
-            android:hint="@string/label_alamat"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textJenisPelanggaran"
-            android:layout_below="@+id/textCustAddress"
-            android:hint="@string/label_jenis_pelanggaran"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
         <!--<Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,86 +252,6 @@
             android:layout_alignTop="@+id/imageView"
             android:layout_alignRight="@+id/btnSaveInputCust"
             android:layout_alignEnd="@+id/btnSaveInputCust" />-->
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Simpan"
-            android:id="@+id/btnSaveInputCust"
-            android:layout_marginRight="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginTop="41dp"
-            android:layout_below="@+id/spinnerTarif"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/no_image_large"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/btnSaveInputCust"
-            android:layout_alignTop="@+id/btnSaveInputCust"
-            android:layout_toLeftOf="@+id/btnSaveInputCust" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerTarif"
-            android:layout_below="@+id/textJenisPelanggaran"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:spinnerMode="dialog"
-            android:layout_toLeftOf="@+id/textFoulDate"
-            android:layout_toStartOf="@+id/textFoulDate" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/tLong"
-            android:layout_below="@+id/tLat"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/tLat"
-            android:layout_below="@+id/btnSaveInputCust"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/textImageName"
-            android:layout_marginTop="26dp"
-            android:layout_below="@+id/tLat"
-            android:layout_alignLeft="@+id/tLong"
-            android:layout_alignStart="@+id/tLong"
-            android:visibility="invisible" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/textFoulDate"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/textJenisPelanggaran"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_above="@+id/imageView"
-            android:hint="yyyy/MM/dd hh:mm:ss" />
 
         <!-- <Button
              android:layout_width="wrap_content"
@@ -166,6 +264,7 @@
              android:layout_alignEnd="@+id/btnUploadImg" />-->
 
     </RelativeLayout>
+
     <!--<fragment-->
         <!--android:id="@+id/nav_drawer"-->
         <!--android:layout_width="@dimen/nav_drawer_width"-->
