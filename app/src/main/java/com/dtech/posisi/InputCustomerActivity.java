@@ -22,17 +22,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.orm.Customer;
-import com.dtech.orm.ImageCustomer;
+import com.dtech.orm.Pelanggaran;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -50,12 +53,14 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private EditText etCode, etName, etAddress, etFoulType;
     private Spinner spinnerTarif;
     private Button btnSave;
-//    private Button btnTakeImg;
-//    private Button btnUploadImg;
+    //    private Button btnTakeImg;
+    //    private Button btnUploadImg;
     private TextView tLat;
     private TextView tLong;
-
+    private TextClock textClock;
+    private EditText etFoulDate;
     private ImageView imagePelanggan;
+    private EditText textDaya;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -70,7 +75,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         setContentView(R.layout.activity_input_customer);
 
         setToolBar();
-        setSpinnerTarif();
+        setSpinnerTarif("");
         setEditTextCustInfo();
         setButtonSave();
         //setButtonUploadImg();
@@ -151,7 +156,6 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             etCode.getText().toString(),
                             etName.getText().toString(),
                             etAddress.getText().toString(),
-                            etFoulType.getText().toString(),
                             spinnerTarif.getSelectedItem().toString(),
                             cbLat, cbLong
                             //image
@@ -160,39 +164,50 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 } else {
                     List<Customer> custm = Customer.find(Customer.class, "code = ?",
                             etCode.getText().toString());
-                    for (Customer cst : custm){
+                    for (Customer cst : custm) {
                         cst.setCode(etCode.getText().toString());
                         cst.setName(etName.getText().toString());
                         cst.setAddress(etAddress.getText().toString());
-                        cst.setFoultype(etFoulType.getText().toString());
                         cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
-                        cst.setLatTude(cbLat);
-                        cst.setLongTude(cbLong);
+                        cst.setLastXPosition(cbLat);
+                        cst.setLastYPosition(cbLong);
                         cst.save();
                         cust = cst;
                     }
                 }
 
                 if (cust == null) {
-                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ",
+                            Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String encodedImg = ImageCustomer.encodeImage(imagePelanggan.getDrawingCache(), null, 100);
-                ImageCustomer cstImage = new ImageCustomer(cust, "test", cbLat, cbLong, new byte[]{}, encodedImg);
+                String encodedImg = Pelanggaran.encodeImage(imagePelanggan.getDrawingCache(),
+                        null, 100);
+                String foulDate = etFoulDate.getText().toString(); // + " " +
+//                        textClock.getText().toString(); // TODO : later we set a time for this
+                Pelanggaran cstImage = new Pelanggaran(cust, "test", cbLat, cbLong, encodedImg
+                        , etFoulType.getText().toString(), foulDate
+                        , new BigDecimal(textDaya.getText().toString()));
                 cstImage.save();
-                Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ",
+                        Toast.LENGTH_SHORT).show();
 
-                etCode.setText("");
-                etName.setText("");
-                etAddress.setText("");
-                etFoulType.setText("");
-                spinnerTarif.setSelection(0);
-                tLat.setText("");
-                tLong.setText("");
-                imagePelanggan.setImageBitmap(null);
+                resetFields();
             }
         });
+    }
+
+    private void resetFields() {
+        etCode.setText("");
+        etName.setText("");
+        etAddress.setText("");
+        etFoulType.setText("");
+        spinnerTarif.setSelection(0);
+        tLat.setText("");
+        tLong.setText("");
+        imagePelanggan.setImageBitmap(null);
+        textDaya.setText("0");
     }
 
     private void setEditTextCustInfo() {
@@ -200,13 +215,18 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etName = (EditText) findViewById(R.id.textCustName);
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
+        etFoulDate = (EditText) findViewById(R.id.textFoulDate);
+        etFoulDate.setText(Pelanggaran.dateToString(Calendar.getInstance().getTime()
+                , Pelanggaran.DEFAULT_DATE_FORMAT));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
+        textDaya = (EditText) findViewById(R.id.textDaya);
+        textClock = (TextClock) findViewById(R.id.textClock);
 
         etCode = (EditText) findViewById(R.id.textCustID);
         etCode.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!s.equals("")) {
+                if (!s.equals("")) {
                     boolean exist = Customer.custExist("code = ? ", s.toString());
                     if (exist) {
                         List<Customer> cust = Customer.find(Customer.class, "code = ? ",
@@ -215,14 +235,19 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                             Toast.makeText(InputCustomerActivity.this, "Data redundan, code: " + s.toString(),
                                     Toast.LENGTH_SHORT).show();
                         }
-                        for (Customer custx : cust){
+                        for (Customer custx : cust) {
                             etName.setText(custx.getName());
                             etAddress.setText(custx.getAddress());
-                            etFoulType.setText(custx.getTarifdaya());
-                            tLat.setText(custx.getLatTude());
-                            tLong.setText(custx.getLongTude());
-//                            spinnerTarif.getSelectedItem().toString(); // TODO : how to set from DB??
+                            tLat.setText(custx.getLastXPosition());
+                            tLong.setText(custx.getLastYPosition());
+                            setSpinnerTarif(custx.getTarifdaya());
                         }
+                    } else {
+                        etName.setText("");
+                        etAddress.setText("");
+                        setSpinnerTarif("");
+                        tLat.setText("");
+                        tLong.setText("");
                     }
                 }
             }
@@ -238,13 +263,17 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
     }
 
-    private void setSpinnerTarif() {
+    private void setSpinnerTarif(String value) {
         // SPINNER
         spinnerTarif = (Spinner) findViewById(R.id.spinnerTarif);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.array_tarif, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerTarif.setAdapter(adapter);
+        int spinnerPosition = 0;
+        if (!value.equals(null) || value.length() > 1)
+            spinnerPosition = adapter.getPosition(value);
+        spinnerTarif.setSelection(spinnerPosition);
     }
 
     private void setToolBar() {
@@ -279,7 +308,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
             // downsizing image as it throws OutOfMemory Exception for larger
             // images
-            options.inSampleSize = 2;
+            options.inSampleSize = 3;
 
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
                     options);

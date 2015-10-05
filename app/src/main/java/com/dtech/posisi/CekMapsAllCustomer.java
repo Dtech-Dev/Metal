@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CekMapsActivity extends FragmentActivity implements
+public class CekMapsAllCustomer extends FragmentActivity implements
         LocationListener, GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -40,13 +40,13 @@ public class CekMapsActivity extends FragmentActivity implements
     String longHandled;
 
 
-    public static final String TAG=CekMapsActivity.class.getSimpleName();
+    public static final String TAG=CekMapsAllCustomer.class.getSimpleName();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cek_maps);
+        setContentView(R.layout.activity_cek_maps_customer);
 
         mGoogleApiClient=new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -65,14 +65,14 @@ public class CekMapsActivity extends FragmentActivity implements
     }
 
     private void intentFromAdapter() {
-        latHandled=getIntent().getExtras().getString("intentLat");
-        longHandled = getIntent().getExtras().getString("intentLong");
+        //latHandled=getIntent().getExtras().getString("intentLat");
+        //longHandled = getIntent().getExtras().getString("intentLong");
         //Toast.makeText(this,"lat= "+latHandled+", long= "+longHandled,Toast.LENGTH_SHORT).show();
     }
 
     private void convertingStringFromAdapter() {
-        latFromAdapter = Double.parseDouble(latHandled);
-        longFromAdapter = Double.parseDouble(longHandled);
+        //latFromAdapter = Double.parseDouble(latHandled);
+        //longFromAdapter = Double.parseDouble(longHandled);
         /*try {
             latFromAdapter = Double.parseDouble(latHandled);
             longFromAdapter = Double.parseDouble(longHandled);
@@ -119,7 +119,7 @@ public class CekMapsActivity extends FragmentActivity implements
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapCustomers))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
@@ -221,13 +221,13 @@ public class CekMapsActivity extends FragmentActivity implements
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(30000)
+                .radius(10000)
                 .strokeColor(0xff009688)
                 .strokeWidth(10)
                 .fillColor(0x80B2DFDB);
         mMap.addCircle(circleOptions);
 
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latFromAdapter, longFromAdapter)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(latFromAdapter, longFromAdapter)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
        /* mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.003, (currentLongitude)+0.003)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
         mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.005, currentLongitude)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));*/
     }

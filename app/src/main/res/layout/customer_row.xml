@@ -5,7 +5,7 @@
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="150dp"
         android:id="@+id/cv1"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="5dp"
@@ -20,23 +20,25 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/mlistnama"
-                android:text="name"
                 android:layout_gravity="center_vertical"
                 android:padding="8dp"
 
                 android:layout_alignParentTop="true"
                 android:layout_alignLeft="@+id/mlistaddress"
-                />
+                android:hint="Code : Name" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/mlistaddress"
                 android:layout_gravity="center_vertical"
-                android:text="address"
                 android:padding="8dp"
                 android:layout_below="@+id/mlistnama"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/lLat"
+                android:layout_alignStart="@+id/lLat"
+                android:hint="Address" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,7 +46,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
                 android:id="@+id/lLat"
-                android:layout_alignParentBottom="true"
+                android:visibility="invisible"
+                android:layout_below="@+id/mlistlastvisit"
                 android:layout_centerHorizontal="true" />
 
             <TextView
@@ -55,20 +58,34 @@
                 android:id="@+id/lLong"
                 android:layout_alignTop="@+id/lLat"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/showUp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/lLat"
-                android:layout_toStartOf="@+id/lLat"
                 android:layout_gravity="top"
+                android:background="@drawable/no_image_large"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/mlistnama"
+                android:layout_toStartOf="@+id/mlistnama" />
 
-                android:layout_above="@+id/lLat" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/mlistlastvisit"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_below="@+id/mlistaddress"
+                android:layout_alignLeft="@+id/mlistaddress"
+                android:layout_alignStart="@+id/mlistaddress"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:hint="Last Visit" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
