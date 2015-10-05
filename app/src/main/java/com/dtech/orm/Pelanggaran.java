@@ -18,10 +18,12 @@ import java.util.List;
  * Created by aris on 22/09/15.
  */
 
-public class ImageCustomer extends SugarRecord<ImageCustomer> {
+public class Pelanggaran extends SugarRecord<Pelanggaran> {
 
-    private static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
-    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+    public static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
+    public static final int DEFAULT_COMPRESSION = 60;
 
     private Customer customer;
     private String name;
@@ -32,12 +34,9 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
     private String foulDate;
     private BigDecimal daya;
 
-    private static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
-    private static final int DEFAULT_COMPRESSION = 60;
+    public Pelanggaran() {}
 
-    public ImageCustomer() {}
-
-    public ImageCustomer(Customer customer, String name, String longitude, String latitude
+    public Pelanggaran(Customer customer, String name, String longitude, String latitude
             , String imageTest, String foulType, String foulDate, BigDecimal daya) {
         this.setCustomer(customer);
         this.setName(name);
@@ -91,23 +90,23 @@ public class ImageCustomer extends SugarRecord<ImageCustomer> {
         this.customer = customer;
     }
 
-    public static ImageCustomer getLastImageRecord(Customer cust) {
-        List<ImageCustomer> res = getImageRecords(cust);
+    public static Pelanggaran getLastImageRecord(Customer cust) {
+        List<Pelanggaran> res = getImageRecords(cust);
         if (res.equals(Collections.EMPTY_LIST))
             return null;
         return res.get(0);
     }
 
-    public static List<ImageCustomer> getImageRecords(Customer cust) {
-        List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
+    public static List<Pelanggaran> getImageRecords(Customer cust) {
+        List<Pelanggaran> imageCust = Pelanggaran.find(Pelanggaran.class, "customer = ? "
                 , new String[]{cust.getId().toString()}, "", "id desc", "");
         if (imageCust.size() <= 0)
             return Collections.emptyList();
         return imageCust;
     }
 
-    public List<ImageCustomer> getImageRecords() {
-        List<ImageCustomer> imageCust = ImageCustomer.find(ImageCustomer.class, "customer = ? "
+    public List<Pelanggaran> getImageRecords() {
+        List<Pelanggaran> imageCust = Pelanggaran.find(Pelanggaran.class, "customer = ? "
                 , new String[]{getCustomer().getId().toString()}, "", "id desc", "");
         if (imageCust.size() <= 0)
             return null;
