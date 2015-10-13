@@ -13,9 +13,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dtech.orm.Customer;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -38,7 +42,28 @@ public class MainActivity extends ActionBarActivity {
 
         NavDrawerFragment drawerFragment=(NavDrawerFragment)
                getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
-        drawerFragment.setUp(R.id.nav_drawer,(DrawerLayout)findViewById(R.id.drawer_layout), tool);
+        drawerFragment.setUp(R.id.nav_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), tool);
+
+        ImageView icon = new ImageView(this); // Create an icon
+        icon.setImageResource(R.drawable.ic_add);
+
+
+       // icon.setBackgroundResource(R.drawable.custom_fab);
+       // FloatingActionButton fab=new FloatingActionButton.Builder(this).setContentView(icon).build();
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(icon)
+
+                .build();
+
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent intent = new Intent(MainActivity.this, InputCustomerActivity.class);*/
+                Intent intent = new Intent(MainActivity.this, CekInsertPhp.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

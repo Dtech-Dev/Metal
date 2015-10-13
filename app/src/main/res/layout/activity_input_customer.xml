@@ -143,12 +143,12 @@
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
+                    <!--android:src="@drawable/no_image_large"-->
                     <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="150dp"
                         android:id="@+id/imageView"
-                        android:src="@drawable/no_image_large"
+
                         android:layout_alignParentLeft="false"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btnSaveInputCust"

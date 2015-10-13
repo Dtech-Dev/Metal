@@ -43,4 +43,5 @@
         <item>TM</item>
         <item>TT</item>
     </string-array>
+    <string name="title_activity_cek_insert_php">CekInsertPhp</string>
 </resources>

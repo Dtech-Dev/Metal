@@ -1,5 +1,6 @@
 package com.dtech.posisi;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -306,8 +308,12 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     /**
      * Display image from a path to ImageView
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void previewCapturedImage() {
         try {
+
+
+
             // bimatp factory
             BitmapFactory.Options options = new BitmapFactory.Options();
 
@@ -317,8 +323,10 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(),
                     options);
-
-
+           /* bitmap.setWidth(100);
+            bitmap.setHeight(150);*/
+            /*Bitmap catching = Bitmap.createBitmap(100, 150, Bitmap.Config.RGB_565);
+            catching.sameAs(bitmap);*/
 
             setImageView(null, bitmap);
         } catch (NullPointerException e) {
