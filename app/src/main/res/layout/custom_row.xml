@@ -18,5 +18,6 @@
         android:layout_gravity="center_vertical"
         android:padding="10dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/listIcon"/>
+        android:layout_toRightOf="@+id/listIcon"
+        android:layout_toEndOf="@+id/listIcon" />
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.dtech.posisi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_row, parent,false);
+        View view=LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_row, parent, false);
         MainViewHolder holder=new MainViewHolder(view);
         return holder;
     }
@@ -110,4 +111,6 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             context.startActivity(gotoMaps);*/
         }
     }
+
+
 }

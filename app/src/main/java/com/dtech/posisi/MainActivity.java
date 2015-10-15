@@ -2,30 +2,79 @@ package com.dtech.posisi;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.dtech.Application.AppController;
+import com.dtech.Data.DataCustomer;
+import com.dtech.Network.VolleySingleton;
 import com.dtech.orm.Customer;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+//re
 
 public class MainActivity extends ActionBarActivity {
 
+    public static String TAG = MainActivity.class.getSimpleName();
     private android.support.v7.widget.Toolbar tool;
     private RecyclerView recyclerView;
+    //old Adapter
     private MainCustomerAdapter adaptCustomer;
+
+    //Current Adapter
+    private MainDataCustomerAdapter myadapter;
+
+    //URL untuk ambil data dari json file
+    public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
+    private List<DataCustomer> listcustomer;
+
+
+    DataCustomer dataCustomer;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +82,16 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         checkingGPS();
-        setRecyleView();
+        new RequestHttp().execute();
 
+
+        //setRecyleView();
+        //==================================================
+        //Untuk load data, ketika MainActivity create, manggil class HttpTask
+        //namun, ketika selesai input customer baru dan balik k main activity, recyclerview blm ng'refresh data yg ada d server
+        new HttpTask().execute(URL_CUSTOMER);
+
+        //==================================================
         tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
         tool.setTitle(getString(R.string.app_name));
         setSupportActionBar(tool);
@@ -69,10 +126,16 @@ public class MainActivity extends ActionBarActivity {
 
     private void setRecyleView() {
         // look! actually we dont really need any adapter. ^_^
-        adaptCustomer = new MainCustomerAdapter(Customer.listAll(Customer.class));
+        /*adaptCustomer = new MainCustomerAdapter(Customer.listAll(Customer.class));
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adaptCustomer);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));*/
+
+        myadapter = new MainDataCustomerAdapter(this, listcustomer);
+        recyclerView=(RecyclerView)findViewById(R.id.mList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(myadapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -94,6 +157,119 @@ public class MainActivity extends ActionBarActivity {
             alertDialog.show();
         }
     }
+
+    public class RequestHttp extends AsyncTask<String, String, String>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost("http://droidsense.web.id/metal/index.php");
+                //httpPost.setEntity(new UrlEncodedFormEntity(values));
+                HttpResponse response = httpClient.execute(httpPost);
+                //HttpEntity entity = response.getEntity();
+                response.getEntity();
+
+
+            } catch (Exception e) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public class HttpTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setIndeterminate(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+
+
+        @Override
+        protected Integer doInBackground(String... params) {
+
+
+            Integer result=0;
+            HttpURLConnection urlConnection;
+
+            try {
+                URL url = new URL(params[0]);
+                urlConnection=(HttpURLConnection)url.openConnection();
+                int statusCode = urlConnection.getResponseCode();
+
+                if (statusCode == 200) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+
+                    }
+                    ambilData(response.toString());
+                    result = 1;
+                } else {
+                    result = 0;
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            progressDialog.dismiss();
+            if (result == 1) {
+                setRecyleView();
+            } else {
+                Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void ambilData(String result) {
+        try {
+
+            JSONArray posts = new JSONArray(result);
+            listcustomer = new ArrayList<>();
+            for (int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.optJSONObject(i);
+                dataCustomer = new DataCustomer();
+
+                dataCustomer.setName(post.getString("name"));
+                dataCustomer.setAddress(post.getString("address"));
+
+                listcustomer.add(dataCustomer);
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,6 +302,11 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setRecyleView();
+        //setRecyleView();
+        new RequestHttp().execute();
+
+        //ambilData();
+        //setRecyleView();
+        //new HttpTask().execute(URL_CUSTOMER);
     }
 }
