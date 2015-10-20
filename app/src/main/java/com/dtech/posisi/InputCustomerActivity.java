@@ -30,11 +30,11 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dtech.orm.Customer;
-import com.dtech.orm.Pelanggaran;
+import com.dtech.orm.DefaultOperation;
+import com.dtech.orm.MtlPelanggan;
+import com.dtech.orm.MtlPelanggaran;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
@@ -47,10 +47,12 @@ import java.util.List;
 /**
  * Created by ADIST on 9/17/2015.
  */
-public class InputCustomerActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class InputCustomerActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks
+        , GoogleApiClient.OnConnectionFailedListener {
     private static final int TAKE_PHOTO_CODE = 1;
     private static final int SELECT_PICTURE = 2;
-    private static final String IMAGE_DIRECTORY_NAME = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
+    private static final String IMAGE_DIRECTORY_NAME = Environment.
+            getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
 
     private String cbLat;
     private String cbLong;
@@ -156,28 +158,29 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean exist = Customer.custExist("code = ? ", etCode.getText().toString());
-                Customer cust = null;
+                boolean exist = MtlPelanggan.custExist("code = ? ", etCode.getText().toString());
+                MtlPelanggan cust = null;
                 if (!exist) {
-                    cust = new Customer(
+                    cust = new MtlPelanggan(
                             etCode.getText().toString(),
                             etName.getText().toString(),
-                            etAddress.getText().toString(),
-                            spinnerTarif.getSelectedItem().toString(),
-                            cbLat, cbLong
-                            //image
+                            etAddress.getText().toString()
                     );
+//                            spinnerTarif.getSelectedItem().toString(),
+//                            cbLat, cbLong
+//                            //image
+//                    );
                     cust.save();
                 } else {
-                    List<Customer> custm = Customer.find(Customer.class, "code = ?",
+                    List<MtlPelanggan> custm = MtlPelanggan.find(MtlPelanggan.class, "code = ?",
                             etCode.getText().toString());
-                    for (Customer cst : custm) {
+                    for (MtlPelanggan cst : custm) {
                         cst.setCode(etCode.getText().toString());
                         cst.setName(etName.getText().toString());
                         cst.setAddress(etAddress.getText().toString());
-                        cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
-                        cst.setLastXPosition(cbLat);
-                        cst.setLastYPosition(cbLong);
+//                        cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
+//                        cst.setLastXPosition(cbLat);
+//                        cst.setLastYPosition(cbLong);
                         cst.save();
                         cust = cst;
                     }
@@ -189,14 +192,15 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                     return;
                 }
 
-                String encodedImg = Pelanggaran.encodeImage(imagePelanggan.getDrawingCache(),
+                String encodedImg = DefaultOperation.encodeImage(imagePelanggan.getDrawingCache(),
                         null, 100);
                 String foulDate = etFoulDate.getText().toString(); // + " " +
 //                        textClock.getText().toString(); // TODO : later we set a time for this
-                Pelanggaran cstImage = new Pelanggaran(cust, "test", cbLat, cbLong, encodedImg
-                        , etFoulType.getText().toString(), foulDate
-                        , new BigDecimal(textDaya.getText().toString()));
-                cstImage.save();
+                MtlPelanggaran fouls = new MtlPelanggaran(cust, etFoulDate.getText().toString(),
+                        etFoulType.getText().toString(),
+                        spinnerTarif.getSelectedItem().toString(),
+                        new BigDecimal(textDaya.getText().toString()));
+                fouls.save();
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ",
                         Toast.LENGTH_SHORT).show();
 
@@ -223,8 +227,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
         etFoulDate = (EditText) findViewById(R.id.textFoulDate);
-        etFoulDate.setText(Pelanggaran.dateToString(Calendar.getInstance().getTime()
-                , Pelanggaran.DEFAULT_DATE_FORMAT));
+        etFoulDate.setText(DefaultOperation.dateToString(Calendar.getInstance().getTime()
+                , DefaultOperation.DEFAULT_DATE_FORMAT));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
         textDaya = (EditText) findViewById(R.id.textDaya);
@@ -234,20 +238,20 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etCode.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.equals("")) {
-                    boolean exist = Customer.custExist("code = ? ", s.toString());
+                    boolean exist = MtlPelanggan.custExist("code = ? ", s.toString());
                     if (exist) {
-                        List<Customer> cust = Customer.find(Customer.class, "code = ? ",
+                        List<MtlPelanggan> cust = MtlPelanggan.find(MtlPelanggan.class, "code = ? ",
                                 s.toString());
                         if (cust.size() > 1) {
                             Toast.makeText(InputCustomerActivity.this, "Data redundan, code: " + s.toString(),
                                     Toast.LENGTH_SHORT).show();
                         }
-                        for (Customer custx : cust) {
+                        for (MtlPelanggan custx : cust) {
                             etName.setText(custx.getName());
                             etAddress.setText(custx.getAddress());
-                            tLat.setText(custx.getLastXPosition());
-                            tLong.setText(custx.getLastYPosition());
-                            setSpinnerTarif(custx.getTarifdaya());
+//                            tLat.setText(custx.getLastXPosition());
+//                            tLong.setText(custx.getLastYPosition());
+//                            setSpinnerTarif(custx.getTarifdaya()); // TODO, maybe we can pass it from MtlPelanggan class
                         }
                     } else {
                         etName.setText("");
