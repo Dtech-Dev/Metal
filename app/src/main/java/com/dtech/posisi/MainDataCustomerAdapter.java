@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dtech.orm2.MtlPelanggan;
+import com.dtech.orm.MtlPelanggan;
 
 import java.util.List;
 

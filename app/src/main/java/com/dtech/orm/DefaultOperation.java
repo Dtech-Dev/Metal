@@ -1,10 +1,13 @@
-package com.dtech.orm2;
+package com.dtech.orm;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ADIST on 10/20/2015.
@@ -34,5 +37,16 @@ public class DefaultOperation {
         byte[] decodedImage = Base64.decode(base64ImgString, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedImage,
                 0, decodedImage.length);
+    }
+
+    public static String dateToString(Date date, String format) {
+        if (format == null || format.length() <= 0)
+            format = DEFAULT_DATETIME_FORMAT;
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
+    public String dateToString(Calendar calendar, String format) {
+        return dateToString(calendar.getTime(), format);
     }
 }

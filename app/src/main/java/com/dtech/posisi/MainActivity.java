@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.dtech.orm2.MtlPelanggan;
+import com.dtech.orm.MtlPelanggan;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import org.apache.http.HttpResponse;
