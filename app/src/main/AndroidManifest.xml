@@ -69,10 +69,6 @@
 
 
         <!-- START: meta-data section -->
-        <meta-data android:name="DATABASE" android:value="metalDB.db" />
-        <meta-data android:name="VERSION" android:value="5" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.dtech.orm" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -85,7 +81,7 @@
             android:value="metalDB.db" />
         <meta-data
             android:name="VERSION"
-            android:value="9" />
+            android:value="5" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
