@@ -1,17 +1,17 @@
-package com.dtech.Data;
+package com.dtech.orm2;
 
 /**
  * Created by Administrator on 14/10/2015.
  */
-public class DataCustomer {
+public class MtlPelanggan {
     String name;
     String address;
 
-    /*public DataCustomer(String name, String address) {
+    /*public MtlPelanggan(String name, String address) {
         this.name = name;
         this.address = address;
     }*/
-    public DataCustomer(){
+    public MtlPelanggan(){
 
     }
 

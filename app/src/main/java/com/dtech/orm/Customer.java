@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by ADIST on 9/18/2015.
  */
+@Deprecated
 public class Customer extends SugarRecord<Customer> {
 
     private String code;

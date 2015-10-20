@@ -20,25 +20,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.dtech.Application.AppController;
-import com.dtech.Data.DataCustomer;
-import com.dtech.Network.VolleySingleton;
-import com.dtech.orm.Customer;
+import com.dtech.orm2.MtlPelanggan;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -46,7 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -69,10 +53,10 @@ public class MainActivity extends ActionBarActivity {
 
     //URL untuk ambil data dari json file
     public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
-    private List<DataCustomer> listcustomer;
+    private List<MtlPelanggan> listcustomer;
 
 
-    DataCustomer dataCustomer;
+    MtlPelanggan dataCustomer;
 
     ProgressDialog progressDialog;
 
@@ -253,7 +237,7 @@ public class MainActivity extends ActionBarActivity {
             listcustomer = new ArrayList<>();
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = posts.optJSONObject(i);
-                dataCustomer = new DataCustomer();
+                dataCustomer = new MtlPelanggan();
 
                 dataCustomer.setName(post.getString("name"));
                 dataCustomer.setAddress(post.getString("address"));

@@ -1,20 +1,16 @@
 package com.dtech.posisi;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.dtech.Data.DataCustomer;
-import com.dtech.orm.Customer;
-import com.dtech.orm.Pelanggaran;
+import com.dtech.orm2.MtlPelanggan;
 
 import java.util.List;
 
@@ -24,13 +20,13 @@ import java.util.List;
 public class MainDataCustomerAdapter extends RecyclerView.Adapter<MainDataCustomerAdapter.MainViewHolder>{
 
 
-    private List<DataCustomer> data;
+    private List<MtlPelanggan> data;
     private Context context;
     String handleLat;
     String handleLong;
 
 
-    public MainDataCustomerAdapter(Context context,List<DataCustomer> customers) {
+    public MainDataCustomerAdapter(Context context,List<MtlPelanggan> customers) {
         this.context = context;
         this.data = customers;
     }
@@ -44,7 +40,7 @@ public class MainDataCustomerAdapter extends RecyclerView.Adapter<MainDataCustom
 
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
-        DataCustomer dataCustomer = data.get(position);
+        MtlPelanggan dataCustomer = data.get(position);
 
         holder.title.setText(Html.fromHtml(dataCustomer.getName()));
         holder.address.setText((Html.fromHtml(dataCustomer.getAddress())));
