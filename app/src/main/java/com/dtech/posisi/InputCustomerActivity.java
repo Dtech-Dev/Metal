@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -158,33 +159,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean exist = MtlPelanggan.custExist("code = ? ", etCode.getText().toString());
-                MtlPelanggan cust = null;
-                if (!exist) {
-                    cust = new MtlPelanggan(
-                            etCode.getText().toString(),
-                            etName.getText().toString(),
-                            etAddress.getText().toString()
-                    );
-//                            spinnerTarif.getSelectedItem().toString(),
-//                            cbLat, cbLong
-//                            //image
-//                    );
-                    cust.save();
-                } else {
-                    List<MtlPelanggan> custm = MtlPelanggan.find(MtlPelanggan.class, "code = ?",
-                            etCode.getText().toString());
-                    for (MtlPelanggan cst : custm) {
-                        cst.setCode(etCode.getText().toString());
-                        cst.setName(etName.getText().toString());
-                        cst.setAddress(etAddress.getText().toString());
-//                        cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
-//                        cst.setLastXPosition(cbLat);
-//                        cst.setLastYPosition(cbLong);
-                        cst.save();
-                        cust = cst;
-                    }
-                }
+                MtlPelanggan cust = validatePelanggan();
 
                 if (cust == null) {
                     Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ",
@@ -192,6 +167,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                     return;
                 }
 
+                // TODO, we need to modif activity that handle many images not one
                 String encodedImg = DefaultOperation.encodeImage(imagePelanggan.getDrawingCache(),
                         null, 100);
                 String foulDate = etFoulDate.getText().toString(); // + " " +
@@ -207,6 +183,38 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 resetFields();
             }
         });
+    }
+
+    @Nullable
+    private MtlPelanggan validatePelanggan() {
+        boolean exist = MtlPelanggan.custExist("code = ? ", etCode.getText().toString());
+        MtlPelanggan cust = null;
+        if (!exist) {
+            cust = new MtlPelanggan(
+                    etCode.getText().toString(),
+                    etName.getText().toString(),
+                    etAddress.getText().toString()
+            );
+//                            spinnerTarif.getSelectedItem().toString(),
+//                            cbLat, cbLong
+//                            //image
+//                    );
+            cust.save();
+        } else {
+            List<MtlPelanggan> custm = MtlPelanggan.find(MtlPelanggan.class, "code = ?",
+                    etCode.getText().toString());
+            for (MtlPelanggan cst : custm) {
+                cst.setCode(etCode.getText().toString());
+                cst.setName(etName.getText().toString());
+                cst.setAddress(etAddress.getText().toString());
+//                        cst.setTarifdaya(spinnerTarif.getSelectedItem().toString());
+//                        cst.setLastXPosition(cbLat);
+//                        cst.setLastYPosition(cbLong);
+                cst.save();
+                cust = cst;
+            }
+        }
+        return cust;
     }
 
     private void resetFields() {
