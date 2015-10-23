@@ -1,5 +1,7 @@
 package com.dtech.posisi;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,8 +35,6 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -50,9 +51,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //re
@@ -337,7 +336,10 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         mStatus.setText("Success");
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
 
+    }
 
     public class RequestHttp extends AsyncTask<String, String, String>{
 
@@ -449,8 +451,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
