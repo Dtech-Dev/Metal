@@ -12,12 +12,18 @@ import java.util.Date;
 /**
  * Created by ADIST on 10/20/2015.
  */
-public class DefaultOperation {
+public class DefaultOps {
     public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
     public static final String DEFAULT_DATETIME_MILI2ND_FORMAT = "yyyy-MM-dd hh:mm:ss.SSS";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int DEFAULT_COMPRESSION = 60;
+    public static final int RC_SIGN_IN = 1;
+    public static final int RC_PERM_GET_ACCOUNTS = 2;
+    public static final String KEY_IS_RESOLVING = "is_resolve";
+    public static final String KEY_SHOULD_RESOLVE = "should_resolve";
+    //URL untuk ambil data dari json file
+    public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
 
     public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
             , int compressQuality){

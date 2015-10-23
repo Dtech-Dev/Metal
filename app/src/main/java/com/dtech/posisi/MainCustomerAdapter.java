@@ -47,7 +47,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
         holder.lLong.setText(customer.getLastYPosition());
         // show an image
         // edhan 093015.0057 ada 2 cara untuk ambil last image, tinggal pilih mana yang enak
-//        String lastImage = Pelanggaran.getLastImageRecord(customer).getImageTest();
+//        String lastImage = Pelanggaran.getLastFoulRecord(customer).getImageTest();
         String lastImage = customer.lastImage();
         if (lastImage != null) {
             holder.showUpImageHolder.setImageBitmap(

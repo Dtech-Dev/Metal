@@ -1,17 +1,14 @@
 package com.dtech.posisi;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -27,12 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlPelanggan;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -49,19 +50,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.jar.Manifest;
 
 //re
 
 public class MainActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
-GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListener{
 
-    private static final int RC_SIGN_IN = 1;
-    private static final int RC_PERM_GET_ACCOUNTS = 2;
-    private static final String KEY_IS_RESOLVING = "is_resolve";
-    private static final String KEY_SHOULD_RESOLVE = "should_resolve";
     private GoogleApiClient googleApiClient;
     private boolean mShouldResolve = false;
     private boolean mIsResolving = false;
@@ -75,8 +73,6 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     //Current Adapter
     private MainDataCustomerAdapter myadapter;
 
-    //URL untuk ambil data dari json file
-    public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
     private List<MtlPelanggan> listcustomer;
 
 
@@ -90,8 +86,8 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
-            mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
-            mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
+            mIsResolving = savedInstanceState.getBoolean(DefaultOps.KEY_IS_RESOLVING);
+            mShouldResolve = savedInstanceState.getBoolean(DefaultOps.KEY_SHOULD_RESOLVE);
         }
 
         settingApi();
@@ -104,7 +100,7 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
         //==================================================
         //Untuk load data, ketika MainActivity create, manggil class HttpTask
         //namun, ketika selesai input customer baru dan balik k main activity, recyclerview blm ng'refresh data yg ada d server
-        new HttpTask().execute(URL_CUSTOMER);
+        new HttpTask().execute(DefaultOps.URL_CUSTOMER);
 
         //==================================================
         tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
@@ -189,12 +185,12 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
                 @Override
                 public void onClick(View v) {
                     ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{perm}, RC_PERM_GET_ACCOUNTS);
+                            new String[]{perm}, DefaultOps.RC_PERM_GET_ACCOUNTS);
                 }
             }).show();
             return false;
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{perm}, RC_PERM_GET_ACCOUNTS);
+            ActivityCompat.requestPermissions(this, new String[]{perm}, DefaultOps.RC_PERM_GET_ACCOUNTS);
             return false;
         }
     }
@@ -202,8 +198,8 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_IS_RESOLVING, mIsResolving);
-        outState.putBoolean(KEY_SHOULD_RESOLVE, mShouldResolve);
+        outState.putBoolean(DefaultOps.KEY_IS_RESOLVING, mIsResolving);
+        outState.putBoolean(DefaultOps.KEY_SHOULD_RESOLVE, mShouldResolve);
 
     }
 
@@ -212,7 +208,7 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == DefaultOps.RC_SIGN_IN) {
             if (resultCode != RESULT_OK) {
                 mShouldResolve = false;
             }
@@ -225,7 +221,7 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d(TAG, "onRequestPermissionResult:" + requestCode);
-        if (requestCode == RC_PERM_GET_ACCOUNTS) {
+        if (requestCode == DefaultOps.RC_PERM_GET_ACCOUNTS) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showSignedInUI();
             } else {
@@ -257,7 +253,7 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
         if (!mIsResolving && mShouldResolve) {
             if (connectionResult.hasResolution()) {
                 try {
-                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    connectionResult.startResolutionForResult(this, DefaultOps.RC_SIGN_IN);
                     mIsResolving = true;
                 } catch (IntentSender.SendIntentException e) {
                     Log.e(TAG, "Couldn't resolve Connection", e);
@@ -280,7 +276,7 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
         if (resultCode != ConnectionResult.SUCCESS) {
             if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, RC_SIGN_IN,
+                apiAvailability.getErrorDialog(this, resultCode, DefaultOps.RC_SIGN_IN,
                         new DialogInterface.OnCancelListener() {
                             @Override
                             public void onCancel(DialogInterface dialogInterface) {
@@ -507,6 +503,4 @@ GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
         //setRecyleView();
         //new HttpTask().execute(URL_CUSTOMER);
     }
-
-
 }

@@ -2,6 +2,8 @@ package com.dtech.orm;
 
 import com.orm.SugarRecord;
 
+import java.util.Calendar;
+
 /**
  * Created by ADIST on 10/20/2015.
  */
@@ -14,6 +16,14 @@ public class MtlImagePelanggaran extends SugarRecord<MtlImagePelanggaran> {
     private String latitude; // latitude
 
     public MtlImagePelanggaran() {}
+
+    public MtlImagePelanggaran(MtlPelanggaran foulId, String image, String imagePath
+            , String longitude, String latitude) {
+        this(foulId, null, image, imagePath, longitude, latitude);
+        String dateString = DefaultOps.dateToString(Calendar.getInstance().getTime()
+                , DefaultOps.DEFAULT_DATETIME_MILI2ND_FORMAT);
+        setFoulDate(dateString);
+    }
 
     public MtlImagePelanggaran(MtlPelanggaran foulId, String foulDate, String image
             , String imagePath, String longitude, String latitude) {

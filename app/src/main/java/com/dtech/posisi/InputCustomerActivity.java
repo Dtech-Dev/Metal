@@ -31,7 +31,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dtech.orm.DefaultOperation;
+import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
 import com.google.android.gms.common.ConnectionResult;
@@ -168,7 +168,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 }
 
                 // TODO, we need to modif activity that handle many images not one
-                String encodedImg = DefaultOperation.encodeImage(imagePelanggan.getDrawingCache(),
+                String encodedImg = DefaultOps.encodeImage(imagePelanggan.getDrawingCache(),
                         null, 100);
                 String foulDate = etFoulDate.getText().toString(); // + " " +
 //                        textClock.getText().toString(); // TODO : later we set a time for this
@@ -235,8 +235,8 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         etAddress = (EditText) findViewById(R.id.textCustAddress);
         etFoulType = (EditText) findViewById(R.id.textJenisPelanggaran);
         etFoulDate = (EditText) findViewById(R.id.textFoulDate);
-        etFoulDate.setText(DefaultOperation.dateToString(Calendar.getInstance().getTime()
-                , DefaultOperation.DEFAULT_DATE_FORMAT));
+        etFoulDate.setText(DefaultOps.dateToString(Calendar.getInstance().getTime()
+                , DefaultOps.DEFAULT_DATE_FORMAT));
         tLat = (TextView) findViewById(R.id.tLat);
         tLong = (TextView) findViewById(R.id.tLong);
         textDaya = (EditText) findViewById(R.id.textDaya);
