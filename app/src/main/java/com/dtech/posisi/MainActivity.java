@@ -1,14 +1,20 @@
 package com.dtech.posisi;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +24,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.orm.MtlPelanggan;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import org.apache.http.HttpResponse;
@@ -37,11 +51,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Manifest;
 
 //re
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
+    private static final int RC_SIGN_IN = 1;
+    private static final int RC_PERM_GET_ACCOUNTS = 2;
+    private static final String KEY_IS_RESOLVING = "is_resolve";
+    private static final String KEY_SHOULD_RESOLVE = "should_resolve";
+    private GoogleApiClient googleApiClient;
+    private boolean mShouldResolve = false;
+    private boolean mIsResolving = false;
+    private TextView mStatus;
     public static String TAG = MainActivity.class.getSimpleName();
     private android.support.v7.widget.Toolbar tool;
     private RecyclerView recyclerView;
@@ -65,9 +89,16 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (savedInstanceState != null) {
+            mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
+            mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
+        }
+
+        settingApi();
         checkingGPS();
         new RequestHttp().execute();
 
+        mStatus = (TextView) findViewById(R.id.textSignIn);
 
         //setRecyleView();
         //==================================================
@@ -108,6 +139,166 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void settingApi() {
+        googleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .addScope(new Scope(Scopes.EMAIL))
+                .build();
+    }
+
+    private void showSignedInUI() {
+        updateUI(true);
+    }
+
+    public void showSignedOutUI() {
+
+    }
+
+    private void updateUI(boolean isSignedIn) {
+        if (isSignedIn) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(googleApiClient);
+            if (currentPerson != null) {
+                String nameUser = currentPerson.getDisplayName();
+                mStatus.setText(nameUser);
+                if (checkAccountsPermission()) {
+                    String currentAccount = Plus.AccountApi.getAccountName(googleApiClient);
+                    ((TextView) findViewById(R.id.textEmail)).setText(currentAccount);
+
+                }
+            } else {
+                Log.w(TAG, "Null Person");
+                mStatus.setText("Sign In Error");
+            }
+        }
+        else{
+            mStatus.setText("Error");
+        }
+    }
+
+    private boolean checkAccountsPermission() {
+        final String perm = android.Manifest.permission.GET_ACCOUNTS;
+        int permissioncheck = ContextCompat.checkSelfPermission(this, perm);
+        if (permissioncheck == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }else if (ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {
+            Snackbar.make(findViewById(R.id.mainLayout),
+                    R.string.contacts_permission_rationale,
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{perm}, RC_PERM_GET_ACCOUNTS);
+                }
+            }).show();
+            return false;
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{perm}, RC_PERM_GET_ACCOUNTS);
+            return false;
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_IS_RESOLVING, mIsResolving);
+        outState.putBoolean(KEY_SHOULD_RESOLVE, mShouldResolve);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode != RESULT_OK) {
+                mShouldResolve = false;
+            }
+            mIsResolving = false;
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "onRequestPermissionResult:" + requestCode);
+        if (requestCode == RC_PERM_GET_ACCOUNTS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showSignedInUI();
+            } else {
+                Log.d(TAG, "Permission Denied");
+            }
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "onConnected:" + bundle);
+
+        mShouldResolve = false;
+        showSignedInUI();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (!mIsResolving && mShouldResolve) {
+            if (connectionResult.hasResolution()) {
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                    mIsResolving = true;
+                } catch (IntentSender.SendIntentException e) {
+                    Log.e(TAG, "Couldn't resolve Connection", e);
+                    mIsResolving = false;
+                    googleApiClient.connect();
+                }
+
+            } else {
+                showErrorDialog(connectionResult);
+            }
+
+        } else {
+
+        }
+    }
+
+    private void showErrorDialog(ConnectionResult connectionResult) {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, RC_SIGN_IN,
+                        new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialogInterface) {
+                                mShouldResolve = false;
+                                showSignedOutUI();
+                            }
+                        }).show();
+            } else {
+                Log.w(TAG, "Google Play Services Error:" + connectionResult);
+                String errorString = apiAvailability.getErrorString(resultCode);
+                Toast.makeText(this, errorString, Toast.LENGTH_SHORT).show();
+
+                mShouldResolve = false;
+                showSignedOutUI();
+            }
+        }
+    }
+
     private void setRecyleView() {
         // look! actually we dont really need any adapter. ^_^
         /*adaptCustomer = new MainCustomerAdapter(Customer.listAll(Customer.class));
@@ -142,6 +333,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void onSignInClicked() {
+
+        mShouldResolve = true;
+        googleApiClient.connect();
+
+        mStatus.setText("Success");
+    }
+
+
+
     public class RequestHttp extends AsyncTask<String, String, String>{
 
         @Override
@@ -168,7 +369,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -276,11 +477,24 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(MainActivity.this, "Menu Setting has been clicked", Toast.LENGTH_SHORT).show();
             return true;
         }
-        if(id==R.id.nav){
-            startActivity(new Intent(this, InputCustomerActivity.class));
+        if(id==R.id.nav) {
+            onSignInClicked();
+            //startActivity(new Intent(this, InputCustomerActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
     }
 
     @Override
@@ -293,4 +507,6 @@ public class MainActivity extends ActionBarActivity {
         //setRecyleView();
         //new HttpTask().execute(URL_CUSTOMER);
     }
+
+
 }

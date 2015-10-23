@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dtech.AsyncTask.InsertDataCustomer;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -43,7 +45,9 @@ public class CekInsertPhp extends AppCompatActivity {
     String result = null;
     int code;
 
+    Snackbar snackbar;
 
+    View view;
 
     private static String url_insert = "http://droidsense.web.id/metal/insert.php";
 
@@ -58,27 +62,26 @@ public class CekInsertPhp extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
+        view = new View(this);
         edName = (EditText) findViewById(R.id.edName);
         edAddress = (EditText) findViewById(R.id.edAddress);
 
         name = edName.getText().toString();
         address = edAddress.getText().toString();
 
-
+        //View view;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
 
-                //insert.execute(name, address);
                 name = edName.getText().toString();
                 address = edAddress.getText().toString();
                 new InsertData().execute();
 
+             /*Snackbar.make(view, "Success Insert Data", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
     }
@@ -90,7 +93,7 @@ public class CekInsertPhp extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(CekInsertPhp.this);
-            pDialog.setMessage("Creating Product..");
+            pDialog.setMessage("Proccessing..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -145,10 +148,13 @@ public class CekInsertPhp extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //Toast.makeText(this, "Insert Succes " + result, Toast.LENGTH_SHORT).show();
+
             pDialog.dismiss();
             edName.setText("");
             edAddress.setText("");
+/*            snackbar = Snackbar.make(view, "Success", Snackbar.LENGTH_LONG);
+            snackbar.setAction("", null);
+            snackbar.show();*/
         }
 
     }

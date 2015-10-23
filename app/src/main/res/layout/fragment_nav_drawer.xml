@@ -23,7 +23,33 @@
             app:border="true"
             app:border_color="#EEEEEE"
             app:border_width="4dp"
-            app:shadow="true" />
+            app:shadow="true"
+            android:id="@+id/view" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Medium Text"
+            android:id="@+id/textSignIn"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/view"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Medium Text"
+            android:id="@+id/textEmail"
+            android:layout_above="@+id/textSignIn"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/view"
+            android:layout_marginLeft="5dp"/>
+
+
 
     </RelativeLayout>
 
