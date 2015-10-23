@@ -32,11 +32,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Medium Text"
             android:id="@+id/textSignIn"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/view"
-            />
+            android:layout_below="@+id/view"
+            android:layout_alignLeft="@+id/view"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,10 +42,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Medium Text"
             android:id="@+id/textEmail"
-            android:layout_above="@+id/textSignIn"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/view"
-            android:layout_marginLeft="5dp"/>
+            android:layout_below="@+id/textSignIn"
+            android:layout_alignLeft="@+id/view"
+            android:textStyle="bold" />
 
 
 
