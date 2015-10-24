@@ -35,6 +35,8 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
@@ -51,7 +53,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //re
@@ -79,6 +83,14 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     ProgressDialog progressDialog;
 
+    private LocationRequest mLocationRequest;
+    private LocationManager mLocationManager;
+    protected Location mCurrentLocation;
+    protected String mLastUpdateTime;
+    protected Boolean mRequestingLocationUpdates;
+    private Intent gpsIntent;
+    private boolean settingOpened;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +101,8 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
             mShouldResolve = savedInstanceState.getBoolean(DefaultOps.KEY_SHOULD_RESOLVE);
         }
 
-        settingApi();
-        checkingGPS();
+        setupAPIs();
+
         new RequestHttp().execute();
 
         mStatus = (TextView) findViewById(R.id.textSignIn);
@@ -114,13 +126,8 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         ImageView icon = new ImageView(this); // Create an icon
         icon.setImageResource(R.drawable.ic_add);
 
-
-       // icon.setBackgroundResource(R.drawable.custom_fab);
-       // FloatingActionButton fab=new FloatingActionButton.Builder(this).setContentView(icon).build();
-
         FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
                 .setContentView(icon)
-
                 .build();
 
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -134,13 +141,33 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     }
 
-    private void settingApi() {
-        googleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        if (gpsIntent != null)
+                            gpsIntent.putExtra("enabled", false);
+                        sendBroadcast(gpsIntent);
+                        MainActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
+    protected synchronized void setupAPIs() {
+        googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .addScope(new Scope(Scopes.EMAIL))
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .build();
+        checkGPSSettings();
     }
 
     private void showSignedInUI() {
@@ -235,6 +262,31 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         mShouldResolve = false;
         showSignedInUI();
+
+        Log.i(TAG, "Connected to GoogleApiClient");
+
+        // If the initial location was never previously requested, we use
+        // FusedLocationApi.getLastLocation() to get it. If it was previously requested, we store
+        // its value in the Bundle and check for it in onCreate(). We
+        // do not request it again unless the user specifically requests location updates by pressing
+        // the Start Updates button.
+        //
+        // Because we cache the value of the initial location in the Bundle, it means that if the
+        // user launches the activity,
+        // moves to a new location, and then changes the device orientation, the original location
+        // is displayed as the activity is re-created.
+        if (mCurrentLocation == null) {
+            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+//            updateUI();
+        }
+
+        // If the user presses the Start Updates button before GoogleApiClient connects, we set
+        // mRequestingLocationUpdates to true (see startUpdatesButtonHandler()). Here, we check
+        // the value of mRequestingLocationUpdates and if it is true, we start location updates.
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
     }
 
     @Override
@@ -309,36 +361,69 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void checkingGPS() {
+    private void checkGPSSettings() {
+        mRequestingLocationUpdates = false;
         LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) || !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Location Services Not Active");
-            alert.setMessage("Please Enable Location Service and GPS");
-            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intentGPS);
-                }
-            });
-            Dialog alertDialog = alert.create();
-            alertDialog.setCanceledOnTouchOutside(false);
-            alertDialog.show();
+            Dialog dialogs = new AlertDialog.Builder(this)
+                    .setTitle("GPS Service In-Active")
+                    .setMessage("Enabling GPS Services?")
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            settingOpened = true;
+                            Intent intentGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intentGPS);
+                        }
+                    }).create();
+            dialogs.setCanceledOnTouchOutside(false);
+            dialogs.show();
+        } else {
+            settingOpened = true;
         }
+
+        if (!settingOpened)
+            return;
+
+        // Turn ON GPS.
+        gpsIntent = new Intent("android.location.GPS_ENABLED_CHANGE");
+        gpsIntent.putExtra("enabled", true);
+        sendBroadcast(gpsIntent);
+
+        // still dont know what this for, maybe we need it later..
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+    }
+
+    /**
+     * Requests location updates from the FusedLocationApi.
+     */
+    protected void startLocationUpdates() {
+        // The final argument to {@code requestLocationUpdates()} is a LocationListener
+        // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
+        if (!googleApiClient.isConnected())
+            new AlertDialog.Builder(this)
+                    .setTitle("Invalid Action")
+                    .setMessage("Anda harus login terlebih dahulu!")
+                    .setPositiveButton(android.R.string.yes, null).create().show();
+        else
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, mLocationRequest, this);
     }
 
     private void onSignInClicked() {
-
         mShouldResolve = true;
         googleApiClient.connect();
-
         mStatus.setText("Success");
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
     }
 
     public class RequestHttp extends AsyncTask<String, String, String>{
@@ -370,7 +455,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
            // Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     public class HttpTask extends AsyncTask<String, Void, Integer> {
 
