@@ -24,6 +24,7 @@ public class DefaultOps {
     public static final String KEY_SHOULD_RESOLVE = "should_resolve";
     //URL untuk ambil data dari json file
     public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
+    public static final String EMPTY_STRING = "";
 
     public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
             , int compressQuality){
