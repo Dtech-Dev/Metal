@@ -3,6 +3,8 @@ package com.dtech.orm;
 import com.orm.SugarRecord;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by ADIST on 10/20/2015.
@@ -82,5 +84,21 @@ public class MtlImagePelanggaran extends SugarRecord<MtlImagePelanggaran> {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public static MtlImagePelanggaran getLastImage(MtlPelanggaran fouls) {
+        List<MtlImagePelanggaran> res = getFoulRecords(fouls);
+        if (res.equals(Collections.EMPTY_LIST))
+            return null;
+        return res.get(0);
+    }
+
+    private static List<MtlImagePelanggaran> getFoulRecords(MtlPelanggaran fouls) {
+        List<MtlImagePelanggaran> foulRecord = MtlImagePelanggaran
+                .find(MtlImagePelanggaran.class, "foul_id = ? "
+                        , new String[]{fouls.getId().toString()}, "", "id desc", "");
+        if (foulRecord.size() <= 0)
+            return Collections.emptyList();
+        return foulRecord;
     }
 }

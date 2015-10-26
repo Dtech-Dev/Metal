@@ -118,4 +118,14 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
         }
         return lastRecord.getFoulDate();
     }
+
+    public String getLastImage() {
+        MtlPelanggaran fouls = MtlPelanggaran.getLastFoulRecord(this);
+        if (fouls == null)
+            return DefaultOps.EMPTY_STRING;
+        MtlImagePelanggaran foulImages = MtlImagePelanggaran.getLastImage(fouls);
+        if (foulImages != null)
+            return foulImages.getImage();
+        return DefaultOps.EMPTY_STRING;
+    }
 }
