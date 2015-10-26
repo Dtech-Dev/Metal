@@ -77,6 +77,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
     private int count = 0;
     Uri outputFileUri;
 
+    CekInsertPhp cekInsertPhp;
     byte[] image;
 
     @Override
@@ -84,6 +85,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_customer);
 
+        cekInsertPhp = new CekInsertPhp();
         setToolBar();
         setSpinnerTarif("");
         setEditTextCustInfo();
@@ -179,7 +181,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 fouls.save();
                 Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ",
                         Toast.LENGTH_SHORT).show();
-
+                cekInsertPhp.execute();
                 resetFields();
             }
         });

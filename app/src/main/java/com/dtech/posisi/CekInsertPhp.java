@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dtech.AsyncTask.InsertDataCustomer;
+import com.dtech.orm.MtlPelanggan;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,11 +32,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 
-public class CekInsertPhp extends AppCompatActivity {
+public class CekInsertPhp extends AsyncTask<String, String, String> {
 
     public EditText edName;
     EditText edAddress;
 
+    private String codeP;
+    private String nameP;
+    private String addressP;
+
+    MtlPelanggan mtlPelanggan;
 
 
     InputStream is = null;
@@ -54,24 +60,25 @@ public class CekInsertPhp extends AppCompatActivity {
 
     private ProgressDialog pDialog;
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cek_insert_php);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);*/
 
+        /*id = mtlPelanggan.getCode();
+        nameP = mtlPelanggan.getName();
+        addressP = mtlPelanggan.getAddress();*/
 
-        view = new View(this);
+        /*view = new View(this);
         edName = (EditText) findViewById(R.id.edName);
         edAddress = (EditText) findViewById(R.id.edAddress);
 
         name = edName.getText().toString();
         address = edAddress.getText().toString();
-
-        //View view;
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        */
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,32 +87,38 @@ public class CekInsertPhp extends AppCompatActivity {
                 address = edAddress.getText().toString();
                 new InsertData().execute();
 
-             /*Snackbar.make(view, "Success Insert Data", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+             *//*Snackbar.make(view, "Success Insert Data", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
             }
-        });
-    }
+        });*/
+    //}
 
 
-    class InsertData extends AsyncTask<String, String, String> {
+   // class InsertData extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(CekInsertPhp.this);
+
+            /*pDialog = new ProgressDialog(CekInsertPhp.this);
             pDialog.setMessage("Proccessing..");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
-            pDialog.show();
+            pDialog.show();*/
         }
 
         @Override
         protected String doInBackground(String... args) {
 
+            codeP = mtlPelanggan.getCode();
+            nameP = mtlPelanggan.getName();
+            addressP = mtlPelanggan.getAddress();
+
             ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 
-            values.add(new BasicNameValuePair("name", name));
-            values.add(new BasicNameValuePair("address", address));
+            values.add(new BasicNameValuePair("code", codeP));
+            values.add(new BasicNameValuePair("nama", nameP));
+            values.add(new BasicNameValuePair("alamat", addressP));
 
             try {
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -149,13 +162,13 @@ public class CekInsertPhp extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            pDialog.dismiss();
+            /*pDialog.dismiss();
             edName.setText("");
-            edAddress.setText("");
+            edAddress.setText("");*/
 /*            snackbar = Snackbar.make(view, "Success", Snackbar.LENGTH_LONG);
             snackbar.setAction("", null);
             snackbar.show();*/
         }
 
-    }
+   // }
 }
