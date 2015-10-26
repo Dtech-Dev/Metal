@@ -42,11 +42,11 @@
             android:label="@string/title_activity_cek_maps" >
         </activity>
         <activity
-            android:name=".ShowLogActivity"
+            android:name=".ActvtLogs"
             android:label="@string/title_activity_show_log" >
         </activity>
         <activity
-            android:name=".InputCustomerActivity"
+            android:name=".ActvtInputPelanggaran"
             android:label="@string/title_activity_input" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -57,14 +57,14 @@
             android:label="@string/title_activity_input" >
         </activity>
         <activity
-            android:name=".GalleryActivity"
+            android:name=".ActvtGalleries"
             android:label="@string/title_activity_gallery" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".CekMapsAllCustomer"
+            android:name=".ActvtMapsCheck"
             android:label="All Customers" >
         </activity>
         <!-- END: activity section -->

@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.dtech.posisi.ShowLogActivity"/>
+        className = "com.dtech.posisi.ActvtLogs"/>
       <point      
         x = "2800"      
         y = "0"/>
@@ -38,7 +38,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.dtech.posisi.GalleryActivity"/>
+        className = "com.dtech.posisi.ActvtGalleries"/>
       <point      
         x = "2960"      
         y = "508"/>
@@ -54,7 +54,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.dtech.posisi.InputCustomerActivity"/>
+        className = "com.dtech.posisi.ActvtInputPelanggaran"/>
       <point      
         x = "888"      
         y = "584"/>

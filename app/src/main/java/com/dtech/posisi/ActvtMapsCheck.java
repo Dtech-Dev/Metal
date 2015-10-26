@@ -14,13 +14,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class CekMapsAllCustomer extends FragmentActivity implements
+public class ActvtMapsCheck extends FragmentActivity implements
         LocationListener, GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -40,7 +39,7 @@ public class CekMapsAllCustomer extends FragmentActivity implements
     String longHandled;
 
 
-    public static final String TAG=CekMapsAllCustomer.class.getSimpleName();
+    public static final String TAG=ActvtMapsCheck.class.getSimpleName();
 
 
     @Override

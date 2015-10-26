@@ -122,7 +122,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(MainActivity.this, InputCustomerActivity.class);*/
+                /*Intent intent = new Intent(MainActivity.this, ActvtInputPelanggaran.class);*/
                 Intent intent = new Intent(MainActivity.this, CekInsertPhp.class);
                 startActivity(intent);
             }
@@ -482,7 +482,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         }
         if(id==R.id.nav) {
             onSignInClicked();
-            //startActivity(new Intent(this, InputCustomerActivity.class));
+            //startActivity(new Intent(this, ActvtInputPelanggaran.class));
         }
 
         return super.onOptionsItemSelected(item);

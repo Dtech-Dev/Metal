@@ -48,7 +48,7 @@ import java.util.List;
 /**
  * Created by ADIST on 9/17/2015.
  */
-public class InputCustomerActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks
+public class ActvtInputPelanggaran extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks
         , GoogleApiClient.OnConnectionFailedListener {
     private static final int TAKE_PHOTO_CODE = 1;
     private static final int SELECT_PICTURE = 2;
@@ -164,7 +164,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                 MtlPelanggan cust = validatePelanggan();
 
                 if (cust == null) {
-                    Toast.makeText(InputCustomerActivity.this, "Penyimpanan gagal!! ",
+                    Toast.makeText(ActvtInputPelanggaran.this, "Penyimpanan gagal!! ",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -179,7 +179,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                         spinnerTarif.getSelectedItem().toString(),
                         new BigDecimal(textDaya.getText().toString()));
                 fouls.save();
-                Toast.makeText(InputCustomerActivity.this, "Data Anda telah disimpan. ",
+                Toast.makeText(ActvtInputPelanggaran.this, "Data Anda telah disimpan. ",
                         Toast.LENGTH_SHORT).show();
                 cekInsertPhp.execute();
                 resetFields();
@@ -253,7 +253,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
                         List<MtlPelanggan> cust = MtlPelanggan.find(MtlPelanggan.class, "code = ? ",
                                 s.toString());
                         if (cust.size() > 1) {
-                            Toast.makeText(InputCustomerActivity.this, "Data redundan, code: " + s.toString(),
+                            Toast.makeText(ActvtInputPelanggaran.this, "Data redundan, code: " + s.toString(),
                                     Toast.LENGTH_SHORT).show();
                         }
                         for (MtlPelanggan custx : cust) {
@@ -449,7 +449,7 @@ public class InputCustomerActivity extends AppCompatActivity implements GoogleAp
 
     public void backToMain(){
         Intent backToMain;
-        backToMain = new Intent(InputCustomerActivity.this, MainActivity.class);
+        backToMain = new Intent(ActvtInputPelanggaran.this, MainActivity.class);
         startActivity(backToMain);
 
     }

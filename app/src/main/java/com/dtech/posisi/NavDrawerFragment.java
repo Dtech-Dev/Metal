@@ -74,19 +74,21 @@ public class NavDrawerFragment extends Fragment {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(mainActivity, InputCustomerActivity.class));
+                        startActivity(new Intent(mainActivity, ActvtInputPelanggaran.class));
                         break;
                     case 1:
-                        startActivity(new Intent(mainActivity, GalleryActivity.class));
+                        startActivity(new Intent(mainActivity, ActvtInputPelanggan.class));
                         break;
                     case 2:
-                        startActivity(new Intent(mainActivity, CekMapsAllCustomer.class));
+                        startActivity(new Intent(mainActivity, ActvtGalleries.class));
                         break;
                     case 3:
-                        startActivity(new Intent(mainActivity, ShowLogActivity.class));
+                        startActivity(new Intent(mainActivity, ActvtMapsCheck.class));
+                        break;
+                    case 4:
+                        startActivity(new Intent(mainActivity, ActvtLogs.class));
                         break;
                 }
-
             }
 
             @Override
@@ -104,9 +106,10 @@ public class NavDrawerFragment extends Fragment {
     public static List<Information> getData(){
         List<Information> data=new ArrayList<>();
 
-        int[] icons={R.drawable.ic_polymer_black_24dp, R.drawable.ic_camera_enhance_black_24dp,
-                R.drawable.ic_room_black_24dp, R.drawable.ic_assignment_ind_black_24dp};
-        String[] title={"Input Pelanggaran", "Gallery", "Check Map", "Show Log"};
+        int[] icons={R.drawable.ic_polymer_black_24dp, R.drawable.ic_polymer_black_24dp,
+                R.drawable.ic_camera_enhance_black_24dp, R.drawable.ic_room_black_24dp,
+                R.drawable.ic_assignment_ind_black_24dp};
+        String[] title={"Input Pelanggaran", "Input Pelanggan", "Gallery", "Check Map", "Show Log"};
         for (int i=0;i<title.length && i<icons.length; i++){
             Information current=new Information();
             current.title=title[i];

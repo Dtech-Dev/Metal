@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class ShowLogActivity extends AppCompatActivity {
+public class ActvtLogs extends AppCompatActivity {
 
     String latlang="Boo";
 

@@ -9,7 +9,7 @@ import android.widget.GridView;
 
 import com.dtech.orm.Pelanggaran;
 
-public class GalleryActivity extends AppCompatActivity {
+public class ActvtGalleries extends AppCompatActivity {
 
     GalleryAdapter adapter;
     private Toolbar toolbar;
