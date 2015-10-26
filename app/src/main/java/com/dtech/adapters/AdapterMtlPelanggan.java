@@ -1,4 +1,4 @@
-package com.dtech.posisi;
+package com.dtech.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dtech.orm.MtlPelanggan;
+import com.dtech.posisi.R;
 
 import java.util.List;
 

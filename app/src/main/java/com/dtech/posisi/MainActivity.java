@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.adapters.AdapterMtlPelanggan;
 import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlPelanggan;
 import com.google.android.gms.common.ConnectionResult;
