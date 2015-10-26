@@ -106,6 +106,10 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
         this.active = active;
     }
 
+    public boolean getActive(boolean active) {
+        return active;
+    }
+
     public String getLastVisit() {
         MtlPelanggaran lastRecord = MtlPelanggaran.getLastFoulRecord(this);
         SimpleDateFormat xxx = new SimpleDateFormat(DefaultOps.DEFAULT_DATETIME_FORMAT);

@@ -40,6 +40,9 @@ public class CekInsertPhp extends AsyncTask<String, String, String> {
     private String codeP;
     private String nameP;
     private String addressP;
+    private String lastX;
+    private String lastY;
+    private boolean active;
 
     MtlPelanggan mtlPelanggan;
 
@@ -113,12 +116,23 @@ public class CekInsertPhp extends AsyncTask<String, String, String> {
             codeP = mtlPelanggan.getCode();
             nameP = mtlPelanggan.getName();
             addressP = mtlPelanggan.getAddress();
+            lastX = mtlPelanggan.getLastXPosition();
+            lastY = mtlPelanggan.getLastYPosition();
+            //active = mtlPelanggan.getActive(active);
+            active = mtlPelanggan.isActive();
+
+
 
             ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
 
             values.add(new BasicNameValuePair("code", codeP));
             values.add(new BasicNameValuePair("nama", nameP));
             values.add(new BasicNameValuePair("alamat", addressP));
+            values.add(new BasicNameValuePair("lastX", lastX));
+            values.add(new BasicNameValuePair("lastY", lastY));
+            //values.add(new BasicNameValuePair("alamat", active));
+
+
 
             try {
                 DefaultHttpClient httpClient = new DefaultHttpClient();
