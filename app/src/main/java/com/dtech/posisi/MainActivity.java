@@ -71,7 +71,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
     private MainCustomerAdapter adaptCustomer;
 
     //Current Adapter
-    private MainDataCustomerAdapter myadapter;
+    private AdapterMtlPelanggan myadapter;
 
     private List<MtlPelanggan> listcustomer;
 
@@ -96,7 +96,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         mStatus = (TextView) findViewById(R.id.textSignIn);
 
-        //setRecyleView();
+        setRecyleView();
         //==================================================
         //Untuk load data, ketika MainActivity create, manggil class HttpTask
         //namun, ketika selesai input customer baru dan balik k main activity, recyclerview blm ng'refresh data yg ada d server
@@ -316,7 +316,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         recyclerView.setAdapter(adaptCustomer);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));*/
 
-        myadapter = new MainDataCustomerAdapter(this, listcustomer);
+        myadapter = new AdapterMtlPelanggan(this, listcustomer);
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myadapter);
@@ -442,20 +442,15 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     private void ambilData(String result) {
         try {
-
             JSONArray posts = new JSONArray(result);
             listcustomer = new ArrayList<>();
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = posts.optJSONObject(i);
                 dataCustomer = new MtlPelanggan();
-
                 dataCustomer.setName(post.getString("name"));
                 dataCustomer.setAddress(post.getString("address"));
-
                 listcustomer.add(dataCustomer);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

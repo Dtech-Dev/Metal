@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 28/08/2015.
  */
-public class MainDataCustomerAdapter extends RecyclerView.Adapter<MainDataCustomerAdapter.MainViewHolder>{
+public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelanggan.MainViewHolder>{
 
 
     private List<MtlPelanggan> data;
@@ -26,7 +26,7 @@ public class MainDataCustomerAdapter extends RecyclerView.Adapter<MainDataCustom
     String handleLong;
 
 
-    public MainDataCustomerAdapter(Context context,List<MtlPelanggan> customers) {
+    public AdapterMtlPelanggan(Context context, List<MtlPelanggan> customers) {
         this.context = context;
         this.data = customers;
     }
