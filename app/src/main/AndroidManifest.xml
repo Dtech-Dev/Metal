@@ -53,6 +53,9 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:name=".FrgmInputPelanggan"
+            android:label="Input Pelanggan" />
+        <activity
             android:name=".InputActivity"
             android:label="@string/title_activity_input" >
         </activity>
@@ -95,6 +98,10 @@
             android:name=".CekInsertPhp"
             android:label="@string/title_activity_cek_insert_php"
             android:theme="@style/AppTheme.Base" >
+        </activity>
+        <activity
+            android:name=".ActvtMainInput"
+            android:label="@string/title_activity_actvt_main_input">
         </activity>
     </application>
 

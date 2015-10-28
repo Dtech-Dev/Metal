@@ -46,4 +46,5 @@
     <string name="title_activity_cek_insert_php">CekInsertPhp</string>
 
     <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>
+    <string name="title_activity_actvt_main_input">ActvtMainInput</string>
 </resources>
