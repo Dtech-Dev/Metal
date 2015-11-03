@@ -23,7 +23,8 @@ import com.google.android.gms.maps.model.Marker;
 /**
  * Created by ADIST on 10/27/2015.
  */
-public class FrgmInputPelanggan extends Fragment implements LocationListener, GoogleMap.OnMyLocationButtonClickListener,
+public class FrgmInputPelanggan extends Fragment implements LocationListener
+        , GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     private EditText etCode;
@@ -46,7 +47,9 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener, Go
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_input_pelanggan, container, false);
+        if (rootView != null)
+            return rootView;
+        rootView = inflater.inflate(R.layout.fragment_input_pelanggan, container, false);
         setEtCode((EditText) rootView.findViewById(R.id.textCustID));
         setEtName((EditText) rootView.findViewById(R.id.textCustName));
         setEtAddress((EditText) rootView.findViewById(R.id.textCustAddress));

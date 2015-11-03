@@ -59,27 +59,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinnerFoulType"
-                android:layout_gravity="left|top"
-                android:spinnerMode="dialog"
-                android:textAlignment="gravity"
-                android:gravity="fill_horizontal" />
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="2"
+                android:rowCount="1"
+                android:orientation="horizontal"
+                android:rowOrderPreserved="false">
 
-        </TableRow>
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerFoulType"
+                    android:layout_gravity="left|top"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="gravity"
+                    android:gravity="fill_horizontal"
+                    android:dropDownWidth="fill_parent" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinnerTarif"
+                    android:layout_gravity="left|top"
+                    android:spinnerMode="dropdown"
+                    android:textAlignment="gravity"
+                    android:dropDownWidth="fill_parent" />
+            </GridLayout>
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinnerTarif"
-                android:layout_gravity="right|top"
-                android:spinnerMode="dialog" />
         </TableRow>
 
     </TableLayout>

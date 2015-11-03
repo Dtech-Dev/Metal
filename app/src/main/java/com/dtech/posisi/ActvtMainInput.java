@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,10 @@ public class ActvtMainInput extends AppCompatActivity {
     private String custCode;
     private String custName;
     private String custAddress;
+    private String foulDate;
+    private String foulDaya;
+    private String foulType;
+    private String foulTariff;
     private Spinner spinnerTarif, spinnerFoulType;
     private TextView tLat, tlong;
     private TextClock textClock;
@@ -128,6 +133,18 @@ public class ActvtMainInput extends AppCompatActivity {
             case "address":
                 setCustAddress(s.toString());
                 break;
+            case "foulDate":
+                setFoulDate(s.toString());
+                break;
+            case "foulDaya":
+                setFoulDaya(s.toString());
+                break;
+            case "foulType":
+                setFoulType(s.toString());
+                break;
+            case "foulTariff":
+                setFoulTariff(s.toString());
+                break;
         }
     }
 
@@ -153,6 +170,38 @@ public class ActvtMainInput extends AppCompatActivity {
 
     public void setCustAddress(String custAddress) {
         this.custAddress = custAddress;
+    }
+
+    public String getFoulDate() {
+        return foulDate;
+    }
+
+    public void setFoulDate(String foulDate) {
+        this.foulDate = foulDate;
+    }
+
+    public String getFoulType() {
+        return foulType;
+    }
+
+    public void setFoulType(String foulType) {
+        this.foulType = foulType;
+    }
+
+    public String getFoulTariff() {
+        return foulTariff;
+    }
+
+    public void setFoulTariff(String foulTariff) {
+        this.foulTariff = foulTariff;
+    }
+
+    public String getFoulDaya() {
+        return foulDaya;
+    }
+
+    public void setFoulDaya(String foulDaya) {
+        this.foulDaya = foulDaya;
     }
 
 
@@ -216,7 +265,17 @@ public class ActvtMainInput extends AppCompatActivity {
         customer = new MtlPelanggan(getCustCode(), getCustName()
                 , getCustAddress());
         customer.save();
-        Toast.makeText(this.getBaseContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
+
+        fouls = new MtlPelanggaran(customer, getFoulDate(), getFoulType(), getFoulTariff()
+                , new BigDecimal(getFoulDaya()));
+        fouls.save();
+
+//        frgmInputPelanggan.newInstance();
+//        frgmInputPelanggaran.newInstance();
+
+        Toast.makeText(this.getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
+
+        this.finish();
     }
 
     private boolean validateData() {
