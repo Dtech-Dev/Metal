@@ -43,6 +43,12 @@
         <item>TM</item>
         <item>TT</item>
     </string-array>
+    <string-array name="array_foul_type">
+        <item>P1</item>
+        <item>P2</item>
+        <item>P3</item>
+        <item>p4</item>
+    </string-array>
     <string name="title_activity_cek_insert_php">CekInsertPhp</string>
 
     <string name="contacts_permission_rationale">Contacts access is needed in order to retrieve your email address.</string>

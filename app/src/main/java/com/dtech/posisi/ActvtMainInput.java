@@ -2,7 +2,6 @@ package com.dtech.posisi;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextClock;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.dtech.orm.MtlPelanggan;
+import com.dtech.orm.MtlPelanggaran;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +41,28 @@ public class ActvtMainInput extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-
-    EditText etCode;
-    EditText etName;
-    EditText etAddress;
     List<String> comptTab1 = new ArrayList<String>();
+
+    MtlPelanggan customer;
+    MtlPelanggaran fouls;
+    MtlPelanggan foulImages;
+
+    private String cbLat;
+    private String cbLong;
+
+    private EditText etCode, etName, etAddress, etFoulDate;
+    private String custCode;
+    private String custName;
+    private String custAddress;
+    private Spinner spinnerTarif, spinnerFoulType;
+    private TextView tLat, tlong;
+    private TextClock textClock;
+    private ImageView imagePelanggan;
+    private EditText textDaya;
+
+    private FrgmInputPelanggan frgmInputPelanggan;
+    private FrgmInputPelanggaran frgmInputPelanggaran;
+    private FrgmnInputImages frgmnInputImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +82,18 @@ public class ActvtMainInput extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                saveData();
             }
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,12 +117,51 @@ public class ActvtMainInput extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onTextChanged(String field, CharSequence s) {
+        switch(field){
+            case "code":
+                setCustCode(s.toString());
+                break;
+            case "name":
+                setCustName(s.toString());
+                break;
+            case "address":
+                setCustAddress(s.toString());
+                break;
+        }
+    }
+
+    public String getCustCode() {
+        return custCode;
+    }
+
+    public void setCustCode(String custCode) {
+        this.custCode = custCode;
+    }
+
+    public String getCustName() {
+        return custName;
+    }
+
+    public void setCustName(String custName) {
+        this.custName = custName;
+    }
+
+    public String getCustAddress() {
+        return custAddress;
+    }
+
+    public void setCustAddress(String custAddress) {
+        this.custAddress = custAddress;
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private String tabName[] = {"PELANGGAN", "PELANGGARAN", "GALERI"};
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -110,11 +171,14 @@ public class ActvtMainInput extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    return new FrgmInputPelanggan();
+                    frgmInputPelanggan = new FrgmInputPelanggan();
+                    return frgmInputPelanggan;
                 case 1:
-                    return new FrgmInputPelanggan();
+                    frgmInputPelanggaran = new FrgmInputPelanggaran();
+                    return frgmInputPelanggaran;
                 case 2:
-                    return new FrgmInputPelanggan();
+                    frgmnInputImages = new FrgmnInputImages();
+                    return frgmnInputImages;
                 default:
                     return new FrgmInputPelanggan();
             }
@@ -128,15 +192,34 @@ public class ActvtMainInput extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "PELANGGAN";
-                case 1:
-                    return "PELANGGARAN";
-                case 2:
-                    return "GALLERY";
-            }
-            return null;
+//            https://guides.codepath.com/android/google-play-style-tabs-using-tablayout
+//            // Generate title based on item position
+//            // return tabTitles[position];
+//
+//            // getDrawable(int i) is deprecated, use getDrawable(int i, Theme theme) for min SDK >=21
+//            // or ContextCompat.getDrawable(Context context, int id) if you want support for older versions.
+//            // Drawable image = context.getResources().getDrawable(iconIds[position], context.getTheme());
+//            // Drawable image = context.getResources().getDrawable(imageResId[position]);
+//
+//            Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
+//            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+//            SpannableString sb = new SpannableString(" ");
+//            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+//            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            return sb;
+            return tabName[position];
         }
+    }
+
+    private void saveData(){
+        validateData();
+        customer = new MtlPelanggan(getCustCode(), getCustName()
+                , getCustAddress());
+        customer.save();
+        Toast.makeText(this.getBaseContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean validateData() {
+        return true;
     }
 }

@@ -44,9 +44,6 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -54,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 //re
@@ -76,9 +74,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     private List<MtlPelanggan> listcustomer;
 
-
-    MtlPelanggan dataCustomer;
-
     ProgressDialog progressDialog;
 
     @Override
@@ -93,15 +88,16 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         setupAPIs();
 
-        new RequestHttp().execute();
+//        new RequestHttp().execute();
 
         mStatus = (TextView) findViewById(R.id.textSignIn);
 
+        setCustomerData();
         setRecyleView();
         //==================================================
         //Untuk load data, ketika MainActivity create, manggil class HttpTask
         //namun, ketika selesai input customer baru dan balik k main activity, recyclerview blm ng'refresh data yg ada d server
-        new HttpTask().execute(DefaultOps.URL_CUSTOMER);
+//        new HttpTask().execute(DefaultOps.URL_CUSTOMER);
 
         //==================================================
         tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
@@ -416,7 +412,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
                         response.append(line);
 
                     }
-                    ambilData(response.toString());
+//                    setCustomerData(response.toString()); // TODO maybe later we need to research about it
                     result = 1;
                 } else {
                     result = 0;
@@ -441,22 +437,14 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         }
     }
 
-    private void ambilData(String result) {
-        try {
-            JSONArray posts = new JSONArray(result);
-            listcustomer = new ArrayList<>();
-            for (int i = 0; i < posts.length(); i++) {
-                JSONObject post = posts.optJSONObject(i);
-                dataCustomer = new MtlPelanggan();
-                dataCustomer.setName(post.getString("name"));
-                dataCustomer.setAddress(post.getString("address"));
-                listcustomer.add(dataCustomer);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+    private void setCustomerData() {
+        listcustomer = new ArrayList<MtlPelanggan>();
+        Iterator<MtlPelanggan> oldData = MtlPelanggan.findAll(MtlPelanggan.class);
+        while(oldData.hasNext()) {
+            MtlPelanggan currentData = oldData.next();
+            if (currentData != null) // ben gak error :D
+                listcustomer.add(currentData);
         }
-
-
     }
 
     @Override
@@ -506,7 +494,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         //setRecyleView();
         new RequestHttp().execute();
 
-        //ambilData();
+        //setCustomerData();
         //setRecyleView();
         //new HttpTask().execute(URL_CUSTOMER);
     }

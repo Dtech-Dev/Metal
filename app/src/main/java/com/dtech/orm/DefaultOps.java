@@ -2,6 +2,7 @@ package com.dtech.orm;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
@@ -25,6 +26,8 @@ public class DefaultOps {
     //URL untuk ambil data dari json file
     public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
     public static final String EMPTY_STRING = "";
+    public static final String IMAGE_DIRECTORY_NAME = Environment.
+            getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
 
     public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
             , int compressQuality){

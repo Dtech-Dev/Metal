@@ -1,12 +1,13 @@
 package com.dtech.posisi;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 
 /**
@@ -28,6 +29,8 @@ public class FrgmInputPelanggaran extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Spinner spinnerTarif;
+    private Spinner spinnerFoulType;
 
     /**
      * Use this factory method to create a new instance of
@@ -64,24 +67,16 @@ public class FrgmInputPelanggaran extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_input_pelanggaran, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_input_pelanggaran, container, false);
+        setSpinnerTarif(rootView, "");
+        setSpinnerFoulType(rootView, "");
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -104,6 +99,32 @@ public class FrgmInputPelanggaran extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private void setSpinnerTarif(View rootView, String value) {
+        // SPINNER
+        spinnerTarif = (Spinner) rootView.findViewById(R.id.spinnerTarif);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
+                R.array.array_tarif, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerTarif.setAdapter(adapter);
+        int spinnerPosition = 0;
+        if (!value.equals(null) || value.length() > 1)
+            spinnerPosition = adapter.getPosition(value);
+        spinnerTarif.setSelection(spinnerPosition);
+    }
+
+    private void setSpinnerFoulType(View rootView, String value) {
+        // SPINNER
+        spinnerFoulType = (Spinner) rootView.findViewById(R.id.spinnerFoulType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(rootView.getContext(),
+                R.array.array_foul_type, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinnerFoulType.setAdapter(adapter);
+        int spinnerPosition = 0;
+        if (!value.equals(null) || value.length() > 1)
+            spinnerPosition = adapter.getPosition(value);
+        spinnerFoulType.setSelection(spinnerPosition);
     }
 
 }
