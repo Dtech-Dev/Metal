@@ -1,5 +1,6 @@
 package com.dtech.posisi;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,11 +59,12 @@ public class ActvtMainInput extends AppCompatActivity {
     private String foulDaya;
     private String foulType;
     private String foulTariff;
-    private Spinner spinnerTarif, spinnerFoulType;
     private TextView tLat, tlong;
     private TextClock textClock;
     private ImageView imagePelanggan;
     private EditText textDaya;
+
+    private List<Bitmap> galeries;
 
     private FrgmInputPelanggan frgmInputPelanggan;
     private FrgmInputPelanggaran frgmInputPelanggaran;

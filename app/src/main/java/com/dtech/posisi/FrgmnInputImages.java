@@ -1,11 +1,12 @@
 package com.dtech.posisi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,12 +20,13 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.dtech.orm.DefaultOps;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,6 +58,8 @@ public class FrgmnInputImages extends Fragment {
     private int height;
     private int count = 0;
     Uri outputFileUri;
+
+    private ImageAdapter imageAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -95,7 +99,8 @@ public class FrgmnInputImages extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_input_images, container, false);
         setTextView();
         gvImage = (GridView) rootView.findViewById(R.id.gridViewImage);
-        gvImage.setAdapter(new ImageAdapter(getContext()));
+        imageAdapter = new ImageAdapter(getContext());
+        gvImage.setAdapter(imageAdapter);
 //        setImageButton(rootView, gvImage, 0);
         return rootView;
     }
@@ -138,28 +143,23 @@ public class FrgmnInputImages extends Fragment {
         width = displaymetrics.widthPixels;
         height = displaymetrics.heightPixels;
     }
+
     public class ImageAdapter extends BaseAdapter {
 
         private Context mContext;
         private Bitmap[]mis_fotos;
+        private List<Bitmap> bitmapsData;
 
         public ImageAdapter(Context c) {
             mContext = c;
-            mis_fotos = new Bitmap[]{
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large),
-                    BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large)
-            };
+            bitmapsData = new ArrayList<Bitmap>();
+            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
+            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
+            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
         }
 
         public int getCount() {
-            return (mis_fotos == null ? 0 : mis_fotos.length);
+            return (bitmapsData == null ? 0 : bitmapsData.size());
         }
 
         public Object getItem(int position) {
@@ -175,11 +175,23 @@ public class FrgmnInputImages extends Fragment {
                 ImageButton imgButton = new ImageButton(mContext);
                 imgButton.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.add_image));
                 imgButton.setLayoutParams(new GridView.LayoutParams(width / 3, height / 4));
-                imgButton.setBackgroundColor(Color.BLUE);
                 imgButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "Avaliable Soon!", Toast.LENGTH_SHORT).show();
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("")
+                                .setMessage("Ambil gambar dari ... ")
+                                .setNegativeButton("CAMERA", new DialogInterface.OnClickListener(){
+                                    public void onClick(DialogInterface arg0, int arg1){
+                                        setButtonTakeImage();
+                                    }
+                                })
+                                .setPositiveButton("GALERY", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        setButtonUploadImg();
+                                    }
+                                }).create().show();
+//                        Toast.makeText(mContext, "Avaliable Soon!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 return imgButton;
@@ -193,7 +205,7 @@ public class FrgmnInputImages extends Fragment {
                 } else {
                     imageView = (ImageView) convertView;
                 }
-                imageView.setImageBitmap(mis_fotos[position]);
+                imageView.setImageBitmap(bitmapsData.get(position));
                 return imageView;
             }
 
@@ -237,6 +249,8 @@ public class FrgmnInputImages extends Fragment {
         intentUpload.setType("image/*");
         intentUpload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
+        Uri selectedImageUri = intentUpload.getData();
+//        imageAdapter.bitmapsData.add() // TODO ngelu
     }
 
 }
