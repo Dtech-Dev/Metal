@@ -1,6 +1,5 @@
 package com.dtech.posisi;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -282,10 +281,5 @@ public class ActvtMainInput extends AppCompatActivity {
 
     private boolean validateData() {
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

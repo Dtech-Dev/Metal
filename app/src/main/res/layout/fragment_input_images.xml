@@ -4,55 +4,14 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ScrollView
+    <GridView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isScrollContainer="true">
-            <ImageButton
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/imgbtn"
-                android:background="@drawable/ic_polymer_black_24dp"/>
-
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/imgvi"
-                android:layout_below="@+id/imgbtn"
-                android:layout_marginLeft="10dp"/>
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/imgvi1"
-                android:layout_toRightOf="@+id/imgvi"
-                android:layout_below="@+id/imgbtn"
-                android:layout_marginLeft="10dp"/>
-            <ImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:id="@+id/imgvi2"
-                android:layout_toRightOf="@+id/imgvi1"
-                android:layout_below="@+id/imgbtn"
-                android:layout_marginLeft="10dp"/>
-
-            <GridView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imgvi"
-                android:id="@+id/gridViewImage"
-                android:layout_gravity="left|top"
-                android:choiceMode="singleChoice"
-                android:layoutMode="opticalBounds"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                />
-        </RelativeLayout>
-
-    </ScrollView>
-
+        android:layout_height="wrap_content"
+        android:id="@+id/gridViewImage"
+        android:layout_gravity="left|top"
+        android:choiceMode="singleChoice"
+        android:layoutMode="opticalBounds"
+        android:numColumns="3"
+        android:stretchMode="columnWidth" />
 
 </FrameLayout>
