@@ -178,6 +178,19 @@ public class FrgmnInputImages extends Fragment {
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(2, 2, 2, 2);
                 imageView.setImageBitmap(bitmapsData.get(position));
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Toast.makeText(getContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                });
                 return imageView;
             }
         }
