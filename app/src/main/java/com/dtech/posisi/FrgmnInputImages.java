@@ -27,6 +27,7 @@ import com.dtech.orm.DefaultOps;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,6 @@ import java.util.List;
  * Activities that contain this fragment must implement the
  * {@link FrgmnInputImages.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FrgmnInputImages#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class FrgmnInputImages extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +46,7 @@ public class FrgmnInputImages extends Fragment {
     private static final int TAKE_PHOTO_CODE = 1;
     private static final int SELECT_PICTURE = 2;
 
+    private List<Bitmap> bitmapsData;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -55,8 +55,6 @@ public class FrgmnInputImages extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private ImageButton imgButton;
-     ImageView imgv, imgv1, imgv2;
-    ImageButton imgbtn;
     private GridView gvImage;
     private int width;
     private int height;
@@ -65,24 +63,6 @@ public class FrgmnInputImages extends Fragment {
 
     private ImageAdapter imageAdapter;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FrgmnInputImages.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FrgmnInputImages newInstance(String param1, String param2) {
-        FrgmnInputImages fragment = new FrgmnInputImages();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public FrgmnInputImages() {
         // Required empty public constructor
     }
@@ -90,88 +70,26 @@ public class FrgmnInputImages extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //imgv = new ImageView(getContext());
-
         View rootView = inflater.inflate(R.layout.fragment_input_images, container, false);
-        setTextView();
+        setWidthHeight();
         gvImage = (GridView) rootView.findViewById(R.id.gridViewImage);
 
-        imgv = (ImageView) rootView.findViewById(R.id.imgvi);
-        imgv1 = (ImageView) rootView.findViewById(R.id.imgvi1);
-        imgv2 = (ImageView) rootView.findViewById(R.id.imgvi2);
-        imageAdapter = new ImageAdapter(getContext());
-
+        bitmapsData = new ArrayList<>();
+        imageAdapter = new ImageAdapter(getContext(), bitmapsData);
         gvImage.setAdapter(imageAdapter);
         gvImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                /*switch ((int)parent.getItemAtPosition(position)) {
-                    case 0:
-                        Toast.makeText(getContext(),"boo", Toast.LENGTH_SHORT).show();
-                        imgv.setImageResource(R.drawable.ic_add);
-                        imageAdapter.setImageView(imgv);
-                        break;
-                    case 1:
-                        Toast.makeText(getContext(),"boo1", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(getContext(),"boo2", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(getContext(),"boo3", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(getContext(),"boo", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-
-                int item = (int) parent.getItemAtPosition(position);
-
-                String showItem = Integer.toString(item);
-                Toast.makeText(getContext(), "Item = " + showItem, Toast.LENGTH_SHORT).show();*/
+                Toast.makeText(getContext(), "Available Soon", Toast.LENGTH_SHORT).show();
             }
         });
-        //imgv=imageAdapter.getImageView();
-//        setImageButton(rootView, gvImage, 0);
-        imgbtn = (ImageButton) rootView.findViewById(R.id.imgbtn);
-        imgbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("")
-                        .setMessage("Ambil gambar dari ... ")
-                        .setNegativeButton("CAMERA", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                setButtonTakeImage();
-                            }
-                        })
-                        .setPositiveButton("GALERY", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                setButtonUploadImg();
-                            }
-                        }).create().show();
-            }
-        });
-
         return rootView;
     }
-
-    private void setImageButton(View rootView, GridView gvImage, int i) {
-        imgButton = new ImageButton(getContext());
-    }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -185,8 +103,6 @@ public class FrgmnInputImages extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
 
     /**
      * This interface must be implemented by activities that contain this
@@ -203,7 +119,7 @@ public class FrgmnInputImages extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    private  void setTextView() {
+    private void setWidthHeight() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
@@ -213,33 +129,15 @@ public class FrgmnInputImages extends Fragment {
     public class ImageAdapter extends BaseAdapter {
 
         private Context mContext;
-        private Bitmap[] mis_fotos;
-        private List<Bitmap> bitmapsData;
-        ImageView imageView;
+        private List<Bitmap> bitmaps;
 
-        public ImageAdapter(Context c) {
+        public ImageAdapter(Context c, List<Bitmap> bitmaps){
             mContext = c;
-            bitmapsData = new ArrayList<Bitmap>();
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-            bitmapsData.add(BitmapFactory.decodeResource(getResources(), R.drawable.no_image_large));
-        }
-
-
-
-        public ImageView getImageView() {
-            return imageView;
-        }
-
-        public void setImageView(ImageView imageView) {
-            this.imageView = imageView;
+            this.bitmaps = bitmaps;
         }
 
         public int getCount() {
-            return (bitmapsData == null ? 0 : bitmapsData.size());
+            return (this.bitmaps == null ? 0 : this.bitmaps.size()) + 1;
         }
 
         public Object getItem(int position) {
@@ -251,7 +149,7 @@ public class FrgmnInputImages extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            /*if (position >= (getCount() - 1)) {
+            if (position >= (getCount() - 1)) {
                 ImageButton imgButton = new ImageButton(mContext);
                 imgButton.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.add_image));
                 imgButton.setLayoutParams(new GridView.LayoutParams(width / 3, height / 4));
@@ -263,91 +161,38 @@ public class FrgmnInputImages extends Fragment {
                                 .setMessage("Ambil gambar dari ... ")
                                 .setNegativeButton("CAMERA", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface arg0, int arg1) {
-                                        setButtonTakeImage();
+                                        setBtnTakeImage();
                                     }
                                 })
                                 .setPositiveButton("GALERY", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface arg0, int arg1) {
-                                        setButtonUploadImg();
+                                        setBtnUploadImage();
                                     }
                                 }).create().show();
-//                        Toast.makeText(mContext, "Avaliable Soon!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 return imgButton;
-           } else { */
-
-                if (convertView == null) {
-                    //imgv.setImageResource(R.drawable.no_image_large);
-                    imageView = new ImageView(mContext);
-                    imageView.setLayoutParams(new ViewGroup.LayoutParams(width/3, height/4));
-
-
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                    imageView.setPadding(0, 0, 0, 0);
-                } else {
-                    imageView = (ImageView) convertView;
-                }
+            } else {
+                ImageView imageView = convertView == null ? new ImageView(mContext) : (ImageView) convertView;
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(width/3, height/4));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setPadding(2, 2, 2, 2);
                 imageView.setImageBitmap(bitmapsData.get(position));
                 return imageView;
-            //}
-
-        }
-
-   }
-
-
-public void setImageVi(Uri selectedImageUri, Bitmap bm) {
-        /*if (imgv == null) {
-
-        }*/
-
-    if (imgv.getDrawable() == null && imgv1.getDrawable() == null && imgv2.getDrawable() == null) {
-        if (selectedImageUri != null) {
-            imgv.setImageURI(selectedImageUri);
-            //imageAdapter.setImageView(imgv);
-        }
-
-        if (bm != null) {
-            imgv.setImageBitmap(bm);
-            //imageAdapter.setImageView(imgv);
-        }
-    } else if (imgv.getDrawable() != null && imgv1.getDrawable() == null && imgv2.getDrawable() == null) {
-        if (selectedImageUri != null) {
-            imgv1.setImageURI(selectedImageUri);
-            //imageAdapter.setImageView(imgv);
-        }
-
-        if (bm != null) {
-            imgv1.setImageBitmap(bm);
-            //imageAdapter.setImageView(imgv);
-        }
-    } else if (imgv.getDrawable() != null && imgv1.getDrawable() != null && imgv2.getDrawable() == null){
-        if (selectedImageUri != null) {
-            imgv2.setImageURI(selectedImageUri);
-            //imageAdapter.setImageView(imgv);
-        }
-
-        if (bm != null) {
-            imgv2.setImageBitmap(bm);
-            //imageAdapter.setImageView(imgv);
+            }
         }
     }
-    /*if (selectedImageUri != null) {
 
-        imgv.setImageURI(selectedImageUri);
-        //imageAdapter.setImageView(imgv);
+    public void setImageView(Bitmap bm) {
+        if (bm == null)
+            return;
+        bitmapsData.add(bm);
+        imageAdapter = new ImageAdapter(getContext(), bitmapsData);
+        gvImage.setAdapter(imageAdapter);
     }
-
-    if (bm != null) {
-        imgv.setImageBitmap(bm);
-        //imageAdapter.setImageView(imgv);
-    }*/
-}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         switch (requestCode) {
             case SELECT_PICTURE:
                 setImageUpload(data);
@@ -358,11 +203,41 @@ public void setImageVi(Uri selectedImageUri, Bitmap bm) {
         }
     }
 
+    private static int getPowerOfTwoForSampleRatio(double ratio){
+        int k = Integer.highestOneBit((int)Math.floor(ratio));
+        if(k==0) return 1;
+        else return k;
+    }
+
     public void setImageUpload(Intent data) {
+        try {
+            // source http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
+            Uri imageUri = data.getData();
+            InputStream input = getContext().getContentResolver().openInputStream(imageUri);
+            BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+            onlyBoundsOptions.inJustDecodeBounds = true;
+            onlyBoundsOptions.inDither=true;//optional
+            onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+            BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+            input.close();
+            if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
+                return;
 
-        Uri selectedImageUri = data.getData();
-        setImageVi(selectedImageUri, null);
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+            int thumbnailSize = height > width ? height : width;
+            double ratio = (originalSize > thumbnailSize) ? (originalSize / thumbnailSize) : 1.0;
 
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+            bitmapOptions.inDither=true;//optional
+            bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+            input = getContext().getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+            input.close();
+            setImageView(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void previewCaptured() {
@@ -370,13 +245,13 @@ public void setImageVi(Uri selectedImageUri, Bitmap bm) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(), options);
-            setImageVi(null, bitmap);
+            setImageView(bitmap);
         } catch (NullPointerException e) {
-
+            e.printStackTrace();
         }
     }
 
-    private void setButtonTakeImage() {
+    private void setBtnTakeImage() {
         // MENU TAKE IMAGE
         File newdir = new File(DefaultOps.IMAGE_DIRECTORY_NAME);
         if (!newdir.exists())
@@ -388,7 +263,6 @@ public void setImageVi(Uri selectedImageUri, Bitmap bm) {
         // start camera
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
         startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
     }
 
@@ -407,16 +281,11 @@ public void setImageVi(Uri selectedImageUri, Bitmap bm) {
         return outputFileUri;
     }
 
-    private void setButtonUploadImg() {
+    private void setBtnUploadImage() {
         // MENU UPLOAD IMAGE
         Intent intentUpload = new Intent();
         intentUpload.setType("image/*");
         intentUpload.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
-       // Uri selectedImageUri = intentUpload.getData();
-//        imageAdapter.bitmapsData.add() // TODO ngelu
     }
-
-
-
 }
