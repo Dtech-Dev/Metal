@@ -48,13 +48,8 @@ public class FrgmnInputImages extends Fragment {
 
     private List<Bitmap> bitmapsData;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    private ImageButton imgButton;
     private GridView gvImage;
     private int width;
     private int height;
@@ -176,19 +171,12 @@ public class FrgmnInputImages extends Fragment {
                 ImageView imageView = convertView == null ? new ImageView(mContext) : (ImageView) convertView;
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(width/3, height/4));
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageView.setPadding(2, 2, 2, 2);
+                imageView.setPadding(8, 8, 8, 8);
                 imageView.setImageBitmap(bitmapsData.get(position));
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Toast.makeText(getContext(), "Available Soon!", Toast.LENGTH_SHORT).show();
-                        return false;
                     }
                 });
                 return imageView;
