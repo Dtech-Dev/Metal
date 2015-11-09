@@ -74,8 +74,8 @@ public class FrgmnInputImages extends Fragment {
         setWidthHeight();
         gvImage = (GridView) rootView.findViewById(R.id.gridViewImage);
 
-        bitmapsData = new ArrayList<>();
-        imageAdapter = new ImageAdapter(getContext(), bitmapsData);
+        setBitmapsData(new ArrayList<Bitmap>());
+        imageAdapter = new ImageAdapter(getContext(), getBitmapsData());
         gvImage.setAdapter(imageAdapter);
         gvImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,6 +97,14 @@ public class FrgmnInputImages extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public List<Bitmap> getBitmapsData() {
+        return bitmapsData;
+    }
+
+    public void setBitmapsData(List<Bitmap> bitmapsData) {
+        this.bitmapsData = bitmapsData;
     }
 
     /**
@@ -172,7 +180,7 @@ public class FrgmnInputImages extends Fragment {
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(width/3, height/4));
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(8, 8, 8, 8);
-                imageView.setImageBitmap(bitmapsData.get(position));
+                imageView.setImageBitmap(getBitmapsData().get(position));
                 imageView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -187,8 +195,8 @@ public class FrgmnInputImages extends Fragment {
     public void setImageView(Bitmap bm) {
         if (bm == null)
             return;
-        bitmapsData.add(bm);
-        imageAdapter = new ImageAdapter(getContext(), bitmapsData);
+        getBitmapsData().add(bm);
+        imageAdapter = new ImageAdapter(getContext(), getBitmapsData());
         gvImage.setAdapter(imageAdapter);
     }
 

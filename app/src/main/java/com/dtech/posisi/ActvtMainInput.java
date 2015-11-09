@@ -1,5 +1,7 @@
 package com.dtech.posisi;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -70,6 +72,8 @@ public class ActvtMainInput extends AppCompatActivity {
     private FrgmInputPelanggan frgmInputPelanggan;
     private FrgmInputPelanggaran frgmInputPelanggaran;
     private FrgmnInputImages frgmnInputImages;
+
+    boolean closeit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,12 +276,24 @@ public class ActvtMainInput extends AppCompatActivity {
                 , new BigDecimal(getFoulDaya()));
         fouls.save();
 
+        List<Bitmap> images = frgmnInputImages.getBitmapsData();
+
 //        frgmInputPelanggan.newInstance();
 //        frgmInputPelanggaran.newInstance();
 
-        Toast.makeText(this.getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+            .setTitle("?")
+            .setMessage("Make sure your data are correct!")
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Toast.makeText(getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
+                    closeit = true;
+                }
+            }).create().show();
 
-        this.finish();
+        if (closeit)
+            this.finish();
     }
 
     private boolean validateData() {
