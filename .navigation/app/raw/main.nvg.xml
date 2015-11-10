@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.dtech.posisi.Main2Activity"/>
+        className = "com.dtech.posisi.DetailActivity"/>
       <point      
         x = "1924"      
         y = "-28"/>

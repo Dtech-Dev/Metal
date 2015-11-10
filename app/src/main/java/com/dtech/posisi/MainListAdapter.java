@@ -60,7 +60,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.MainVi
             super(itemView);
 
             context=itemView.getContext();
-            title=(TextView)itemView.findViewById(R.id.mlistText);
+            title=(TextView)itemView.findViewById(R.id.mlistName);
             icon=(ImageView)itemView.findViewById(R.id.mlistIcon);
         }
 

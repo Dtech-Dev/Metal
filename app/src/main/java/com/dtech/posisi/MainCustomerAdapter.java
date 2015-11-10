@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dtech.orm.Customer;
 import com.dtech.orm.Pelanggaran;
@@ -89,9 +90,10 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
         public MainViewHolder(View itemView) {
             super(itemView);
-            rel = (RelativeLayout) itemView.findViewById(R.id.rel);
 
             context = itemView.getContext();
+            rel = (RelativeLayout) itemView.findViewById(R.id.rel);
+            rel.setOnClickListener((View.OnClickListener) context);
             title = (TextView)itemView.findViewById(R.id.mlistnama);
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
             lastVisit = (TextView) itemView.findViewById(R.id.mlistlastvisit);
@@ -102,7 +104,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
 
         @Override
         public void onClick(View view) {
-           // Toast.makeText(context,"Clicked",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show();
            /* handleLat = lLat.getText().toString();
             handleLong = lLong.getText().toString();
             Intent gotoMaps = new Intent(context, CekMapsActivity.class);

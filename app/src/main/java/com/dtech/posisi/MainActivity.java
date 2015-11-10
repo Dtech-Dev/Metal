@@ -22,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -119,8 +120,8 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
             @Override
             public void onClick(View view) {
                 /*Intent intent = new Intent(MainActivity.this, ActvtInputPelanggaran.class);*/
-                Intent intent = new Intent(MainActivity.this, CekInsertPhp.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(MainActivity.this, CekInsertPhp.class);
+                startActivity(intent);*/
             }
         });
 
@@ -318,6 +319,25 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(myadapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        /*recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+               Toast.makeText(MainActivity.this,"Boo", Toast.LENGTH_SHORT).show();
+               *//* Intent cekI = new Intent(MainActivity.this, CekMapsActivity.class);
+                startActivity(cekI);*//*
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });*/
     }
 
     private void checkGPSSettings() {
@@ -350,7 +370,71 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     }
 
-    public class RequestHttp extends AsyncTask<String, String, String>{
+    private void setCustomerData() {
+        listcustomer = new ArrayList<MtlPelanggan>();
+        Iterator<MtlPelanggan> oldData = MtlPelanggan.findAll(MtlPelanggan.class);
+        while(oldData.hasNext()) {
+            MtlPelanggan currentData = oldData.next();
+            if (currentData != null) // ben gak error :D
+                listcustomer.add(currentData);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        // RELOAD recyclerView
+        //setRecyleView();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(MainActivity.this, "Menu Setting has been clicked", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if(id==R.id.nav) {
+            onSignInClicked();
+            //startActivity(new Intent(this, ActvtInputPelanggaran.class));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //setRecyleView();
+       // new RequestHttp().execute();
+
+        //setCustomerData();
+        //setRecyleView();
+        //new HttpTask().execute(URL_CUSTOMER);
+    }
+
+    /*public class RequestHttp extends AsyncTask<String, String, String>{
 
         @Override
         protected void onPreExecute() {
@@ -376,11 +460,10 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         @Override
         protected void onPostExecute(String s) {
-           // Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(MainActivity.this, "Success Update Data", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public class HttpTask extends AsyncTask<String, Void, Integer> {
+    }*/
+    /*public class HttpTask extends AsyncTask<String, Void, Integer> {
 
         @Override
         protected void onPreExecute() {
@@ -435,67 +518,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
                 Toast.makeText(MainActivity.this, "Failed to load data!", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
-    private void setCustomerData() {
-        listcustomer = new ArrayList<MtlPelanggan>();
-        Iterator<MtlPelanggan> oldData = MtlPelanggan.findAll(MtlPelanggan.class);
-        while(oldData.hasNext()) {
-            MtlPelanggan currentData = oldData.next();
-            if (currentData != null) // ben gak error :D
-                listcustomer.add(currentData);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        // RELOAD recyclerView
-        //setRecyleView();
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(MainActivity.this, "Menu Setting has been clicked", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        if(id==R.id.nav) {
-            onSignInClicked();
-            //startActivity(new Intent(this, ActvtInputPelanggaran.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        googleApiClient.disconnect();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //setRecyleView();
-        new RequestHttp().execute();
-
-        //setCustomerData();
-        //setRecyleView();
-        //new HttpTask().execute(URL_CUSTOMER);
-    }
 }
