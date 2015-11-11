@@ -85,8 +85,8 @@ public class DefaultOps {
         float latitude = convertToDegree(result[2]);
         float longitude = convertToDegree(result[3]);
 
-        latitude = result[0].equals("N") ? latitude : 0 - latitude;
-        longitude = result[1].equals("E") ? longitude : 0 - longitude;
+        latitude = result[0].equals("N") ? latitude : -latitude;
+        longitude = result[1].equals("E") ? longitude : -longitude;
 
         return new float[] {longitude, latitude};
     }
@@ -112,5 +112,33 @@ public class DefaultOps {
 
         result = new Float(FloatD + (FloatM/60) + (FloatS/3600));
         return result;
+    }
+	
+	public static String setLocationRef(String imagePath, float[] coord) {
+		try {
+			// coord[0] : latitude, coord[1] : longitude
+			ExifInterface exif = new ExifInterface(imagePath);
+			exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE, convertFromDegree(coord[0]);
+			exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE, convertFromDegree(coord[1]);
+			String latRef = coord[0] > 0 ? "N" : "S";
+			String lonRef = coord[1] > 0 ? "E" : "W";
+			exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, latRef);
+			exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, lonRef);
+			exif.saveAttributes();	
+			return imagePath;
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	private static String convertFromDegree(float coord) {
+		// http://stackoverflow.com/questions/10531544/write-geotag-jpegs-exif-data-in-android
+        coord = coord > 0 ? coord : -coord;  // -105.9876543 -> 105.9876543
+		String sOut = Integer.toString((int)coord) + "/1,";   // 105/1,
+		coord = (coord % 1) * 60;         // .987654321 * 60 = 59.259258
+		sOut = sOut + Integer.toString((int)coord) + "/1,";   // 105/1,59/1,
+		coord = (coord % 1) * 60000;             // .259258 * 60000 = 15555
+		sOut = sOut + Integer.toString((int)coord) + "/1000";   // 105/1,59/1,15555/1000
+		return sOut;
     }
 }

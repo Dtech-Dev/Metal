@@ -278,7 +278,9 @@ public class FrgmnInputImages extends Fragment {
             output.flush();
             output.close();
             input.close();
-            setImageView(newImage.getPath(), bitmap);
+			float[] coord = DefaultOps.getLocationRef(imageUri.getPath());
+			String newImagePath = DefaultOps.setLocationRef(newImage.getPath(), coord);
+            setImageView(newImagePath, bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
