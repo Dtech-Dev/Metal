@@ -26,10 +26,15 @@ import android.widget.Toast;
 import com.dtech.orm.DefaultOps;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,6 +52,7 @@ public class FrgmnInputImages extends Fragment {
     private static final int SELECT_PICTURE = 2;
 
     private List<Bitmap> bitmapsData;
+    private Map<String, Bitmap> bitmapMap;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,6 +81,7 @@ public class FrgmnInputImages extends Fragment {
         gvImage = (GridView) rootView.findViewById(R.id.gridViewImage);
 
         setBitmapsData(new ArrayList<Bitmap>());
+        setBitmapMap(new HashMap<String, Bitmap>());
         imageAdapter = new ImageAdapter(getContext(), getBitmapsData());
         gvImage.setAdapter(imageAdapter);
         gvImage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,6 +112,14 @@ public class FrgmnInputImages extends Fragment {
 
     public void setBitmapsData(List<Bitmap> bitmapsData) {
         this.bitmapsData = bitmapsData;
+    }
+
+    public Map<String, Bitmap> getBitmapMap() {
+        return bitmapMap;
+    }
+
+    public void setBitmapMap(Map<String, Bitmap> bitmapMap) {
+        this.bitmapMap = bitmapMap;
     }
 
     /**
@@ -192,10 +207,24 @@ public class FrgmnInputImages extends Fragment {
         }
     }
 
-    public void setImageView(Bitmap bm) {
-        if (bm == null)
+    public void setImageView(String imagePath, Bitmap bitmap) {
+        if (imagePath == null || imagePath.length() <=0 || bitmap == null)
             return;
-        getBitmapsData().add(bm);
+        // validate coordinate
+        try {
+            float[] coordinat = DefaultOps.getLocationRef(imagePath);
+            if (coordinat.length <= 0) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("!")
+                        .setMessage("File '" + imagePath + "' tidak memiliki koordinat!")
+                        .setPositiveButton(android.R.string.ok, null).create().show();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        getBitmapsData().add(bitmap);
+        getBitmapMap().put(imagePath, bitmap);
         imageAdapter = new ImageAdapter(getContext(), getBitmapsData());
         gvImage.setAdapter(imageAdapter);
     }
@@ -220,9 +249,11 @@ public class FrgmnInputImages extends Fragment {
 
     public void setImageUpload(Intent data) {
         try {
-            // source http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
             Uri imageUri = data.getData();
+            Uri newImage = getImageNameFile();
+            // source http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
             InputStream input = getContext().getContentResolver().openInputStream(imageUri);
+            OutputStream output = new FileOutputStream(newImage.getPath());
             BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
             onlyBoundsOptions.inJustDecodeBounds = true;
             onlyBoundsOptions.inDither=true;//optional
@@ -242,8 +273,12 @@ public class FrgmnInputImages extends Fragment {
             bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
             input = getContext().getContentResolver().openInputStream(imageUri);
             Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+            // copy this fucking images to MetalPict folers
+            bitmap.compress(Bitmap.CompressFormat.JPEG, DefaultOps.DEFAULT_COMPRESSION, output);
+            output.flush();
+            output.close();
             input.close();
-            setImageView(bitmap);
+            setImageView(newImage.getPath(), bitmap);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -254,30 +289,33 @@ public class FrgmnInputImages extends Fragment {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 2;
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(), options);
-            setImageView(bitmap);
+            setImageView(outputFileUri.getPath(), bitmap);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
     private void setBtnTakeImage() {
-        // MENU TAKE IMAGE
+        // start camera
+        Uri outputFile = getImageNameFile();
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFile);
+        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+    }
+
+    private Uri getImageNameFile() {
+        // Directory Handling
         File newdir = new File(DefaultOps.IMAGE_DIRECTORY_NAME);
         if (!newdir.exists())
             if (!newdir.mkdir())
                 Log.d(DefaultOps.IMAGE_DIRECTORY_NAME, "Oops! Failed create "
                         + DefaultOps.IMAGE_DIRECTORY_NAME + " directory");
-        setImageNameFile(newdir.getAbsolutePath());
 
-        // start camera
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
-    }
-
-    private Uri setImageNameFile(String dir) {
-        count++;
-        String file = dir+count+".jpg";
+        // File Handling
+        String fileName = DefaultOps.dateToString(Calendar.getInstance()
+                , DefaultOps.DEFAULT_DATETIME_FORMAT);
+        String file = newdir + "/" + fileName.replace(" ", "").replace("-", "").replace(":", "")
+                + DefaultOps.DEFAULT_IMAGE_EXT;
         File newfile = new File(file);
         try {
             newfile.createNewFile();

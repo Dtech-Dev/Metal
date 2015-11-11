@@ -22,12 +22,16 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.orm.DefaultOps;
+import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ActvtMainInput extends AppCompatActivity {
 
@@ -49,7 +53,7 @@ public class ActvtMainInput extends AppCompatActivity {
 
     MtlPelanggan customer;
     MtlPelanggaran fouls;
-    MtlPelanggan foulImages;
+    MtlImagePelanggaran foulImages;
 
     private String cbLat;
     private String cbLong;
@@ -100,7 +104,11 @@ public class ActvtMainInput extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                try {
+                    saveData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -266,29 +274,41 @@ public class ActvtMainInput extends AppCompatActivity {
         }
     }
 
-    private void saveData(){
+    private void saveData() throws IOException {
         validateData();
         customer = new MtlPelanggan(getCustCode(), getCustName()
                 , getCustAddress());
-        customer.save();
-
         fouls = new MtlPelanggaran(customer, getFoulDate(), getFoulType(), getFoulTariff()
                 , new BigDecimal(getFoulDaya()));
-        fouls.save();
 
-        List<Bitmap> images = frgmnInputImages.getBitmapsData();
-
-//        frgmInputPelanggan.newInstance();
-//        frgmInputPelanggaran.newInstance();
-
+        Map<String, Bitmap> imagesData = frgmnInputImages.getBitmapMap();
+        final List<MtlImagePelanggaran> tempImage = new ArrayList<>();
+        for (String imagePath : imagesData.keySet()){
+            String image = DefaultOps.encodeImage(imagesData.get(imagePath)
+                    , DefaultOps.DEFAULT_COMPRESS_FORMAT
+                    , DefaultOps.DEFAULT_COMPRESSION);
+            float[] coordinat = DefaultOps.getLocationRef(imagePath);
+            if (coordinat.length <= 0) {
+                Toast.makeText(getBaseContext(), "Gambar '" + imagePath + "' tidak memiliki koordinat!"
+                        , Toast.LENGTH_LONG).show();
+                continue;
+            }
+            foulImages  = new MtlImagePelanggaran(fouls, image, imagePath
+                    , Float.toString(coordinat[0]), Float.toString(coordinat[1]));
+            tempImage.add(foulImages);
+        }
         new AlertDialog.Builder(this)
             .setTitle("?")
             .setMessage("Make sure your data are correct!")
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
-                    Toast.makeText(getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
                     closeit = true;
+                    customer.save();
+                    fouls.save();
+                    for (MtlImagePelanggaran data : tempImage)
+                        data.save();
+                    Toast.makeText(getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
                 }
             }).create().show();
 
