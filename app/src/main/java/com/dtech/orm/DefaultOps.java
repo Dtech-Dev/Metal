@@ -128,6 +128,7 @@ public class DefaultOps {
 			return imagePath;
 		} catch (IOException e){
 			e.printStackTrace();
+            return null;
 		}
 	}
 	
