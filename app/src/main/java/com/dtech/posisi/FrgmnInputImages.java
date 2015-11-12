@@ -216,7 +216,7 @@ public class FrgmnInputImages extends Fragment {
             if (coordinat.length <= 0) {
                 new AlertDialog.Builder(getContext())
                         .setTitle("!")
-                        .setMessage("File '" + imagePath + "' tidak memiliki koordinat!")
+                        .setMessage("GeoTAG tidak ditemukan di " + imagePath)
                         .setPositiveButton(android.R.string.ok, null).create().show();
                 return;
             }
@@ -253,6 +253,16 @@ public class FrgmnInputImages extends Fragment {
             Uri newImage = getImageNameFile();
             // source http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
             InputStream input = getContext().getContentResolver().openInputStream(imageUri);
+            String realPath = DefaultOps.getRealPathFromURI(getContext(), imageUri);
+            float[] coord = DefaultOps.getLocationRef(realPath);
+            if (coord == null || coord.length <= 0) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("!")
+                        .setMessage("GeoTAG tidak ditemukan di " + realPath)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create().show();
+                return;
+            }
             OutputStream output = new FileOutputStream(newImage.getPath());
             BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
             onlyBoundsOptions.inJustDecodeBounds = true;
@@ -272,13 +282,13 @@ public class FrgmnInputImages extends Fragment {
             bitmapOptions.inDither=true;//optional
             bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
             input = getContext().getContentResolver().openInputStream(imageUri);
-            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
             // copy this fucking images to MetalPict folers
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
             bitmap.compress(Bitmap.CompressFormat.JPEG, DefaultOps.DEFAULT_COMPRESSION, output);
             output.flush();
             output.close();
             input.close();
-			float[] coord = DefaultOps.getLocationRef(imageUri.getPath());
+            // copy coordinats attribute
 			String newImagePath = DefaultOps.setLocationRef(newImage.getPath(), coord);
             setImageView(newImagePath, bitmap);
         } catch (IOException e) {
@@ -332,9 +342,11 @@ public class FrgmnInputImages extends Fragment {
 
     private void setBtnUploadImage() {
         // MENU UPLOAD IMAGE
-        Intent intentUpload = new Intent();
+        Intent intentUpload = new Intent(Intent.ACTION_PICK
+                , android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         intentUpload.setType("image/*");
-        intentUpload.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
+//        intentUpload.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intentUpload, SELECT_PICTURE);
+//        startActivityForResult(Intent.createChooser(intentUpload, "Select Picture"), SELECT_PICTURE);
     }
 }
