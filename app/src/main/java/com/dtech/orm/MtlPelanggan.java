@@ -56,6 +56,9 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
     }
 
     public void setCode(String code) {
+        List<MtlPelanggan> check = MtlPelanggan.find(MtlPelanggan.class, "code = ?", code);
+        if (check.size() > 0)
+            throw new DuplicateException("Duplicate code found for entry " + code);
         this.code = code;
     }
 
@@ -82,7 +85,20 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
         return customer.size() > 0;
     }
 
-    public String getLastXPosition() {
+    public String[] getLastLatLong(){
+        List<MtlPelanggaran> fouls = MtlPelanggaran.find(MtlPelanggaran.class,
+                "pelanggan = ?", new String[]{getId().toString()},
+                null, "foul_date desc, id desc", "limit 1");
+        List<MtlImagePelanggaran> images = MtlImagePelanggaran.find(MtlImagePelanggaran.class,
+                "foul_id = ?", new String[]{fouls.get(0).getId().toString()},
+                null, "foul_date desc, id desc", "limit 1");
+        return images.size() > 0 ?
+                new String[]{images.get(0).getLatitude(), images.get(0).getLongitude()} :
+                null;
+    }
+
+    @Deprecated
+    public String getLastLatitude() {
         return lastXPosition;
     }
 
@@ -90,7 +106,8 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
         this.lastXPosition = lastXPosition;
     }
 
-    public String getLastYPosition() {
+    @Deprecated
+    public String getLastLongitude() {
         return lastYPosition;
     }
 

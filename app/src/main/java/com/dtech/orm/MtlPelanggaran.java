@@ -49,8 +49,8 @@ public class MtlPelanggaran extends SugarRecord<MtlPelanggaran> {
 //            if (!existInLite){
 //                MtlPelanggan mtlPelanggan = new MtlPelanggan(currentOldData.getCode(),
 //                        currentOldData.getName(), currentOldData.getAddress());
-//                mtlPelanggan.setLastXPosition(currentOldData.getLastXPosition());
-//                mtlPelanggan.setLastYPosition(currentOldData.getLastXPosition());
+//                mtlPelanggan.setLastXPosition(currentOldData.getLastLatitude());
+//                mtlPelanggan.setLastYPosition(currentOldData.getLastLatitude());
 //                mtlPelanggan.save();
 //            }
 //        }

@@ -4,11 +4,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,8 +27,8 @@ import java.util.Date;
  * Created by ADIST on 10/20/2015.
  */
 public class DefaultOps {
-    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
-    public static final String DEFAULT_DATETIME_MILI2ND_FORMAT = "yyyy-MM-dd hh:mm:ss.SSS";
+    public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATETIME_MILI2ND_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     public static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
     public static final int DEFAULT_COMPRESSION = 60;
@@ -67,6 +74,12 @@ public class DefaultOps {
         return dateToString(calendar.getTime(), format);
     }
 
+    /**
+     * Get GeoTAG reference
+     * @param imagePath Where image file located
+     * @return float[] {latitude, logitude}
+     * @throws IOException
+     */
     public static float[] getLocationRef(String imagePath) throws IOException {
         ExifInterface exif = new ExifInterface(imagePath);
         String[] result = {
@@ -97,7 +110,7 @@ public class DefaultOps {
         latitude = result[0].equals("N") ? latitude : -latitude;
         longitude = result[1].equals("E") ? longitude : -longitude;
 
-        return new float[] {longitude, latitude};
+        return new float[] {latitude, longitude};
     }
 
     private static float convertToDegree(String coordinat) {
@@ -122,7 +135,13 @@ public class DefaultOps {
         result = new Float(FloatD + (FloatM/60) + (FloatS/3600));
         return result;
     }
-	
+
+    /**
+     * Set GeoTAG Reference to bitmaps
+     * @param imagePath Where image file located
+     * @param coord float[] {latitude, longitude}
+     * @return null is failed
+     */
 	public static String setLocationRef(String imagePath, float[] coord) {
 		try {
 			// coord[0] : latitude, coord[1] : longitude
@@ -164,6 +183,25 @@ public class DefaultOps {
             if (cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    private void handleNewLocation(GoogleMap gMap, Location location, Marker marker) {
+        double currentLatitude=location.getLatitude();
+        double currentLongitude=location.getLongitude();
+
+        LatLng latLng=new LatLng(currentLatitude, currentLongitude);
+        MarkerOptions options=new MarkerOptions().position(latLng).title("You're Here");
+
+        if (marker==null) {
+            marker=gMap.addMarker(options);
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            gMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+        } else {
+            marker.remove();
+            marker=gMap.addMarker(options);
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            gMap.moveCamera(CameraUpdateFactory.zoomTo(11));
         }
     }
 }

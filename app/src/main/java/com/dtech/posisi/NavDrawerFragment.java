@@ -77,18 +77,12 @@ public class NavDrawerFragment extends Fragment {
                         startActivity(new Intent(mainActivity, ActvtMainInput.class));
                         break;
                     case 1:
-                        startActivity(new Intent(mainActivity, ActvtInputPelanggaran.class));
-                        break;
-                    case 2:
-                        startActivity(new Intent(mainActivity, FrgmInputPelanggan.class));
-                        break;
-                    case 3:
                         startActivity(new Intent(mainActivity, ActvtGalleries.class));
                         break;
-                    case 4:
+                    case 2:
                         startActivity(new Intent(mainActivity, ActvtMapsCheck.class));
                         break;
-                    case 5:
+                    case 3:
                         startActivity(new Intent(mainActivity, ActvtLogs.class));
                         break;
                 }
@@ -110,12 +104,11 @@ public class NavDrawerFragment extends Fragment {
         List<Information> data=new ArrayList<>();
 
         int[] icons = {
-            R.drawable.ic_polymer_black_24dp, R.drawable.ic_polymer_black_24dp,
             R.drawable.ic_polymer_black_24dp, R.drawable.ic_camera_enhance_black_24dp,
             R.drawable.ic_room_black_24dp, R.drawable.ic_assignment_ind_black_24dp
         };
         String[] title = {
-            "Input Data", "Input Pelanggaran", "Input Pelanggan", "Gallery",
+            "Input Data", "Gallery",
             "Check Map", "Show Log"
         };
         for (int i=0;i<title.length && i<icons.length; i++){

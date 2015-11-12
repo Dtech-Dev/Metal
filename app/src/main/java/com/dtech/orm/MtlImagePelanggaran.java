@@ -20,7 +20,7 @@ public class MtlImagePelanggaran extends SugarRecord<MtlImagePelanggaran> {
     public MtlImagePelanggaran() {}
 
     public MtlImagePelanggaran(MtlPelanggaran foulId, String image, String imagePath
-            , String longitude, String latitude) {
+            , String latitude, String longitude) {
         this(foulId, null, image, imagePath, longitude, latitude);
         String dateString = DefaultOps.dateToString(Calendar.getInstance().getTime()
                 , DefaultOps.DEFAULT_DATETIME_MILI2ND_FORMAT);

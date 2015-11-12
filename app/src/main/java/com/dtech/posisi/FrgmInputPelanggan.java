@@ -5,20 +5,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dtech.orm.MtlPelanggan;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 /**
  * Created by ADIST on 10/27/2015.
@@ -27,6 +34,7 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
         , GoogleMap.OnMyLocationButtonClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
+    private static final String TAG = FrgmInputPelanggan.class.getSimpleName();
     private EditText etCode;
     private EditText etName;
     private EditText etAddress;
@@ -93,7 +101,15 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.i(TAG, "Location Service Connected");
+        Location location=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
+
+        if (location==null){
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        } else{
+            handleNewLocation(location);
+        }
     }
 
     @Override
@@ -116,15 +132,28 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
         return false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpMapIfNeeded();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(mGoogleApiClient.isConnected()){
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-//            mMap = ((SupportMapFragment) getActivity().getSupportFragmentManager()
-//                    .findFragmentById(R.id.mapCustomersInput))
-//                    .getMap();
             SupportMapFragment mapFragment =
-                    ((SupportMapFragment) getFragmentManager()
+                    ((SupportMapFragment) getChildFragmentManager()
                             .findFragmentById(R.id.mapCustomersInput));
             if (mapFragment == null){
                 Toast.makeText(getContext(), "Can't load Maps! "
@@ -142,9 +171,6 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
     }
 
     private void setUpMap() {
-        /*lat=location.getLatitude();
-        longi = location.getLongitude();*/
-        // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
         mMap.setMyLocationEnabled(true);
     }
 
@@ -161,6 +187,12 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         ((ActvtMainInput) getActivity()).onTextChanged("code", s);
+                        List<MtlPelanggan> custs = MtlPelanggan.find(MtlPelanggan.class
+                                , "code = ?", s.toString());
+                        for (MtlPelanggan cust : custs){
+                            getEtName().setText(cust.getName());
+                            getEtAddress().setText(cust.getAddress());
+                        }
                     }
 
                     @Override
@@ -207,5 +239,27 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
                     }
                 }
         );
+    }
+
+    private void handleNewLocation(Location location) {
+        Log.d(TAG, location.toString());
+
+        currentLatitude=location.getLatitude();
+        currentLongitude=location.getLongitude();
+
+        LatLng latLng=new LatLng(currentLatitude, currentLongitude);
+
+        MarkerOptions options=new MarkerOptions().position(latLng).title("You're Here");
+
+        if (usrMarker==null) {
+            usrMarker=mMap.addMarker(options);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+        } else {
+            usrMarker.remove();
+            usrMarker=mMap.addMarker(options);
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+        }
     }
 }

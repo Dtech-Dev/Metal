@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.orm.DefaultOps;
+import com.dtech.orm.DuplicateException;
 import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
@@ -76,8 +77,6 @@ public class ActvtMainInput extends AppCompatActivity {
     private FrgmInputPelanggan frgmInputPelanggan;
     private FrgmInputPelanggaran frgmInputPelanggaran;
     private FrgmnInputImages frgmnInputImages;
-
-    boolean closeit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,22 +227,22 @@ public class ActvtMainInput extends AppCompatActivity {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            frgmInputPelanggan = new FrgmInputPelanggan();
+            frgmInputPelanggaran = new FrgmInputPelanggaran();
+            frgmnInputImages = new FrgmnInputImages();
         }
 
         @Override
         public Fragment getItem(int position) {
             switch(position){
                 case 0:
-                    frgmInputPelanggan = new FrgmInputPelanggan();
                     return frgmInputPelanggan;
                 case 1:
-                    frgmInputPelanggaran = new FrgmInputPelanggaran();
                     return frgmInputPelanggaran;
                 case 2:
-                    frgmnInputImages = new FrgmnInputImages();
                     return frgmnInputImages;
                 default:
-                    return new FrgmInputPelanggan();
+                    return null;
             }
         }
 
@@ -276,8 +275,24 @@ public class ActvtMainInput extends AppCompatActivity {
 
     private void saveData() throws IOException {
         validateData();
-        customer = new MtlPelanggan(getCustCode(), getCustName()
-                , getCustAddress());
+        boolean custExist = MtlPelanggan.custExist("code = ?", getCustCode());
+        try {
+            if (custExist) {
+                List<MtlPelanggan> customers = MtlPelanggan.find(MtlPelanggan.class, "code = ? ", getCustCode());
+                customer = customers.get(0);
+                customer.setName(getCustName());
+                customer.setAddress(getCustAddress());
+            } else {
+                customer = new MtlPelanggan(getCustCode(), getCustName()
+                        , getCustAddress());
+            }
+        } catch (DuplicateException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("!")
+                    .setMessage("Gagal menyimpan data. Mungkin karena duplikasi.")
+                    .setPositiveButton(android.R.string.ok, null).create().show();
+        }
+
         fouls = new MtlPelanggaran(customer, getFoulDate(), getFoulType(), getFoulTariff()
                 , new BigDecimal(getFoulDaya()));
 
@@ -299,21 +314,18 @@ public class ActvtMainInput extends AppCompatActivity {
         }
         new AlertDialog.Builder(this)
             .setTitle("?")
-            .setMessage("Make sure your data are correct!")
+            .setMessage("Pastikan data yang diinputkan sudah benar!")
             .setNegativeButton(android.R.string.cancel, null)
             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
-                    closeit = true;
                     customer.save();
                     fouls.save();
                     for (MtlImagePelanggaran data : tempImage)
                         data.save();
                     Toast.makeText(getBaseContext(), "Data Sudah Disimpan!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }).create().show();
-
-        if (closeit)
-            this.finish();
     }
 
     private boolean validateData() {

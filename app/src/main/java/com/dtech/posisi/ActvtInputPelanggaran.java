@@ -259,8 +259,8 @@ public class ActvtInputPelanggaran extends AppCompatActivity implements GoogleAp
                         for (MtlPelanggan custx : cust) {
                             etName.setText(custx.getName());
                             etAddress.setText(custx.getAddress());
-//                            tLat.setText(custx.getLastXPosition());
-//                            tLong.setText(custx.getLastYPosition());
+//                            tLat.setText(custx.getLastLatitude());
+//                            tLong.setText(custx.getLastLongitude());
 //                            setSpinnerTarif(custx.getTarifdaya()); // TODO, maybe we can pass it from MtlPelanggan class
                         }
                     } else {

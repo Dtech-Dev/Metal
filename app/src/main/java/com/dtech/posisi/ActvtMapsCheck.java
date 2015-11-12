@@ -197,6 +197,7 @@ public class ActvtMapsCheck extends FragmentActivity implements
     }
 
     private void handleNewLocation(Location location) {
+        // TODO move it to DefaultOps class
         Log.d(TAG, location.toString());
 
          currentLatitude=location.getLatitude();
