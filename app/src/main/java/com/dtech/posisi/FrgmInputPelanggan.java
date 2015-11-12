@@ -103,12 +103,10 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location Service Connected");
         Location location=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-
         if (location==null){
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         } else{
-            handleNewLocation(location);
+            handleNewLocation(location, null);
         }
     }
 
@@ -192,6 +190,17 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
                         for (MtlPelanggan cust : custs){
                             getEtName().setText(cust.getName());
                             getEtAddress().setText(cust.getAddress());
+                            String[] lastLatLong = cust.getLastLatLong();
+                            if (lastLatLong == null || lastLatLong.length <= 0)
+                                continue;
+                            Location custLocation = new Location("");
+                            custLocation.setLatitude(Double.parseDouble(lastLatLong[0]));
+                            custLocation.setLongitude(Double.parseDouble(lastLatLong[1]));
+                            handleNewLocation(custLocation, cust.getCode() + ":" + cust.getName());
+                        }
+                        if (custs.size() <= 0){
+                            getEtName().setText(null);
+                            getEtAddress().setText(null);
                         }
                     }
 
@@ -241,15 +250,15 @@ public class FrgmInputPelanggan extends Fragment implements LocationListener
         );
     }
 
-    private void handleNewLocation(Location location) {
+    private void handleNewLocation(Location location, String title) {
         Log.d(TAG, location.toString());
-
         currentLatitude=location.getLatitude();
         currentLongitude=location.getLongitude();
-
+        if (title == null || title.length() <=0)
+            title = "Lokasi anda sekarang.";
         LatLng latLng=new LatLng(currentLatitude, currentLongitude);
 
-        MarkerOptions options=new MarkerOptions().position(latLng).title("You're Here");
+        MarkerOptions options=new MarkerOptions().position(latLng).title(title);
 
         if (usrMarker==null) {
             usrMarker=mMap.addMarker(options);

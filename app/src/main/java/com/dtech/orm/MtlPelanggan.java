@@ -88,10 +88,10 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
     public String[] getLastLatLong(){
         List<MtlPelanggaran> fouls = MtlPelanggaran.find(MtlPelanggaran.class,
                 "pelanggan = ?", new String[]{getId().toString()},
-                null, "foul_date desc, id desc", "limit 1");
+                null, "foul_date desc, id desc", "1");
         List<MtlImagePelanggaran> images = MtlImagePelanggaran.find(MtlImagePelanggaran.class,
                 "foul_id = ?", new String[]{fouls.get(0).getId().toString()},
-                null, "foul_date desc, id desc", "limit 1");
+                null, "foul_date desc, id desc", "1");
         return images.size() > 0 ?
                 new String[]{images.get(0).getLatitude(), images.get(0).getLongitude()} :
                 null;
