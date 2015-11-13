@@ -38,10 +38,6 @@
             android:label="@string/title_activity_loc" >
         </activity>
         <activity
-            android:name=".CekMapsActivity"
-            android:label="@string/title_activity_cek_maps" >
-        </activity>
-        <activity
             android:name=".ActvtLogs"
             android:label="@string/title_activity_show_log" >
         </activity>

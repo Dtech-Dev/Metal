@@ -30,7 +30,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.dtech.posisi.CekMapsActivity"/>
+        className = "com.dtech.posisi.ActvtMapsCheck"/>
       <point      
         x = "2028"      
         y = "964"/>

@@ -42,6 +42,7 @@ public class DefaultOps {
     public static final String EMPTY_STRING = "";
     public static final String IMAGE_DIRECTORY_NAME = Environment.
             getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MetalImages/";
+    public static final int DEFAULT_RADIUS = 10000;
 
     public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
             , int compressQuality){

@@ -2,7 +2,6 @@ package com.dtech.posisi;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +65,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
             public void onClick(View view) {
                 handleLat = holder.lLat.getText().toString();
                 handleLong = holder.lLong.getText().toString();
-                Intent gotoMaps = new Intent(context, CekMapsActivity.class);
+                Intent gotoMaps = new Intent(context, ActvtMapsCheck.class);
                 gotoMaps.putExtra("intentLat", handleLat);
                 gotoMaps.putExtra("intentLong", handleLong);
                 context.startActivity(gotoMaps);

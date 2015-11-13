@@ -89,6 +89,8 @@ public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
         List<MtlPelanggaran> fouls = MtlPelanggaran.find(MtlPelanggaran.class,
                 "pelanggan = ?", new String[]{getId().toString()},
                 null, "foul_date desc, id desc", "1");
+        if (fouls.size() <= 0)
+            return null;
         List<MtlImagePelanggaran> images = MtlImagePelanggaran.find(MtlImagePelanggaran.class,
                 "foul_id = ?", new String[]{fouls.get(0).getId().toString()},
                 null, "foul_date desc, id desc", "1");

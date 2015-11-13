@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.dtech.orm.DefaultOps;
+import com.dtech.orm.MtlPelanggan;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -14,10 +16,15 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ActvtMapsCheck extends FragmentActivity implements
         LocationListener, GoogleMap.OnMyLocationButtonClickListener,
@@ -35,12 +42,9 @@ public class ActvtMapsCheck extends FragmentActivity implements
     private double longFromAdapter;
     private double locthr=currentLongitude+0.3;
 
-    String latHandled;
-    String longHandled;
+    public static final String TAG = ActvtMapsCheck.class.getSimpleName();
 
-
-    public static final String TAG=ActvtMapsCheck.class.getSimpleName();
-
+    private Map<String, MarkerOptions> markerColections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,31 +61,27 @@ public class ActvtMapsCheck extends FragmentActivity implements
                 .setInterval(10 * 1000)
                 .setFastestInterval(1 * 1000);
 
-
+        setMarkers();
         setUpMapIfNeeded();
-        intentFromAdapter();
-        convertingStringFromAdapter();
     }
 
-    private void intentFromAdapter() {
-        //latHandled=getIntent().getExtras().getString("intentLat");
-        //longHandled = getIntent().getExtras().getString("intentLong");
-        //Toast.makeText(this,"lat= "+latHandled+", long= "+longHandled,Toast.LENGTH_SHORT).show();
+    private void setMarkers() {
+        List<MtlPelanggan> customers = MtlPelanggan.find(MtlPelanggan.class, "active = ?", "1");
+        markerColections = new HashMap<>();
+        for (MtlPelanggan cust : customers) {
+            String[] lastLatLong = cust.getLastLatLong();
+            if (lastLatLong == null)
+                continue;
+            double lat = Double.parseDouble(lastLatLong[0]);
+            double lon = Double.parseDouble(lastLatLong[1]);
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(new LatLng(lat, lon))
+                    .title(cust.getCode() + ":" + cust.getName())
+                    .icon(BitmapDescriptorFactory.
+                            fromResource(R.drawable.ic_person_pin_black_24dp));
+            markerColections.put(cust.getCode(), markerOptions);
+        }
     }
-
-    private void convertingStringFromAdapter() {
-        //latFromAdapter = Double.parseDouble(latHandled);
-        //longFromAdapter = Double.parseDouble(longHandled);
-        /*try {
-            latFromAdapter = Double.parseDouble(latHandled);
-            longFromAdapter = Double.parseDouble(longHandled);
-            Toast.makeText(this,"success converting", Toast.LENGTH_SHORT).show();
-        } catch (NumberFormatException e) {
-            //e.printStackTrace();
-            Toast.makeText(this,"failed converting", Toast.LENGTH_SHORT).show();
-        }*/
-    }
-
 
     @Override
     protected void onResume() {
@@ -122,9 +122,7 @@ public class ActvtMapsCheck extends FragmentActivity implements
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-
                 setUpMap();
-
             }
         }
     }
@@ -136,77 +134,39 @@ public class ActvtMapsCheck extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        /*lat=location.getLatitude();
-        longi = location.getLongitude();*/
-
-      // mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-
         mMap.setMyLocationEnabled(true);
-
-
-
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-        /*LocationManager locationManager=(LocationManager)getSystemService(LOCATION_SERVICE);
-        Criteria criteria=new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        if (latitude==0 && longitude==0 ){
-            Toast.makeText(CekMapsActivity.this,"Null", Toast.LENGTH_SHORT).show();
-        }
-        else{Toast.makeText(CekMapsActivity.this,
-                "Lat = "+latitude+" long = "+longitude,Toast.LENGTH_SHORT).show();}*/
-       // mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Here"));
-       // LatLng latLng = new LatLng(latitude, longitude);
-
         return false;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-       /* usrMarker=mMap.addMarker((new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude))
-        .title("you're here")));
 
-        if (usrMarker==null){
-            handleNewLocation(location);
-        } else{
-            usrMarker.remove();
-            handleNewLocation(location);
-        }*/
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-
         Log.i(TAG, "Location Service Connected");
         Location location=LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-
         if (location==null){
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient
+                    , mLocationRequest, this);
         } else{
             handleNewLocation(location);
         }
-
-
     }
 
     private void handleNewLocation(Location location) {
-        // TODO move it to DefaultOps class
         Log.d(TAG, location.toString());
-
-         currentLatitude=location.getLatitude();
-         currentLongitude=location.getLongitude();
+        currentLatitude=location.getLatitude();
+        currentLongitude=location.getLongitude();
 
         LatLng latLng=new LatLng(currentLatitude, currentLongitude);
-
-        MarkerOptions options=new MarkerOptions().position(latLng).title("You're Here");
-
+        MarkerOptions options=new MarkerOptions().position(latLng).title("Anda disini.");
 
         if (usrMarker==null){
             usrMarker=mMap.addMarker(options);
@@ -221,20 +181,28 @@ public class ActvtMapsCheck extends FragmentActivity implements
 
         CircleOptions circleOptions=new CircleOptions()
                 .center(new LatLng(currentLatitude, currentLongitude))
-                .radius(10000)
+                .radius(DefaultOps.DEFAULT_RADIUS)
                 .strokeColor(0xff009688)
-                .strokeWidth(10)
+                .strokeWidth(1)
                 .fillColor(0x80B2DFDB);
         mMap.addCircle(circleOptions);
 
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(latFromAdapter, longFromAdapter)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
+
+
+        for (String code : markerColections.keySet()){
+            mMap.addMarker(markerColections.get(code));
+        }
+//        MarkerOptions markerOptions = new MarkerOptions()
+//                .position(new LatLng(latFromAdapter, longFromAdapter))
+//                .title("Marker")
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp));
+//        mMap.addMarker(markerOptions);
        /* mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.003, (currentLongitude)+0.003)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
         mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.005, currentLongitude)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));*/
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
         Log.i(TAG, "Suspended, please reconnect");
     }
 
