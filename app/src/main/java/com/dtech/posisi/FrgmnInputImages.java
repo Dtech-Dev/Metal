@@ -273,7 +273,8 @@ public class FrgmnInputImages extends Fragment {
             if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
                 return;
 
-            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ?
+                    onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
             int thumbnailSize = height > width ? height : width;
             double ratio = (originalSize > thumbnailSize) ? (originalSize / thumbnailSize) : 1.0;
 
@@ -291,15 +292,16 @@ public class FrgmnInputImages extends Fragment {
             // copy coordinats attribute
 			String newImagePath = DefaultOps.setLocationRef(newImage.getPath(), coord);
             setImageView(newImagePath, bitmap);
-        } catch (IOException e) {
+        } catch (IOException|NullPointerException e) {
             e.printStackTrace();
         }
     }
 
     public void previewCaptured() {
         try {
+            // TODO need more commpression
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
+            options.inSampleSize = getPowerOfTwoForSampleRatio(1.0);
             final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(), options);
             setImageView(outputFileUri.getPath(), bitmap);
         } catch (NullPointerException e) {
