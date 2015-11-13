@@ -187,7 +187,7 @@ public class ActvtMapsCheck extends FragmentActivity implements
             mMap.moveCamera(CameraUpdateFactory.zoomTo(DefaultOps.DEFAULT_MAPS_ZOOM));
         }
 
-        CircleOptions circleOptions=new CircleOptions()
+        CircleOptions circleOptions = new CircleOptions()
                 .center(currentLatLang)
                 .radius(DefaultOps.DEFAULT_RADIUS)
                 .strokeColor(0xff009688)
@@ -197,6 +197,17 @@ public class ActvtMapsCheck extends FragmentActivity implements
 
         // set Markers
         for (String code : markerColections.keySet()){
+            MarkerOptions mc = markerColections.get(code);
+            float[] distance = new float[2];
+            double[] endCoordinat = new double[]{
+                    mc.getPosition().latitude,
+                    mc.getPosition().longitude
+            };
+            Location.distanceBetween(currentLatitude, currentLongitude
+                    , endCoordinat[0], endCoordinat[1]
+                    , distance);
+            if (distance[0] > circleOptions.getRadius())
+                continue;
             mMap.addMarker(markerColections.get(code));
         }
     }
