@@ -66,6 +66,7 @@ public class MainCustomerAdapter extends RecyclerView.Adapter<MainCustomerAdapte
                 handleLat = holder.lLat.getText().toString();
                 handleLong = holder.lLong.getText().toString();
                 Intent gotoMaps = new Intent(context, ActvtMapsCheck.class);
+                // TODO pay attention for this, accepted intent is (MtlPelanggan)"selectedCustomer"
                 gotoMaps.putExtra("intentLat", handleLat);
                 gotoMaps.putExtra("intentLong", handleLong);
                 context.startActivity(gotoMaps);

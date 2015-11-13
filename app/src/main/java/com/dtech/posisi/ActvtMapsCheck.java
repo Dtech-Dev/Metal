@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,14 +34,8 @@ public class ActvtMapsCheck extends FragmentActivity implements
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     //private Location location;
     private GoogleApiClient mGoogleApiClient;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST=9000;
     private LocationRequest mLocationRequest;
     private Marker usrMarker;
-    private double currentLatitude;
-    private double currentLongitude;
-    private double latFromAdapter;
-    private double longFromAdapter;
-    private double locthr=currentLongitude+0.3;
 
     public static final String TAG = ActvtMapsCheck.class.getSimpleName();
 
@@ -59,14 +54,26 @@ public class ActvtMapsCheck extends FragmentActivity implements
         mLocationRequest=LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
-                .setFastestInterval(1 * 1000);
+                .setFastestInterval(1000);
 
         setMarkers();
         setUpMapIfNeeded();
     }
 
     private void setMarkers() {
-        List<MtlPelanggan> customers = MtlPelanggan.find(MtlPelanggan.class, "active = ?", "1");
+        Bundle passedIntent = getIntent().getExtras();
+        List<MtlPelanggan> customers = new ArrayList<>();
+        if (passedIntent != null) {
+            MtlPelanggan selectedCustomer = (MtlPelanggan) getIntent()
+                    .getExtras().get("selectedCustomer");
+            customers.add(selectedCustomer);
+        }
+
+        if (customers.size() <= 0){
+            customers.clear();
+            customers = MtlPelanggan.find(MtlPelanggan.class, "active = ?", "1");
+        }
+
         markerColections = new HashMap<>();
         for (MtlPelanggan cust : customers) {
             String[] lastLatLong = cust.getLastLatLong();
@@ -118,7 +125,8 @@ public class ActvtMapsCheck extends FragmentActivity implements
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapCustomers))
+            mMap = ((SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.mapCustomers))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
@@ -162,43 +170,35 @@ public class ActvtMapsCheck extends FragmentActivity implements
 
     private void handleNewLocation(Location location) {
         Log.d(TAG, location.toString());
-        currentLatitude=location.getLatitude();
-        currentLongitude=location.getLongitude();
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
 
-        LatLng latLng=new LatLng(currentLatitude, currentLongitude);
-        MarkerOptions options=new MarkerOptions().position(latLng).title("Anda disini.");
+        LatLng currentLatLang = new LatLng(currentLatitude, currentLongitude);
+        MarkerOptions options = new MarkerOptions().position(currentLatLang).title("Anda disini.");
 
         if (usrMarker==null){
             usrMarker=mMap.addMarker(options);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLang));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(DefaultOps.DEFAULT_MAPS_ZOOM));
         } else{
             usrMarker.remove();
             usrMarker=mMap.addMarker(options);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(11));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLang));
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(DefaultOps.DEFAULT_MAPS_ZOOM));
         }
 
         CircleOptions circleOptions=new CircleOptions()
-                .center(new LatLng(currentLatitude, currentLongitude))
+                .center(currentLatLang)
                 .radius(DefaultOps.DEFAULT_RADIUS)
                 .strokeColor(0xff009688)
-                .strokeWidth(1)
+                .strokeWidth(DefaultOps.DEFAULT_MAPS_STROKE_WIDTH)
                 .fillColor(0x80B2DFDB);
         mMap.addCircle(circleOptions);
 
-
-
+        // set Markers
         for (String code : markerColections.keySet()){
             mMap.addMarker(markerColections.get(code));
         }
-//        MarkerOptions markerOptions = new MarkerOptions()
-//                .position(new LatLng(latFromAdapter, longFromAdapter))
-//                .title("Marker")
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp));
-//        mMap.addMarker(markerOptions);
-       /* mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.003, (currentLongitude)+0.003)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));
-        mMap.addMarker(new MarkerOptions().position(new LatLng((currentLatitude)+0.005, currentLongitude)).title("Marker").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person_pin_black_24dp)));*/
     }
 
     @Override
@@ -210,12 +210,14 @@ public class ActvtMapsCheck extends FragmentActivity implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if(connectionResult.hasResolution()){
             try{
-                connectionResult.startResolutionForResult(this,CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                connectionResult.startResolutionForResult(this
+                        , DefaultOps.CONNECTION_FAILURE_RESOLUTION_REQUEST);
             } catch (IntentSender.SendIntentException e) {
                 e.printStackTrace();
             }
         }else{
-            Log.i(TAG, "Location services connection failed with code "+connectionResult.getErrorCode());
+            Log.i(TAG, "Location services connection failed with code "
+                    + connectionResult.getErrorCode());
         }
     }
 }
