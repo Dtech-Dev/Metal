@@ -15,5 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class com.dtech.orm.Customer{*;}
--keep class com.dtech.orm.Pelanggaran{*;}
+#-dontskipnonpubliclibraryclassmembers
+-ignorewarnings
+-keep class org.dtech.orm.** { *; }
