@@ -59,16 +59,4 @@
         </FrameLayout>
 
     </TableLayout>
-
-    <!--<include
-        android:layout_width="396dp"
-        android:layout_height="wrap_content"
-        layout="@layout/app_bar"
-        android:layout_alignParentTop="true"
-        android:id="@+id/barInputCust"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />-->
-
 </RelativeLayout>

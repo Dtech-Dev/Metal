@@ -3,8 +3,10 @@ package com.dtech.posisi;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlPelanggan;
@@ -40,6 +42,7 @@ public class ActvtMapsCheck extends FragmentActivity implements
     public static final String TAG = ActvtMapsCheck.class.getSimpleName();
 
     private Map<String, MarkerOptions> markerColections;
+    private int circleRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,21 @@ public class ActvtMapsCheck extends FragmentActivity implements
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
                 .setFastestInterval(1000);
-
+        circleRadius = DefaultOps.DEFAULT_RADIUS;
         setMarkers();
         setUpMapIfNeeded();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu();
+            }
+        });
+    }
+
+    private void showMenu() {
+
     }
 
     private void setMarkers() {
@@ -189,7 +204,7 @@ public class ActvtMapsCheck extends FragmentActivity implements
 
         CircleOptions circleOptions = new CircleOptions()
                 .center(currentLatLang)
-                .radius(DefaultOps.DEFAULT_RADIUS)
+                .radius(circleRadius)
                 .strokeColor(0xff009688)
                 .strokeWidth(DefaultOps.DEFAULT_MAPS_STROKE_WIDTH)
                 .fillColor(0x80B2DFDB);
