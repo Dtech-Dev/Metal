@@ -3,15 +3,36 @@
     android:layout_height="match_parent" tools:context="com.dtech.posisi.FrgmnInputImages">
 
     <!-- TODO: Update blank fragment layout -->
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:id="@+id/imgbtn"
+        android:background="@drawable/no_image_large"/>
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_toRightOf="@+id/imgbtn"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/imgvi"/>
 
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/imgbtn"
         android:id="@+id/gridViewImage"
         android:layout_gravity="left|top"
         android:choiceMode="singleChoice"
         android:layoutMode="opticalBounds"
         android:numColumns="3"
         android:stretchMode="columnWidth" />
+
+</RelativeLayout>
+
+
+
 
 </FrameLayout>
