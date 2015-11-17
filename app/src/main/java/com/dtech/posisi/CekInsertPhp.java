@@ -9,20 +9,19 @@ import android.widget.EditText;
 
 import com.dtech.orm.MtlPelanggan;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+
+//import org.apache.http.HttpEntity;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.NameValuePair;
+//import org.apache.http.client.entity.UrlEncodedFormEntity;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.impl.client.DefaultHttpClient;
+//import org.apache.http.message.BasicNameValuePair;
 
 
 public class CekInsertPhp extends AsyncTask<String, String, String> {
@@ -116,27 +115,27 @@ public class CekInsertPhp extends AsyncTask<String, String, String> {
 
 
 
-            ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
-
-            values.add(new BasicNameValuePair("code", codeP));
-            values.add(new BasicNameValuePair("nama", nameP));
-            values.add(new BasicNameValuePair("alamat", addressP));
-            values.add(new BasicNameValuePair("lastX", lastX));
-            values.add(new BasicNameValuePair("lastY", lastY));
-            //values.add(new BasicNameValuePair("alamat", active));
-
-
-
-            try {
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost("http://droidsense.web.id/metal/insert.php");
-                httpPost.setEntity(new UrlEncodedFormEntity(values));
-                HttpResponse response = httpClient.execute(httpPost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            } catch (Exception e) {
-
-            }
+//            ArrayList<NameValuePair> values = new ArrayList<NameValuePair>();
+//
+//            values.add(new BasicNameValuePair("code", codeP));
+//            values.add(new BasicNameValuePair("nama", nameP));
+//            values.add(new BasicNameValuePair("alamat", addressP));
+//            values.add(new BasicNameValuePair("lastX", lastX));
+//            values.add(new BasicNameValuePair("lastY", lastY));
+//            //values.add(new BasicNameValuePair("alamat", active));
+//
+//
+//
+//            try {
+//                DefaultHttpClient httpClient = new DefaultHttpClient();
+//                HttpPost httpPost = new HttpPost("http://droidsense.web.id/metal/insert.php");
+//                httpPost.setEntity(new UrlEncodedFormEntity(values));
+//                HttpResponse response = httpClient.execute(httpPost);
+//                HttpEntity entity = response.getEntity();
+//                is = entity.getContent();
+//            } catch (Exception e) {
+//
+//            }
 
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));

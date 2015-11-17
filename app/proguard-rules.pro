@@ -16,6 +16,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-#-dontskipnonpubliclibraryclassmembers
--ignorewarnings
--keep class com.dtech.orm.** { *; }
+-keep class com.dtech.** { *; }
+-dontwarn okio.**
+-dontwarn com.squareup.**
+

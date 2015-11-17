@@ -30,7 +30,6 @@ android {
         }
         debug {
             signingConfig signingConfigs.config
-            proguardFile '/home/aris/AndroidStudioProjects/repo/Metal/app/proguard-rules.pro'
         }
     }
     useLibrary 'org.apache.http.legacy'
