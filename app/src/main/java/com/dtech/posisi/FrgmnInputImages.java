@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.dtech.orm.DefaultOps;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,9 +62,9 @@ public class FrgmnInputImages extends Fragment {
     private int width;
     private int height;
     private int count = 0;
-    Uri outputFileUri;
 
     private ImageAdapter imageAdapter;
+    private String currentTempImageFile;
 
     public FrgmnInputImages() {
         // Required empty public constructor
@@ -120,6 +122,14 @@ public class FrgmnInputImages extends Fragment {
 
     public void setBitmapMap(Map<String, Bitmap> bitmapMap) {
         this.bitmapMap = bitmapMap;
+    }
+
+    public String getCurrentTempImageFile() {
+        return currentTempImageFile;
+    }
+
+    public void setCurrentTempImageFile(String currentTempImageFile) {
+        this.currentTempImageFile = currentTempImageFile;
     }
 
     /**
@@ -263,7 +273,6 @@ public class FrgmnInputImages extends Fragment {
                         .create().show();
                 return;
             }
-            OutputStream output = new FileOutputStream(newImage.getPath());
             BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
             onlyBoundsOptions.inJustDecodeBounds = true;
             onlyBoundsOptions.inDither=true;//optional
@@ -283,12 +292,11 @@ public class FrgmnInputImages extends Fragment {
             bitmapOptions.inDither=true;//optional
             bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
             input = getContext().getContentResolver().openInputStream(imageUri);
+            OutputStream output = new FileOutputStream(newImage.getPath());
             // copy this fucking images to MetalPict folers
             Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
             bitmap.compress(Bitmap.CompressFormat.JPEG, DefaultOps.DEFAULT_COMPRESSION, output);
-            output.flush();
-            output.close();
-            input.close();
+            output.flush(); output.close(); input.close();
             // copy coordinats attribute
 			String newImagePath = DefaultOps.setLocationRef(newImage.getPath(), coord);
             setImageView(newImagePath, bitmap);
@@ -299,25 +307,70 @@ public class FrgmnInputImages extends Fragment {
 
     public void previewCaptured() {
         try {
-            // TODO need more commpression
+            Uri newImage = getImageNameFile();
+            // source http://stackoverflow.com/questions/3879992/get-bitmap-from-an-uri-android
+            InputStream input = new FileInputStream(getCurrentTempImageFile());
+            String realPath = getCurrentTempImageFile().replace("file:", "");
+            float[] coord = DefaultOps.getLocationRef(realPath);
+            if (coord == null || coord.length <= 0) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle("!")
+                        .setMessage("GeoTAG tidak ditemukan di " + realPath)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create().show();
+                return;
+            }
+            BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+            onlyBoundsOptions.inJustDecodeBounds = true;
+            onlyBoundsOptions.inDither=true;//optional
+            onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+            BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+            input.close();
+            if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
+                return;
+
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ?
+                    onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+            int thumbnailSize = height > width ? height : width;
+            double ratio = (originalSize > thumbnailSize) ? (originalSize / thumbnailSize) : 1.0;
+
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = getPowerOfTwoForSampleRatio(1.0);
-            final Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(), options);
-            setImageView(outputFileUri.getPath(), bitmap);
-        } catch (NullPointerException e) {
+            options.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+            options.inDither=true;//optional
+            options.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+
+            InputStream otherInput = new FileInputStream(getCurrentTempImageFile());
+            String newImagePath = newImage.getPath();
+            OutputStream output = new FileOutputStream(newImagePath);
+
+            Bitmap bitmap = BitmapFactory.decodeStream(otherInput, null, options);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, DefaultOps.DEFAULT_COMPRESSION, output);
+            output.flush(); output.close(); otherInput.close();
+            newImagePath = DefaultOps.setLocationRef(newImage.getPath(), coord);
+            setImageView(newImagePath, bitmap);
+        } catch (NullPointerException|IOException e) {
             e.printStackTrace();
         }
     }
 
     private void setBtnTakeImage() {
         // start camera
-        Uri outputFile = getImageNameFile();
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFile);
-        startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+        try {
+            String fileTempName = DefaultOps.generateRandomString(6, DefaultOps.Mode.ALPHANUMERIC);
+            File imageTempFile = File.createTempFile(fileTempName, ".jpg"
+                    , Environment
+                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+            setCurrentTempImageFile(imageTempFile.getAbsolutePath());
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageTempFile));
+            startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Uri getImageNameFile() {
+        Uri outputFileUri;
         // Directory Handling
         File newdir = new File(DefaultOps.IMAGE_DIRECTORY_NAME);
         if (!newdir.exists())
