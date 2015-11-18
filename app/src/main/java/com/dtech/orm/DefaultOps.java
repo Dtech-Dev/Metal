@@ -40,12 +40,17 @@ public class DefaultOps {
     //URL untuk ambil data dari json file
     public static final String URL_CUSTOMER = "http://droidsense.web.id/metal/customer.json";
     public static final String EMPTY_STRING = "";
-    public static final String IMAGE_DIRECTORY_NAME = Environment.
-            getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MetalImages/";
+    public static final String DEFAULT_TEMP_IMAGE_DIR = Environment
+            .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/";
+    public static final String IMAGE_DIRECTORY_NAME = DEFAULT_TEMP_IMAGE_DIR + "MetalImages/";
     public static final int DEFAULT_RADIUS = 10000;
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int DEFAULT_MAPS_ZOOM = 11;
     public final static int DEFAULT_MAPS_STROKE_WIDTH = 2;
+
+    public static enum Mode {
+        ALPHA, ALPHANUMERIC, NUMERIC
+    }
 
     public static String encodeImage(Bitmap image, Bitmap.CompressFormat compresFormat
             , int compressQuality){
@@ -207,5 +212,34 @@ public class DefaultOps {
             gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             gMap.moveCamera(CameraUpdateFactory.zoomTo(11));
         }
+    }
+
+    public static String generateRandomString(int length, Mode mode) throws RuntimeException {
+
+        StringBuffer buffer = new StringBuffer();
+        String characters = "";
+
+        switch(mode){
+
+            case ALPHA:
+                characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                break;
+
+            case ALPHANUMERIC:
+                characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+                break;
+
+            case NUMERIC:
+                characters = "1234567890";
+                break;
+        }
+
+        int charactersLength = characters.length();
+
+        for (int i = 0; i < length; i++) {
+            double index = Math.random() * charactersLength;
+            buffer.append(characters.charAt((int) index));
+        }
+        return buffer.toString();
     }
 }
