@@ -202,7 +202,7 @@ public class FrgmnInputImages extends Fragment {
                 return imgButton;
             } else {
                 ImageView imageView = convertView == null ? new ImageView(mContext) : (ImageView) convertView;
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(width/3, height/4));
+                imageView.setLayoutParams(new GridView.LayoutParams(width/3, height/4));
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setPadding(8, 8, 8, 8);
                 imageView.setImageBitmap(getBitmapsData().get(position));
