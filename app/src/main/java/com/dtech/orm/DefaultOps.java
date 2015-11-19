@@ -46,6 +46,7 @@ public class DefaultOps {
     public static final int DEFAULT_RADIUS = 10000;
     public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int DEFAULT_MAPS_ZOOM = 11;
+    public final static int DEFAULT_FASTEST_INTERVAL = 1000; // 1 second
     public final static int DEFAULT_MAPS_STROKE_WIDTH = 2;
 
     public static enum Mode {
@@ -56,7 +57,7 @@ public class DefaultOps {
             , int compressQuality){
         if (compresFormat == null)
             compresFormat = DEFAULT_COMPRESS_FORMAT;
-        if (compressQuality < 60)
+        if (compressQuality < DEFAULT_COMPRESSION)
             compressQuality = DEFAULT_COMPRESSION;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(compresFormat, compressQuality, stream);
