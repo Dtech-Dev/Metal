@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 
+import com.dtech.MetalAppsGlobalClass;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -106,13 +107,13 @@ public class DefaultOps {
             }
         }
 
-        float[] res = new float[]{};
         if (!pass){
             // try one more time!
-            // sakasline isi coding e podho.. :v :v
-            if (!exif.getLatLong(res))
-                return null;
-            return res;
+            float[] curLatLong = MetalAppsGlobalClass.getCurrentLatLong();
+            for (float i : curLatLong)
+                if (i == 0.0)
+                    return null;
+            return curLatLong;
         }
         float latitude = convertToDegree(result[2]);
         float longitude = convertToDegree(result[3]);

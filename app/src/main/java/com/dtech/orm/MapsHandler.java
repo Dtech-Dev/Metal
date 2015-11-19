@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.dtech.MetalAppsGlobalClass;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -97,6 +98,10 @@ public class MapsHandler implements LocationListener
     public void handleNewLocation(Location location, String title) {
         setCurrentLattitude(location.getLatitude());
         setCurrentLongitude(location.getLongitude());
+
+        MetalAppsGlobalClass.currentLattitude = (float) getCurrentLattitude();
+        MetalAppsGlobalClass.currentLongitude = (float) getCurrentLongitude();
+
         if (title == null || title.length() <=0)
             title = "Lokasi anda sekarang.";
 
