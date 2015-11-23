@@ -11,6 +11,7 @@
     <style name="AppTheme" parent="android:Theme.Material">
         <!-- theme customizations -->
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
