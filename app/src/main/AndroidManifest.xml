@@ -33,23 +33,8 @@
             android:label="@string/title_activity_main2" >
         </activity>
         <activity
-            android:name=".LocActivity"
-            android:label="@string/title_activity_loc" >
-        </activity>
-        <activity
             android:name=".ActvtLogs"
             android:label="@string/title_activity_show_log" >
-        </activity>
-        <activity
-            android:name=".ActvtInputPelanggaran"
-            android:label="@string/title_activity_input" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".InputActivity"
-            android:label="@string/title_activity_input" >
         </activity>
         <activity
             android:name=".ActvtGalleries"

@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.dtech.orm.Pelanggaran;
+import com.dtech.orm.DefaultOps;
+import com.dtech.orm.MtlImagePelanggaran;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
 public class GalleryAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Pelanggaran> imgCustomer;
+    private List<MtlImagePelanggaran> images;
     private static LayoutInflater inflater = null;
 
-    public GalleryAdapter(Context context, List<Pelanggaran> imgCustomer){
-        this.setImgCustomer(imgCustomer);
+    public GalleryAdapter(Context context, List<MtlImagePelanggaran> images){
+        this.setImages(images);
         this.setContext(context);
         setInflater((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
     }
@@ -36,7 +37,7 @@ public class GalleryAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return getImgCustomer().size();
+        return getImages().size();
     }
 
     @Override
@@ -47,7 +48,6 @@ public class GalleryAdapter extends BaseAdapter {
     @Override
     public long getItemId(int i) {
         return 0;
-
     }
 
     @Override
@@ -58,25 +58,22 @@ public class GalleryAdapter extends BaseAdapter {
         }
 
         ImageView item = (ImageView)view.findViewById(R.id.imageRow);
-        Pelanggaran imgCust = getImgCustomer().get(i);
-        String lastImage = imgCust.getImageTest();
+        MtlImagePelanggaran imgCust = getImages().get(i);
+        String lastImage = imgCust.getImage();
         if (lastImage != null) {
-            item.setImageBitmap(Pelanggaran.decodeImage(lastImage));
+            item.setImageBitmap(DefaultOps.decodeImage(lastImage));
         } else {
             item.setBackgroundResource(R.drawable.no_image_large);
         }
-
-        //item.setImageBitmap();
-
         return view;
     }
 
-    public List<Pelanggaran> getImgCustomer() {
-        return imgCustomer;
+    public List<MtlImagePelanggaran> getImages() {
+        return images;
     }
 
-    public void setImgCustomer(List<Pelanggaran> imgCustomer) {
-        this.imgCustomer = imgCustomer;
+    public void setImages(List<MtlImagePelanggaran> images) {
+        this.images = images;
     }
 
     public Context getContext() {

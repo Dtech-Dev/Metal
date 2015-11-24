@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.posisi.DetailActivity;
 import com.dtech.posisi.R;
@@ -43,10 +44,9 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
         holder.address.setText(dataCustomer.getAddress());
-//        holder.lastVisit.setText(dataCustomer.getLastVisit()); // TODO come see this shit!
-//        holder.showUpImageHolder.setImageBitmap(
-//                BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.no_image_large));
-
+        holder.lastVisit.setText(dataCustomer.getLastVisit());
+        holder.showUpImageHolder.setImageBitmap(
+                DefaultOps.decodeImage(dataCustomer.getLastImage()));
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

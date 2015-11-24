@@ -4,8 +4,8 @@
 
     tools:context="com.dtech.posisi.DetailActivity">
 
-    <include layout="@layout/app_bar_o"
-        android:id="@+id/app_bar"/>
+    <include layout="@layout/app_bar"
+        android:id="@+id/bar_detail_form"/>
 
     <TextView android:text="" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
