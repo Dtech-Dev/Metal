@@ -66,8 +66,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
     public static String TAG = MainActivity.class.getSimpleName();
     private android.support.v7.widget.Toolbar tool;
     private RecyclerView recyclerView;
-    //old Adapter
-    private MainCustomerAdapter adaptCustomer;
 
     //Current Adapter
     private AdapterMtlPelanggan myadapter;
@@ -306,13 +304,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
     }
 
     private void setRecyleView() {
-        // look! actually we dont really need any adapter. ^_^
-        /*adaptCustomer = new MainCustomerAdapter(Customer.listAll(Customer.class));
-        recyclerView=(RecyclerView)findViewById(R.id.mList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adaptCustomer);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));*/
-
         myadapter = new AdapterMtlPelanggan(this, listcustomer);
         recyclerView=(RecyclerView)findViewById(R.id.mList);
         recyclerView.setHasFixedSize(true);
