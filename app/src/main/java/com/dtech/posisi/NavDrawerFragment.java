@@ -17,6 +17,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dtech.adapters.AdapterNavigationList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class NavDrawerFragment extends Fragment {
     private View containerView;
     //RecyclerView Variable==========
     private RecyclerView recyclerView;
-    private NavListAdapter adapter;
+    private AdapterNavigationList adapter;
     //===============================
     MainActivity mainActivity;
 
@@ -65,7 +67,7 @@ public class NavDrawerFragment extends Fragment {
         mainActivity=(MainActivity)getActivity();
         // inserting RecyclerView to this NavigationDrawer
         recyclerView=(RecyclerView)layout.findViewById(R.id.drawerList);
-        adapter=new NavListAdapter(getActivity(), getData());
+        adapter=new AdapterNavigationList(getActivity(), getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
@@ -100,8 +102,8 @@ public class NavDrawerFragment extends Fragment {
 
 
 
-    public static List<Information> getData(){
-        List<Information> data=new ArrayList<>();
+    public static List<AdapterNavigationList.MenuHolder> getData(){
+        List<AdapterNavigationList.MenuHolder> data=new ArrayList<>();
 
         int[] icons = {
             R.drawable.ic_polymer_black_24dp, R.drawable.ic_camera_enhance_black_24dp,
@@ -112,10 +114,9 @@ public class NavDrawerFragment extends Fragment {
             "Check Map", "Show Log"
         };
         for (int i=0;i<title.length && i<icons.length; i++){
-            Information current=new Information();
-            current.title=title[i];
-            current.iconId=icons[i];
-            data.add(current);
+            AdapterNavigationList.MenuHolder menuHolder =
+                    new AdapterNavigationList.MenuHolder(title[i], icons[i]);
+            data.add(menuHolder);
         }
         return data;
     }
