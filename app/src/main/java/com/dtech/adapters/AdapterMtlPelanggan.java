@@ -49,7 +49,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
         holder.address.setText(dataCustomer.getAddress());
-        holder.lastVisit.setText(dataCustomer.getLastVisit());
+//        holder.lastVisit.setText(dataCustomer.getLastVisit());
         holder.showUpImageHolder.setImageBitmap(
                 DefaultOps.decodeImage(dataCustomer.getLastImage()));
 
