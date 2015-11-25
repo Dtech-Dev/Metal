@@ -21,7 +21,6 @@ public class AdapterNavigationList extends RecyclerView.Adapter<AdapterNavigatio
 
     private Context context;
     private LayoutInflater inflater;
-    private List<MenuHolder> menuHolder;
 
     List<MenuHolder> data = Collections.emptyList();
 
@@ -59,12 +58,9 @@ public class AdapterNavigationList extends RecyclerView.Adapter<AdapterNavigatio
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             context=itemView.getContext();
             title=(TextView)itemView.findViewById(R.id.listText);
             icon=(ImageView)itemView.findViewById(R.id.listIcon);
-
-
         }
 
         @Override
@@ -77,7 +73,7 @@ public class AdapterNavigationList extends RecyclerView.Adapter<AdapterNavigatio
         String title;
         int iconId;
 
-        MenuHolder(String title, int iconId) {
+        public MenuHolder(String title, int iconId) {
             this.title = title;
             this.iconId = iconId;
         }

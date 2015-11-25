@@ -7,11 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.dtech.adapters.AdapterGallery;
 import com.dtech.orm.Pelanggaran;
 
 public class ActvtGalleries extends AppCompatActivity {
 
-    GalleryAdapter adapter;
+    AdapterGallery adapter;
     private Toolbar toolbar;
 
     @Override
@@ -19,7 +20,7 @@ public class ActvtGalleries extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        adapter = new GalleryAdapter(this, Pelanggaran.listAll(Pelanggaran.class));
+        adapter = new AdapterGallery(this, Pelanggaran.listAll(Pelanggaran.class));
         GridView grid = (GridView) findViewById(R.id.grid);
         grid.setAdapter(adapter);
 
