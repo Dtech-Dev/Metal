@@ -11,9 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dtech.orm.DefaultOps;
+import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
-import com.dtech.posisi.DetailActivity;
-import com.dtech.posisi.R;
+import com.dtech.posisi.ActvtDetails;
 
 import java.util.List;
 
@@ -23,7 +23,9 @@ import java.util.List;
 public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelanggan.MainViewHolder>{
 
     private List<MtlPelanggan> mtlPelanggans;
+    private List<MtlImagePelanggaran> mtlImgPelanggans;
     private Context context;
+    String name;
 
     public AdapterMtlPelanggan(Context context, List<MtlPelanggan> mtlPelanggans) {
         this.context = context;
@@ -40,6 +42,8 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
 
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
+        final String txt;
+        char indexString;
         MtlPelanggan dataCustomer = mtlPelanggans.get(position);
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
@@ -47,14 +51,79 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         holder.lastVisit.setText(dataCustomer.getLastVisit());
         holder.showUpImageHolder.setImageBitmap(
                 DefaultOps.decodeImage(dataCustomer.getLastImage()));
+
+        txt = holder.title.getText().toString();
+        indexString = txt.charAt(0);
+        
+        if ((indexString == 'a') || (indexString=='A')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.a);
+        } else if ((indexString == 'b') || (indexString=='B')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.b);
+        } else if ((indexString == 'c') || (indexString=='C')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.c);
+        } else if ((indexString == 'd') || (indexString=='D')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.d);
+        } else if ((indexString == 'e') || (indexString=='E')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.e);
+        } else if ((indexString == 'f') || (indexString=='F')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.f);
+        } else if ((indexString == 'g') || (indexString=='G')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.g);
+        } else if ((indexString == 'h') || (indexString=='H')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.h);
+        } else if ((indexString == 'i') || (indexString=='I')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.i);
+        } else if ((indexString == 'j') || (indexString=='J')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.j);
+        } else if ((indexString == 'k') || (indexString=='K')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.k);
+        } else if ((indexString == 'l') || (indexString=='L')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.l);
+        } else if ((indexString == 'm') || (indexString=='M')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.m);
+        } else if ((indexString == 'n') || (indexString=='N')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.n);
+        } else if ((indexString == 'o') || (indexString=='O')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.o);
+        } else if ((indexString == 'p') || (indexString=='P')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.p);
+        } else if ((indexString == 'q') || (indexString=='Q')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.q);
+        } else if ((indexString == 'r') || (indexString=='R')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.r);
+        } else if ((indexString == 's') || (indexString=='S')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.s);
+        } else if ((indexString == 't') || (indexString=='T')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.t);
+        } else if ((indexString == 'u') || (indexString=='U')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.u);
+        } else if ((indexString == 'v') || (indexString=='V')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.v);
+        } else if ((indexString == 'w') || (indexString=='W')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.w);
+        } else if ((indexString == 'x') || (indexString=='X')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.x);
+        } else if ((indexString == 'y') || (indexString=='Y')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.y);
+        } else if ((indexString == 'z') || (indexString=='Z')) {
+            holder.showUpImageHolder.setImageResource(R.drawable.z);
+        } else  {
+            holder.showUpImageHolder.setImageResource(R.drawable.a);
+        }
+
+
+
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cekI = new Intent(context, DetailActivity.class);
+                //Toast.makeText(context, "Nama : "+txt,Toast.LENGTH_SHORT).show();
+                Intent cekI = new Intent(context, ActvtDetails.class);
                 context.startActivity(cekI);
             }
         });
     }
+
+   
 
     @Override
     public int getItemCount() {
@@ -77,7 +146,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
             title = (TextView)itemView.findViewById(R.id.mlistName);
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
             lastVisit = (TextView) itemView.findViewById(R.id.mlistlastvisit);
-            showUpImageHolder = (ImageView) itemView.findViewById(R.id.showUp);
+            showUpImageHolder = (ImageView) itemView.findViewById(R.id.mlistIcon);
         }
     }
 }

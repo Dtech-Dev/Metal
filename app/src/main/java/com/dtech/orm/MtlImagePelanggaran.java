@@ -1,5 +1,7 @@
 package com.dtech.orm;
 
+import android.graphics.Bitmap;
+
 import com.orm.SugarRecord;
 
 import java.util.Calendar;
@@ -16,6 +18,7 @@ public class MtlImagePelanggaran extends SugarRecord<MtlImagePelanggaran> {
     private String imagePath; // file_path
     private String longitude; // longitude
     private String latitude; // latitude
+    private Bitmap bitmap;
 
     public MtlImagePelanggaran() {}
 
