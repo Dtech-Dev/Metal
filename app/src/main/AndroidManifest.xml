@@ -29,12 +29,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_main2" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        <activity
             android:name=".ActvtLogs"
             android:label="@string/title_activity_show_log" />
         <activity

@@ -1,36 +1,3 @@
-<!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    tools:context="com.dtech.posisi.DetailActivity">
-
-    <include layout="@layout/app_bar"
-        android:id="@+id/bar_detail_form"/>
-
-    <TextView android:text="" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/app_bar"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="50sp"
-        android:textColor="@color/colorSecondaryText"
-        android:layout_marginTop="17dp"
-        android:id="@+id/txt1"/>
-
-    <TextView android:text="Coming Soon" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt1"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="30sp"
-        android:textColor="@color/colorSecondaryText"
-        android:layout_marginTop="17dp"/>
-
-
-
-</RelativeLayout>
--->
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"

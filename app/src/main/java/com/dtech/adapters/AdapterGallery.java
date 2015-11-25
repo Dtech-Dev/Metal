@@ -1,4 +1,4 @@
-package com.dtech.posisi;
+package com.dtech.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,22 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
 import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlImagePelanggaran;
-
+import com.dtech.posisi.R;
 import java.util.List;
 
 /**
  * Created by aris on 30/09/15.
  */
-public class GalleryAdapter extends BaseAdapter {
+public class AdapterGallery extends BaseAdapter {
 
     private Context context;
     private List<MtlImagePelanggaran> images;
     private static LayoutInflater inflater = null;
 
-    public GalleryAdapter(Context context, List<MtlImagePelanggaran> images){
+    public AdapterGallery(Context context, List<MtlImagePelanggaran> images){
         this.setImages(images);
         this.setContext(context);
         setInflater((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -32,7 +31,7 @@ public class GalleryAdapter extends BaseAdapter {
     }
 
     public static void setInflater(LayoutInflater inflater) {
-        GalleryAdapter.inflater = inflater;
+        AdapterGallery.inflater = inflater;
     }
 
     @Override

@@ -8,12 +8,11 @@ import android.view.MenuItem;
 import android.widget.GridView;
 
 import com.dtech.orm.MtlImagePelanggaran;
-import com.dtech.orm.MtlPelanggan;
-import com.dtech.orm.Pelanggaran;
+import com.dtech.adapters.AdapterGallery;
 
 public class ActvtGalleries extends AppCompatActivity {
 
-    GalleryAdapter adapter;
+    AdapterGallery adapter;
     private Toolbar toolbar;
 
     @Override
@@ -21,7 +20,7 @@ public class ActvtGalleries extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        adapter = new GalleryAdapter(this, MtlImagePelanggaran.listAll(MtlImagePelanggaran.class));
+        adapter = new AdapterGallery(this, MtlImagePelanggaran.listAll(MtlImagePelanggaran.class));
         GridView grid = (GridView) findViewById(R.id.grid);
         grid.setAdapter(adapter);
 
