@@ -10,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.posisi.ActvtDetails;
+import com.dtech.posisi.R;
 
 import java.util.List;
 
@@ -47,10 +49,13 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
         holder.address.setText(dataCustomer.getAddress());
+        holder.lastVisit.setText(dataCustomer.getLastVisit());
+        holder.showUpImageHolder.setImageBitmap(
+                DefaultOps.decodeImage(dataCustomer.getLastImage()));
 
         txt = holder.title.getText().toString();
         indexString = txt.charAt(0);
-        
+
         if ((indexString == 'a') || (indexString=='A')) {
             holder.showUpImageHolder.setImageResource(R.drawable.a);
         } else if ((indexString == 'b') || (indexString=='B')) {
@@ -107,12 +112,6 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
             holder.showUpImageHolder.setImageResource(R.drawable.a);
         }
 
-
-        //holder.showUpImageHolder.setImageBitmap();
-//        holder.lastVisit.setText(dataCustomer.getLastVisit()); // TODO come see this shit!
-//        holder.showUpImageHolder.setImageBitmap(
-//                BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.no_image_large));
-
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +122,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         });
     }
 
-   
+
 
     @Override
     public int getItemCount() {
@@ -145,7 +144,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
             code = (TextView) itemView.findViewById(R.id.mlistCode);
             title = (TextView)itemView.findViewById(R.id.mlistName);
             address = (TextView) itemView.findViewById(R.id.mlistaddress);
-            lastVisit = (TextView) itemView.findViewById(R.id.mlistlastvisit);
+//            lastVisit = (TextView) itemView.findViewById(R.id.mlistlastvisit);
             showUpImageHolder = (ImageView) itemView.findViewById(R.id.mlistIcon);
         }
     }
