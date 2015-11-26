@@ -99,7 +99,6 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         //==================================================
         tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
-        tool.setTitle(getString(R.string.app_name));
         setSupportActionBar(tool);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
