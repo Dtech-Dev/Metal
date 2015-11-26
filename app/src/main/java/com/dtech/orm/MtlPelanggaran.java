@@ -1,32 +1,35 @@
 package com.dtech.orm;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.NotNull;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by ADIST on 10/20/2015.
  */
-public class MtlPelanggaran extends SugarRecord<MtlPelanggaran> {
+public class MtlPelanggaran extends SugarRecord {
+    @NotNull
     private MtlPelanggan pelanggan; // pelanggan_id
-//    private String name;
+    @NotNull
     private String foulDate; // timestamp
+    @NotNull
     private String foulType; // jenis_pelanggaran
+    @NotNull
     private String tariff; // tarif
-    private BigDecimal daya; // daya
-//    private String imageTest; // TODO maybe we need it later for last image taken
+    @NotNull
+    private Integer daya; // daya
 
     public MtlPelanggaran() {}
 
     public MtlPelanggaran(MtlPelanggan pelanggan, String foulDate, String foulType
-            , String tariff, BigDecimal daya) {
+            , String tariff, Integer daya) {
         this(pelanggan, foulDate, foulType, tariff, daya, false);
     }
 
     public MtlPelanggaran(MtlPelanggan pelanggan, String foulDate, String foulType
-            , String tariff, BigDecimal daya, boolean checkBackwardData) {
+            , String tariff, Integer daya, boolean checkBackwardData) {
         super();
         setPelanggan(pelanggan);
         setFoulType(foulType);
@@ -64,14 +67,6 @@ public class MtlPelanggaran extends SugarRecord<MtlPelanggaran> {
         this.pelanggan = pelanggan;
     }
 
-   /* public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }*/
-
     public String getFoulType() {
         return foulType;
     }
@@ -88,11 +83,11 @@ public class MtlPelanggaran extends SugarRecord<MtlPelanggaran> {
         this.foulDate = foulDate;
     }
 
-    public BigDecimal getDaya() {
+    public Integer getDaya() {
         return daya;
     }
 
-    public void setDaya(BigDecimal daya) {
+    public void setDaya(Integer daya) {
         this.daya = daya;
     }
 

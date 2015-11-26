@@ -1,6 +1,8 @@
 package com.dtech.orm;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.NotNull;
+import com.orm.dsl.Unique;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,9 +12,13 @@ import java.util.List;
 /**
  * Created by Administrator on 14/10/2015.
  */
-public class MtlPelanggan extends SugarRecord<MtlPelanggan> {
+public class MtlPelanggan extends SugarRecord {
+    @NotNull
+    @Unique
     private String code;
+    @NotNull
     private String name;
+    @NotNull
     private String address;
     private String lastXPosition;
     private String lastYPosition;

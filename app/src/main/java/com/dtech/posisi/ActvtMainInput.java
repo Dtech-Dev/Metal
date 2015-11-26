@@ -29,7 +29,6 @@ import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -294,7 +293,7 @@ public class ActvtMainInput extends AppCompatActivity {
         }
 
         fouls = new MtlPelanggaran(customer, getFoulDate(), getFoulType(), getFoulTariff()
-                , new BigDecimal(getFoulDaya()));
+                , new Integer(getFoulDaya()));
 
         Map<String, Bitmap> imagesData = frgmnInputImages.getBitmapMap();
         final List<MtlImagePelanggaran> tempImage = new ArrayList<>();

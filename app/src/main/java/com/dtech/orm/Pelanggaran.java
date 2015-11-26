@@ -18,7 +18,7 @@ import java.util.List;
  * Created by aris on 22/09/15.
  */
 @Deprecated
-public class Pelanggaran extends SugarRecord<Pelanggaran> {
+public class Pelanggaran extends SugarRecord {
 
     public static final String DEFAULT_DATETIME_FORMAT = "yyyy-MM-dd hh:mm";
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";

@@ -1,8 +1,7 @@
 package com.dtech.orm;
 
-import android.graphics.Bitmap;
-
 import com.orm.SugarRecord;
+import com.orm.dsl.NotNull;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,14 +10,16 @@ import java.util.List;
 /**
  * Created by ADIST on 10/20/2015.
  */
-public class MtlImagePelanggaran extends SugarRecord<MtlImagePelanggaran> {
+public class MtlImagePelanggaran extends SugarRecord {
+    @NotNull
     private MtlPelanggaran foulId; // pelanggaran_id
     private String foulDate; // timestamp
+    @NotNull
     private String image; // image
+    @NotNull
     private String imagePath; // file_path
     private String longitude; // longitude
     private String latitude; // latitude
-    private Bitmap bitmap;
 
     public MtlImagePelanggaran() {}
 
