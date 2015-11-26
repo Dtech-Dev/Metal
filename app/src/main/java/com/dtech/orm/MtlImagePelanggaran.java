@@ -13,12 +13,15 @@ import java.util.List;
 public class MtlImagePelanggaran extends SugarRecord {
     @NotNull
     private MtlPelanggaran foulId; // pelanggaran_id
+    @NotNull
     private String foulDate; // timestamp
     @NotNull
     private String image; // image
     @NotNull
     private String imagePath; // file_path
+    @NotNull
     private String longitude; // longitude
+    @NotNull
     private String latitude; // latitude
 
     public MtlImagePelanggaran() {}
