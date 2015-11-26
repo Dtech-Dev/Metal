@@ -12,13 +12,13 @@
         tools:context=".MainActivity">
 
         <include layout="@layout/app_bar"
-            android:id="@+id/app_bar"/>
+            android:id="@+id/barMain"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/mList"
-            android:layout_below="@+id/app_bar"
+            android:layout_below="@+id/barMain"
             android:layout_marginTop="5dp">
 
         </android.support.v7.widget.RecyclerView>
