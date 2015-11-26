@@ -20,7 +20,7 @@ public class ActvtLogs extends AppCompatActivity {
 
         TextView tvlog = (TextView) findViewById(R.id.tvlog);
         tvlog.setText(latlang);
-        Toolbar toolbar= (Toolbar) findViewById(R.id.app_bar);
+        Toolbar toolbar= (Toolbar) findViewById(R.id.barMain);
         setSupportActionBar(toolbar);
 
        // getSupportActionBar().setHomeButtonEnabled(true);

@@ -54,7 +54,7 @@ public class ActvtGalleries extends AppCompatActivity {
 
     private void setToolBar() {
         // TOOLBAR
-        toolbar = (Toolbar) findViewById(R.id.standardToolBar);
+        toolbar = (Toolbar) findViewById(R.id.barGallery);
         toolbar.setTitle("Gallery");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
