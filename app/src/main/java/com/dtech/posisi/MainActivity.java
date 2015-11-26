@@ -15,7 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -56,7 +56,7 @@ import java.util.List;
 
 //re
 
-public class MainActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
 GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListener{
 
     private GoogleApiClient googleApiClient;
@@ -98,7 +98,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 //        new HttpTask().execute(DefaultOps.URL_CUSTOMER);
 
         //==================================================
-        tool= (android.support.v7.widget.Toolbar) findViewById(R.id.app_bar);
+        tool= (android.support.v7.widget.Toolbar) findViewById(R.id.barMain);
         setSupportActionBar(tool);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
