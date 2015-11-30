@@ -44,7 +44,6 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
         final String txt;
-        char indexString;
         MtlPelanggan dataCustomer = mtlPelanggans.get(position);
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
@@ -54,42 +53,8 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
                 DefaultOps.decodeImage(dataCustomer.getLastImage()));
 
         txt = holder.title.getText().toString();
-        indexString = txt.charAt(0);
-        int selectedAlphabet;
-        switch (indexString) {
-            case 'a' | 'A': selectedAlphabet = R.drawable.a; break;
-            case 'b' | 'B': selectedAlphabet = R.drawable.b; break;
-            case 'c' | 'C': selectedAlphabet = R.drawable.c; break;
-            case 'd' | 'D': selectedAlphabet = R.drawable.d; break;
-            case 'e' | 'E': selectedAlphabet = R.drawable.e; break;
-            case 'f' | 'F': selectedAlphabet = R.drawable.f; break;
-            case 'g' | 'G': selectedAlphabet = R.drawable.g; break;
-            case 'h' | 'H': selectedAlphabet = R.drawable.h; break;
-            case 'i' | 'I': selectedAlphabet = R.drawable.i; break;
-            case 'j' | 'J': selectedAlphabet = R.drawable.j; break;
-            case 'k' | 'K': selectedAlphabet = R.drawable.k; break;
-            case 'l' | 'L': selectedAlphabet = R.drawable.l; break;
-            case 'm' | 'M': selectedAlphabet = R.drawable.m; break;
-            case 'n' | 'N': selectedAlphabet = R.drawable.n; break;
-            case 'o' | 'O': selectedAlphabet = R.drawable.o; break;
-            case 'p' | 'P': selectedAlphabet = R.drawable.p; break;
-            case 'q' | 'Q': selectedAlphabet = R.drawable.q; break;
-            case 'r' | 'R': selectedAlphabet = R.drawable.r; break;
-            case 's' | 'S': selectedAlphabet = R.drawable.s; break;
-            case 't' | 'T': selectedAlphabet = R.drawable.t; break;
-            case 'u' | 'U': selectedAlphabet = R.drawable.u; break;
-            case 'v' | 'V': selectedAlphabet = R.drawable.v; break;
-            case 'w' | 'w': selectedAlphabet = R.drawable.w; break;
-            case 'x' | 'X': selectedAlphabet = R.drawable.x; break;
-            case 'y' | 'Y': selectedAlphabet = R.drawable.y; break;
-            case 'z' | 'Z': selectedAlphabet = R.drawable.z; break;
-            default: selectedAlphabet = R.drawable.no_image_large; break;
-        }
-
+        int selectedAlphabet = DefaultOps.getSelectedAlphabet(txt.charAt(0));
         holder.showUpImageHolder.setImageResource(selectedAlphabet);
-
-
-
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +64,6 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
             }
         });
     }
-
 
 
     @Override

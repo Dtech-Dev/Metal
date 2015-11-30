@@ -55,8 +55,6 @@ public class FrgmNavDrawer extends Fragment {
         if(savedInstanceState!=null){
             mFromSavedInstanceState=true;
         }
-
-
     }
 
     @Override
@@ -99,8 +97,6 @@ public class FrgmNavDrawer extends Fragment {
         return layout;
 
     }
-
-
 
     public static List<AdapterNavigationList.MenuHolder> getData(){
         List<AdapterNavigationList.MenuHolder> data=new ArrayList<>();
@@ -171,9 +167,9 @@ public class FrgmNavDrawer extends Fragment {
         return sharedPreferences.getString(preferenceName, defaultValue);
     }
 
-    public static interface ClickListener{
-        public void onClick(View view, int position);
-        public void onLongClick(View view, int position);
+    public interface ClickListener{
+        void onClick(View view, int position);
+        void onLongClick(View view, int position);
 
     }
 
@@ -181,14 +177,15 @@ public class FrgmNavDrawer extends Fragment {
         private GestureDetector gestureDetector;
         private ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener){
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView
+                , final ClickListener clickListener){
             this.clickListener=clickListener;
             gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onSingleTapUp(MotionEvent e){
                 return true;
             }
-                @Override
+            @Override
             public void onLongPress(MotionEvent e){
                     View child=recyclerView.findChildViewUnder(e.getX(), e.getY());
                     if(child!=null && clickListener!=null){

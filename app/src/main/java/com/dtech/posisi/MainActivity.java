@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,7 +23,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +38,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,8 +89,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
         mStatus = (TextView) findViewById(R.id.textSignIn);
 
-        setCustomerData();
-        setRecyleView();
+        refreshCustomerData();
         //==================================================
         //Untuk load data, ketika MainActivity create, manggil class HttpTask
         //namun, ketika selesai input customer baru dan balik k main activity, recyclerview blm ng'refresh data yg ada d server
@@ -106,18 +104,11 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
                getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
         drawerFragment.setUp(R.id.nav_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), tool);
 
-        ImageView icon = new ImageView(this); // Create an icon
-        icon.setImageResource(R.drawable.ic_add);
-
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
-                .setContentView(icon)
-                .build();
+        FloatingActionButton actionButton = (FloatingActionButton) findViewById(R.id.fabAdd);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(MainActivity.this, ActvtInputPelanggaran.class);*/
-                /*Intent intent = new Intent(MainActivity.this, CekInsertPhp.class);
-                startActivity(intent);*/
+                startActivity(new Intent(MainActivity.this, ActvtMainInput.class));
             }
         });
 
@@ -359,22 +350,25 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
 
     }
 
-    private void setCustomerData() {
-        listcustomer = new ArrayList<MtlPelanggan>();
-        Iterator<MtlPelanggan> oldData = MtlPelanggan.findAll(MtlPelanggan.class);
-        while(oldData.hasNext()) {
-            MtlPelanggan currentData = oldData.next();
+    private void refreshCustomerData() {
+        listcustomer = new ArrayList<>();
+        Iterator<MtlPelanggan> pelangganIterator = MtlPelanggan.findAsIterator(MtlPelanggan.class
+                , "", new String[]{}, "", "code asc", "");
+        while(pelangganIterator.hasNext()) {
+            MtlPelanggan currentData = pelangganIterator.next();
             if (currentData != null) // ben gak error :D
                 listcustomer.add(currentData);
         }
+
+        setRecyleView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // RELOAD recyclerView
-        //setRecyleView();
+        // RELOAD data customer
+        refreshCustomerData();
         return true;
     }
 
@@ -410,17 +404,13 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
     protected void onStart() {
         super.onStart();
         googleApiClient.connect();
+        refreshCustomerData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //setRecyleView();
-       // new RequestHttp().execute();
-
-        //setCustomerData();
-        //setRecyleView();
-        //new HttpTask().execute(URL_CUSTOMER);
+        refreshCustomerData();
     }
 
     /*public class RequestHttp extends AsyncTask<String, String, String>{
@@ -484,7 +474,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
                         response.append(line);
 
                     }
-//                    setCustomerData(response.toString()); // TODO maybe later we need to research about it
+//                    refreshCustomerData(response.toString()); // TODO maybe later we need to research about it
                     result = 1;
                 } else {
                     result = 0;

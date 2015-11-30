@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 
 import com.dtech.MetalAppsGlobalClass;
+import com.dtech.posisi.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -50,7 +51,39 @@ public class DefaultOps {
     public final static int DEFAULT_FASTEST_INTERVAL = 1000; // 1 second
     public final static int DEFAULT_MAPS_STROKE_WIDTH = 2;
 
-    public static enum Mode {
+    public static int getSelectedAlphabet(char indexString) {
+        switch (indexString) {
+            case 'a' : case 'A': return R.drawable.a;
+            case 'b' : case 'B': return R.drawable.b;
+            case 'c' : case 'C': return R.drawable.c;
+            case 'd' : case 'D': return R.drawable.d;
+            case 'e' : case 'E': return R.drawable.e;
+            case 'f' : case 'F': return R.drawable.f;
+            case 'g' : case 'G': return R.drawable.g;
+            case 'h' : case 'H': return R.drawable.h;
+            case 'i' : case 'I': return R.drawable.i;
+            case 'j' : case 'J': return R.drawable.j;
+            case 'k' : case 'K': return R.drawable.k;
+            case 'l' : case 'L': return R.drawable.l;
+            case 'm' : case 'M': return R.drawable.m;
+            case 'n' : case 'N': return R.drawable.n;
+            case 'o' : case 'O': return R.drawable.o;
+            case 'p' : case 'P': return R.drawable.p;
+            case 'q' : case 'Q': return R.drawable.q;
+            case 'r' : case 'R': return R.drawable.r;
+            case 's' : case 'S': return R.drawable.s;
+            case 't' : case 'T': return R.drawable.t;
+            case 'u' : case 'U': return R.drawable.u;
+            case 'v' : case 'V': return R.drawable.v;
+            case 'w' : case 'W': return R.drawable.w;
+            case 'x' : case 'X': return R.drawable.x;
+            case 'y' : case 'Y': return R.drawable.y;
+            case 'z' : case 'Z': return R.drawable.z;
+            default: return R.drawable.no_image_large;
+        }
+    }
+
+    public enum Mode {
         ALPHA, ALPHANUMERIC, NUMERIC
     }
 
