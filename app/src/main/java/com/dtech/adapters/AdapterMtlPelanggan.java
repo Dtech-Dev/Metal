@@ -55,62 +55,40 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
 
         txt = holder.title.getText().toString();
         indexString = txt.charAt(0);
-
-        if ((indexString == 'a') || (indexString=='A')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.a);
-        } else if ((indexString == 'b') || (indexString=='B')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.b);
-        } else if ((indexString == 'c') || (indexString=='C')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.c);
-        } else if ((indexString == 'd') || (indexString=='D')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.d);
-        } else if ((indexString == 'e') || (indexString=='E')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.e);
-        } else if ((indexString == 'f') || (indexString=='F')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.f);
-        } else if ((indexString == 'g') || (indexString=='G')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.g);
-        } else if ((indexString == 'h') || (indexString=='H')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.h);
-        } else if ((indexString == 'i') || (indexString=='I')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.i);
-        } else if ((indexString == 'j') || (indexString=='J')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.j);
-        } else if ((indexString == 'k') || (indexString=='K')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.k);
-        } else if ((indexString == 'l') || (indexString=='L')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.l);
-        } else if ((indexString == 'm') || (indexString=='M')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.m);
-        } else if ((indexString == 'n') || (indexString=='N')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.n);
-        } else if ((indexString == 'o') || (indexString=='O')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.o);
-        } else if ((indexString == 'p') || (indexString=='P')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.p);
-        } else if ((indexString == 'q') || (indexString=='Q')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.q);
-        } else if ((indexString == 'r') || (indexString=='R')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.r);
-        } else if ((indexString == 's') || (indexString=='S')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.s);
-        } else if ((indexString == 't') || (indexString=='T')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.t);
-        } else if ((indexString == 'u') || (indexString=='U')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.u);
-        } else if ((indexString == 'v') || (indexString=='V')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.v);
-        } else if ((indexString == 'w') || (indexString=='W')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.w);
-        } else if ((indexString == 'x') || (indexString=='X')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.x);
-        } else if ((indexString == 'y') || (indexString=='Y')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.y);
-        } else if ((indexString == 'z') || (indexString=='Z')) {
-            holder.showUpImageHolder.setImageResource(R.drawable.z);
-        } else  {
-            holder.showUpImageHolder.setImageResource(R.drawable.a);
+        int selectedAlphabet;
+        switch (indexString) {
+            case 'a' | 'A': selectedAlphabet = R.drawable.a; break;
+            case 'b' | 'B': selectedAlphabet = R.drawable.b; break;
+            case 'c' | 'C': selectedAlphabet = R.drawable.c; break;
+            case 'd' | 'D': selectedAlphabet = R.drawable.d; break;
+            case 'e' | 'E': selectedAlphabet = R.drawable.e; break;
+            case 'f' | 'F': selectedAlphabet = R.drawable.f; break;
+            case 'g' | 'G': selectedAlphabet = R.drawable.g; break;
+            case 'h' | 'H': selectedAlphabet = R.drawable.h; break;
+            case 'i' | 'I': selectedAlphabet = R.drawable.i; break;
+            case 'j' | 'J': selectedAlphabet = R.drawable.j; break;
+            case 'k' | 'K': selectedAlphabet = R.drawable.k; break;
+            case 'l' | 'L': selectedAlphabet = R.drawable.l; break;
+            case 'm' | 'M': selectedAlphabet = R.drawable.m; break;
+            case 'n' | 'N': selectedAlphabet = R.drawable.n; break;
+            case 'o' | 'O': selectedAlphabet = R.drawable.o; break;
+            case 'p' | 'P': selectedAlphabet = R.drawable.p; break;
+            case 'q' | 'Q': selectedAlphabet = R.drawable.q; break;
+            case 'r' | 'R': selectedAlphabet = R.drawable.r; break;
+            case 's' | 'S': selectedAlphabet = R.drawable.s; break;
+            case 't' | 'T': selectedAlphabet = R.drawable.t; break;
+            case 'u' | 'U': selectedAlphabet = R.drawable.u; break;
+            case 'v' | 'V': selectedAlphabet = R.drawable.v; break;
+            case 'w' | 'w': selectedAlphabet = R.drawable.w; break;
+            case 'x' | 'X': selectedAlphabet = R.drawable.x; break;
+            case 'y' | 'Y': selectedAlphabet = R.drawable.y; break;
+            case 'z' | 'Z': selectedAlphabet = R.drawable.z; break;
+            default: selectedAlphabet = R.drawable.no_image_large; break;
         }
+
+        holder.showUpImageHolder.setImageResource(selectedAlphabet);
+
+
 
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
