@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavDrawerFragment extends Fragment {
+public class FrgmNavDrawer extends Fragment {
 
     public static final String PREF_FILE_NAME="test";
     public static final String KEY_USER_LEARNED="learned";
@@ -44,7 +44,7 @@ public class NavDrawerFragment extends Fragment {
     private boolean mUserLearnedDrawer;
     private boolean mFromSavedInstanceState;
 
-    public NavDrawerFragment() {
+    public FrgmNavDrawer() {
         // Required empty public constructor
     }
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dtech.posisi.NavDrawerFragment;
+import com.dtech.posisi.FrgmNavDrawer;
 import com.dtech.posisi.R;
 
 import java.util.Collections;
@@ -52,7 +52,7 @@ public class AdapterNavigationList extends RecyclerView.Adapter<AdapterNavigatio
     class MyViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        NavDrawerFragment mDrawer;
+        FrgmNavDrawer mDrawer;
         TextView title;
         ImageView icon;
 

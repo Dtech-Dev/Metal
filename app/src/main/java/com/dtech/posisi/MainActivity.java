@@ -102,7 +102,7 @@ GoogleApiClient.OnConnectionFailedListener, LocationListener, View.OnClickListen
         setSupportActionBar(tool);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        NavDrawerFragment drawerFragment=(NavDrawerFragment)
+        FrgmNavDrawer drawerFragment=(FrgmNavDrawer)
                getSupportFragmentManager().findFragmentById(R.id.nav_drawer);
         drawerFragment.setUp(R.id.nav_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), tool);
 
