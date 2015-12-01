@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.dtech.MetalAppsGlobalClass;
 import com.dtech.orm.MapsHandler;
 import com.dtech.orm.MtlPelanggan;
 import com.google.android.gms.common.ConnectionResult;
@@ -34,6 +35,8 @@ public class FrgmInputPelanggan extends Fragment
     private View rootView;
     private MapsHandler mapsHandler;
 
+    private MtlPelanggan customer;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView != null)
@@ -44,6 +47,23 @@ public class FrgmInputPelanggan extends Fragment
         setEtAddress((EditText) rootView.findViewById(R.id.textCustAddress));
         mapsHandler = new MapsHandler(getContext()
                 , this, this, this, R.id.mapCustomersInput);
+
+        if (MetalAppsGlobalClass.getActiveCustId() != null ||
+                !MetalAppsGlobalClass.getActiveCustId().equals(0)){
+            customer = MtlPelanggan.findById(MtlPelanggan.class,
+                    MetalAppsGlobalClass.getActiveCustId());
+            getEtCode().setText(customer.getCode());
+            getEtName().setText(customer.getName());
+            getEtAddress().setText(customer.getAddress());
+            String[] lastLatLong = customer.getLastLatLong();
+            if (lastLatLong == null || lastLatLong.length <= 0)
+                return  rootView;
+            Location custLocation = new Location("");
+            custLocation.setLatitude(Double.parseDouble(lastLatLong[0]));
+            custLocation.setLongitude(Double.parseDouble(lastLatLong[1]));
+            mapsHandler.handleNewLocation(custLocation
+                    , customer.getCode() + ":" + customer.getName());
+        }
         return rootView;
     }
 
@@ -134,7 +154,8 @@ public class FrgmInputPelanggan extends Fragment
                             Location custLocation = new Location("");
                             custLocation.setLatitude(Double.parseDouble(lastLatLong[0]));
                             custLocation.setLongitude(Double.parseDouble(lastLatLong[1]));
-                            mapsHandler.handleNewLocation(custLocation, cust.getCode() + ":" + cust.getName());
+                            mapsHandler.handleNewLocation(custLocation
+                                    , cust.getCode() + ":" + cust.getName());
                         }
                         if (custs.size() <= 0){
                             getEtName().setText(null);

@@ -16,12 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextClock;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dtech.MetalAppsGlobalClass;
 import com.dtech.orm.DefaultOps;
 import com.dtech.orm.DuplicateException;
 import com.dtech.orm.MtlImagePelanggaran;
@@ -49,16 +46,11 @@ public class ActvtMainInput extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
-    List<String> comptTab1 = new ArrayList<String>();
 
     MtlPelanggan customer;
     MtlPelanggaran fouls;
     MtlImagePelanggaran foulImages;
 
-    private String cbLat;
-    private String cbLong;
-
-    private EditText etCode, etName, etAddress, etFoulDate;
     private String custCode;
     private String custName;
     private String custAddress;
@@ -66,12 +58,6 @@ public class ActvtMainInput extends AppCompatActivity {
     private String foulDaya;
     private String foulType;
     private String foulTariff;
-    private TextView tLat, tlong;
-    private TextClock textClock;
-    private ImageView imagePelanggan;
-    private EditText textDaya;
-
-    private List<Bitmap> galeries;
 
     private FrgmInputPelanggan frgmInputPelanggan;
     private FrgmInputPelanggaran frgmInputPelanggaran;
@@ -226,6 +212,7 @@ public class ActvtMainInput extends AppCompatActivity {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            MetalAppsGlobalClass.setActiveCustId(null);
             frgmInputPelanggan = new FrgmInputPelanggan();
             frgmInputPelanggaran = new FrgmInputPelanggaran();
             frgmnInputImages = new FrgmnInputImages();
@@ -328,6 +315,7 @@ public class ActvtMainInput extends AppCompatActivity {
     }
 
     private boolean validateData() {
+        // TODO we need to validate inputed data
         return true;
     }
 

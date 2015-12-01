@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dtech.MetalAppsGlobalClass;
 import com.dtech.orm.DefaultOps;
 import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
@@ -42,7 +43,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, int position) {
+    public void onBindViewHolder(MainViewHolder holder, final int position) {
         final String txt;
         MtlPelanggan dataCustomer = mtlPelanggans.get(position);
         holder.code.setText(dataCustomer.getCode());
@@ -52,13 +53,15 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
         holder.showUpImageHolder.setImageBitmap(
                 DefaultOps.decodeImage(dataCustomer.getLastImage()));
 
-        txt = holder.title.getText().toString();
-        int selectedAlphabet = DefaultOps.getSelectedAlphabet(txt.charAt(0));
-        holder.showUpImageHolder.setImageResource(selectedAlphabet);
+//        txt = holder.title.getText().toString();
+//        char charAt = txt.charAt(0);
+//        int selectedAlphabet = DefaultOps.getSelectedAlphabet();
+//        holder.showUpImageHolder.setImageResource(selectedAlphabet);
         holder.rel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context, "Nama : "+txt,Toast.LENGTH_SHORT).show();
+                MtlPelanggan currentCust = mtlPelanggans.get(position);
+                MetalAppsGlobalClass.setActiveCustId(currentCust.getId());
                 Intent cekI = new Intent(context, ActvtDetails.class);
                 context.startActivity(cekI);
             }
