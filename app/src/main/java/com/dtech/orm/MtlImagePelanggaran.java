@@ -24,6 +24,9 @@ public class MtlImagePelanggaran extends SugarRecord {
     @NotNull
     private String latitude; // latitude
 
+    /**
+     * Mandatory empty constructor
+     */
     public MtlImagePelanggaran() {}
 
     public MtlImagePelanggaran(MtlPelanggaran foulId, String image, String imagePath

@@ -19,7 +19,8 @@ import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.orm.MtlPelanggaran;
 
-public class ActvtDetails extends AppCompatActivity  {
+public class ActvtDetails extends AppCompatActivity
+        implements FrgmViewPelanggaran.OnFragmentInteractionListener {
 
     SectionsVwDtPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
@@ -37,7 +38,7 @@ public class ActvtDetails extends AppCompatActivity  {
     private String foulTariff;
 
     private FrgmInputPelanggan frgmViewPelanggan;
-//    private FrgmInputPelanggaran frgmInputPelanggaran;
+    private FrgmViewPelanggaran frgmViewPelanggaran;
 //    private FrgmnInputImages frgmnInputImages;
 
     @Override
@@ -92,17 +93,22 @@ public class ActvtDetails extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsVwDtPagerAdapter extends FragmentPagerAdapter {
-        private String tabName[] = {"PELANGGAN"}; //, "PELANGGARAN", "GALERI"};
+        private String tabName[] = {"PELANGGAN", "PELANGGARAN"};//, "GALERI"};
 
         public SectionsVwDtPagerAdapter(FragmentManager fm) {
             super(fm);
             frgmViewPelanggan = new FrgmInputPelanggan();
-//            frgmInputPelanggaran = new FrgmInputPelanggaran();
+            frgmViewPelanggaran = new FrgmViewPelanggaran();
 //            frgmnInputImages = new FrgmnInputImages();
         }
 
@@ -111,8 +117,8 @@ public class ActvtDetails extends AppCompatActivity  {
             switch(position){
                 case 0:
                     return frgmViewPelanggan;
-//                case 1:
-//                    return frgmInputPelanggaran;
+                case 1:
+                    return frgmViewPelanggaran;
 //                case 2:
 //                    return frgmnInputImages;
                 default:

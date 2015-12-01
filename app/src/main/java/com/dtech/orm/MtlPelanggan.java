@@ -24,6 +24,9 @@ public class MtlPelanggan extends SugarRecord {
     private String lastYPosition;
     private boolean active;
 
+    /**
+     * Mandatory empty constructor
+     */
     public MtlPelanggan(){}
 
     public MtlPelanggan(String code, String name, String address){

@@ -21,6 +21,9 @@ public class MtlPelanggaran extends SugarRecord {
     @NotNull
     private Integer daya; // daya
 
+    /**
+     * Mandatory empty constructor
+     */
     public MtlPelanggaran() {}
 
     public MtlPelanggaran(MtlPelanggan pelanggan, String foulDate, String foulType
