@@ -37,7 +37,7 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.custom_main_row, null);
+                inflate(R.layout.layout_recycle_row, null);
         MainViewHolder viewHolder = new MainViewHolder(view);
         return viewHolder;
     }

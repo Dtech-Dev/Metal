@@ -53,7 +53,7 @@ public class AdapterGallery extends BaseAdapter {
     public View getView(int i, View convertview, ViewGroup viewGroup) {
         View view = convertview;
         if (convertview == null) {
-            view = getInflater().inflate(R.layout.gallery_row, null);
+            view = getInflater().inflate(R.layout.layout_gallery_row, null);
         }
 
         ImageView item = (ImageView)view.findViewById(R.id.imageRow);
