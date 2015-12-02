@@ -3,16 +3,17 @@ package com.dtech.posisi;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.dtech.MetalAppsGlobalClass;
+import com.dtech.adapters.AdapterMtlPelanggaran;
 import com.dtech.adapters.AdapterPelanggaran;
 import com.dtech.orm.MtlPelanggaran;
 
@@ -49,7 +50,10 @@ public class FrgmViewPelanggaran extends Fragment implements AbsListView.OnItemC
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    private AdapterMtlPelanggaran mAdapter;
+    private List<MtlPelanggaran> listFouls;
+    private RecyclerView recFoulView;
+    private TextView tvDataKosong;
 
     // TODO: Rename and change types of parameters
     public static FrgmViewPelanggaran newInstance(String param1, String param2) {
@@ -78,11 +82,9 @@ public class FrgmViewPelanggaran extends Fragment implements AbsListView.OnItemC
         }
 
         Long custActiveID = MetalAppsGlobalClass.getActiveCustId();
-        List<MtlPelanggaran> fouls =  MtlPelanggaran.find(MtlPelanggaran.class
-                , "pelanggan = ?", custActiveID.toString());
-        AdapterPelanggaran foulAdapters = new AdapterPelanggaran(getContext(), fouls);
-        mAdapter = new ArrayAdapter<AdapterPelanggaran.Fouls>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, AdapterPelanggaran.ITEMS);
+        listFouls = MtlPelanggaran.find(MtlPelanggaran.class
+                , "pelanggan = ?", new String[]{custActiveID.toString()}, null, "foul_date", null);
+        mAdapter = new AdapterMtlPelanggaran(getContext(), listFouls);
     }
 
     @Override
@@ -91,11 +93,19 @@ public class FrgmViewPelanggaran extends Fragment implements AbsListView.OnItemC
         View view = inflater.inflate(R.layout.fragment_view_pelanggaran, container, false);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(R.id.listviewfouls);
-        mListView.setAdapter(mAdapter);
+        tvDataKosong = (TextView) view.findViewById(R.id.tvDataKosongList);
+        if (listFouls.size() > 0){
+            recFoulView = (RecyclerView) view.findViewById(R.id.recycleFoulView);
+            recFoulView.setAdapter(mAdapter);
+            recFoulView.setHasFixedSize(true);
+            recFoulView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            tvDataKosong.setVisibility(View.INVISIBLE);
+        } else {
+            tvDataKosong.setVisibility(View.VISIBLE);
+        }
 
         // Set OnItemClickListener so we can be notified on item clicks
-        mListView.setOnItemClickListener(this);
+//        mListView.setOnItemClickListener(this);
 
         return view;
     }

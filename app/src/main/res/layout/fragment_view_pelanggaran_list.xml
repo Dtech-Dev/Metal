@@ -3,11 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.dtech.posisi.FrgmViewPelanggaran">
 
-    <ListView android:id="@+id/listviewfouls" android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycleFoulView"
+        android:layout_below="@+id/barMain"
+        android:layout_marginTop="5dp" />
 
-    <TextView android:id="@android:id/empty" android:layout_width="match_parent"
+    <TextView android:id="@+id/tvDataKosongList" android:layout_width="match_parent"
         android:layout_height="match_parent" android:gravity="center"
-        android:text="Data Kosong!" />
+        android:text="Data Kosong!"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
 
 </FrameLayout>

@@ -52,8 +52,11 @@ public class FrgmInputPelanggan extends Fragment
             customer = MtlPelanggan.findById(MtlPelanggan.class,
                     MetalAppsGlobalClass.getActiveCustId());
             getEtCode().setText(customer.getCode());
+            getEtCode().setEnabled(false);
             getEtName().setText(customer.getName());
+            getEtName().setEnabled(false);
             getEtAddress().setText(customer.getAddress());
+            getEtAddress().setEnabled(false);
             String[] lastLatLong = customer.getLastLatLong();
             if (lastLatLong == null || lastLatLong.length <= 0)
                 return  rootView;
@@ -62,6 +65,10 @@ public class FrgmInputPelanggan extends Fragment
             custLocation.setLongitude(Double.parseDouble(lastLatLong[1]));
             mapsHandler.handleNewLocation(custLocation
                     , customer.getCode() + ":" + customer.getName());
+        } else {
+            getEtCode().setEnabled(true);
+            getEtName().setEnabled(true);
+            getEtAddress().setEnabled(true);
         }
         return rootView;
     }

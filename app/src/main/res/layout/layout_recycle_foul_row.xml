@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:id="@+id/customViewFouls"
+        card_view:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relLayoutFouls">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:columnCount="11"
+                        android:rowCount="2">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvFoulDate"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="Tanggal"
+                            android:textStyle="bold"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:layout_margin="5dp" />
+
+                        <TextView
+                            android:layout_width="28dp"
+                            android:layout_height="26dp"
+                            android:id="@+id/tvFoulID"
+
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/mlistIcon"
+                            android:layout_toRightOf="@+id/mlistIcon"
+                            android:visibility="invisible"
+                            android:hint="---"
+                            android:layout_margin="5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCustomer"
+                            android:layout_below="@+id/mlistCode"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:visibility="invisible"
+                            android:hint="---"
+                            android:layout_margin="5dp" />
+
+                    </GridLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvFoulType"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="Tipe"
+                            android:layout_margin="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvTariff"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="Tarif"
+                            android:layout_margin="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvDaya"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="Daya"
+                            android:inputType="number"
+                            android:layout_margin="5dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvVA"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="VA"
+                            android:layout_margin="5dp"
+                            android:text="-VA"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCountImage"
+                            android:layout_below="@+id/mlistName"
+                            android:layout_alignLeft="@+id/mlistCode"
+                            android:layout_alignStart="@+id/mlistCode"
+                            android:hint="Total Image(s)"
+                            android:layout_margin="5dp"
+                            android:text="Total Image : 0"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </GridLayout>
+                </TableRow>
+            </TableLayout>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

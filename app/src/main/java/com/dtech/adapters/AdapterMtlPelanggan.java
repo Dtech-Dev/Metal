@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.dtech.MetalAppsGlobalClass;
 import com.dtech.orm.DefaultOps;
-import com.dtech.orm.MtlImagePelanggaran;
 import com.dtech.orm.MtlPelanggan;
 import com.dtech.posisi.ActvtDetails;
 import com.dtech.posisi.R;
@@ -22,12 +21,11 @@ import java.util.List;
 /**
  * Created by Administrator on 28/08/2015.
  */
-public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelanggan.MainViewHolder>{
+public class AdapterMtlPelanggan
+        extends RecyclerView.Adapter<AdapterMtlPelanggan.MainViewHolder>{
 
     private List<MtlPelanggan> mtlPelanggans;
-    private List<MtlImagePelanggaran> mtlImgPelanggans;
     private Context context;
-    String name;
 
     public AdapterMtlPelanggan(Context context, List<MtlPelanggan> mtlPelanggans) {
         this.context = context;
@@ -44,7 +42,6 @@ public class AdapterMtlPelanggan extends RecyclerView.Adapter<AdapterMtlPelangga
 
     @Override
     public void onBindViewHolder(MainViewHolder holder, final int position) {
-        final String txt;
         MtlPelanggan dataCustomer = mtlPelanggans.get(position);
         holder.code.setText(dataCustomer.getCode());
         holder.title.setText(dataCustomer.getName());
