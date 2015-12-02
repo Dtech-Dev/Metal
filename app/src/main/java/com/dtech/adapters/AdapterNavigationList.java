@@ -32,7 +32,7 @@ public class AdapterNavigationList extends RecyclerView.Adapter<AdapterNavigatio
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view=inflater.inflate(R.layout.custom_row, parent, false);
+        View view=inflater.inflate(R.layout.activity_menu_row, parent, false);
         MyViewHolder holder=new MyViewHolder(view);
         return holder;
     }
