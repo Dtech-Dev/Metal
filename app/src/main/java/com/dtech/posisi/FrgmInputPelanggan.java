@@ -48,8 +48,7 @@ public class FrgmInputPelanggan extends Fragment
         mapsHandler = new MapsHandler(getContext()
                 , this, this, this, R.id.mapCustomersInput);
 
-        if (MetalAppsGlobalClass.getActiveCustId() != null ||
-                !MetalAppsGlobalClass.getActiveCustId().equals(0)){
+        if (!MetalAppsGlobalClass.getActiveCustId().equals(Long.parseLong("0"))){
             customer = MtlPelanggan.findById(MtlPelanggan.class,
                     MetalAppsGlobalClass.getActiveCustId());
             getEtCode().setText(customer.getCode());

@@ -212,7 +212,7 @@ public class ActvtMainInput extends AppCompatActivity {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            MetalAppsGlobalClass.setActiveCustId(null);
+            MetalAppsGlobalClass.setActiveCustId(Long.parseLong("0"));
             frgmInputPelanggan = new FrgmInputPelanggan();
             frgmInputPelanggaran = new FrgmInputPelanggaran();
             frgmnInputImages = new FrgmnInputImages();
