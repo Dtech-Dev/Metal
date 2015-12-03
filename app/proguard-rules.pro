@@ -19,4 +19,7 @@
 -keep class com.dtech.** { *; }
 -dontwarn okio.**
 -dontwarn com.squareup.**
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+-dontwarn sun.misc.Unsafe
 
