@@ -103,11 +103,11 @@ public class FrgmNavDrawer extends Fragment {
 
         int[] icons = {
             R.drawable.ic_polymer_black_24dp, R.drawable.ic_camera_enhance_black_24dp,
-            R.drawable.ic_room_black_24dp, R.drawable.ic_assignment_ind_black_24dp
+            R.drawable.ic_room_black_24dp, R.drawable.ic_action_sync
         };
         String[] title = {
             "Input Data", "Gallery",
-            "Check Map", "Show Log"
+            "Check Map", "Synchronize"
         };
         for (int i=0;i<title.length && i<icons.length; i++){
             AdapterNavigationList.MenuHolder menuHolder =

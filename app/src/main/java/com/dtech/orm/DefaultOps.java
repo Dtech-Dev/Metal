@@ -103,6 +103,7 @@ public class DefaultOps {
 
     public static Bitmap decodeImage(String base64ImgString){
         byte[] decodedImage = Base64.decode(base64ImgString, Base64.DEFAULT);
+//        java.lang.OutOfMemoryError: Failed to allocate a 3932172 byte allocation with 2473943 free bytes and 2MB until OOM
         return BitmapFactory.decodeByteArray(decodedImage,
                 0, decodedImage.length);
     }
